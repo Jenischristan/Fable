@@ -1,0 +1,100 @@
+.topbar-div {
+  display: flex;
+  flex-direction: row;
+  height: 4rem;
+  width: 100%;
+  justify-content: space-between;
+  background-color: black;
+  align-items: center;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+}
+
+.topbar-search-container {
+  position: relative;
+  flex: 1; /* Makes search container grow to fill all extra space */
+  margin-right: 1.5rem; /* Keeps space between search bar and profile section */
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.topbar-div input {
+  width: 100%; /* Spans 100% of the expanded container */
+  padding: 0.6rem 1rem 0.6rem 2.75rem;
+  font-size: 0.9rem;
+  background-color: #131316;
+  color: #ffffff;
+  border: 1px solid #1f1f23;
+  border-radius: 999px;
+  outline: none;
+  font-weight: 500;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.topbar-div input:hover {
+  border-color: #2a2a2f;
+}
+
+.topbar-div input::placeholder {
+  color: #5f5f66;
+}
+
+.topbar-div input:focus {
+  border-color: #3f3f46;
+  background-color: #09090b;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+}
+
+.topbar-profile-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.topbar-profile-container img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.topbar-profile-btn {
+  background: none;
+  border: none;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  color: gray;
+  corner-shape: squircle;
+  padding: 8px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.topbar-profile-btn:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.topbar-profile-btn:active {
+  transform: scale(0.95);
+}

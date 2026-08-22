@@ -1,0 +1,290 @@
+.create-page {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  background-color: #000000;
+}
+
+.create-img-upload-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.create-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  flex-direction: row;
+}
+
+.create-page-img-label {
+  width: min(350px, 100%);
+  aspect-ratio: 7 / 9;
+  background-color: #070707;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.create-page-img-label:hover {
+  background-color: #0e0e0e;
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+input[type="file"]:focus-visible + .create-page-img-label {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.create-page-img-label * {
+  pointer-events: none;
+}
+
+.create-page-img-label div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-page-img-label h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.create-page-img-label p {
+  margin: 0;
+}
+
+.create-page-img-label div p {
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem; /* Reduced padding to avoid text squishing */
+  text-align: center;
+  opacity: 0.7;
+}
+
+.create-page-img-label > p {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.create-page-divider {
+  height: 1px;
+
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.create-inputs-container {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  gap: 2rem;
+  width: 100%;
+  padding: 2rem;
+}
+
+.create-form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.create-form-group input {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 1rem 1.25rem;
+  border-radius: 999px;
+  outline: none;
+  color: white;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.create-form-group input:hover {
+  background-color: #090909;
+}
+
+.create-form-group input:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgb(255, 255, 255);
+}
+
+.create-visibility-input {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.create-radio {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.create-radio-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.create-desc-input {
+  border-radius: 1.5rem !important;
+  corner-shape: squircle;
+  padding-top: 0.75rem !important;
+  padding-bottom: 3.5rem !important;
+  padding-left: 1.25rem !important;
+  padding-right: 1.25rem !important;
+}
+
+.create-radio-label input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1.5px solid #ffffff;
+  border-radius: 50%;
+  background-color: transparent;
+  position: relative;
+  cursor: pointer;
+}
+
+.create-radio-label input[type="radio"]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: transparent;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.15s ease;
+}
+
+.create-radio-label input[type="radio"]:checked::before {
+  background-color: #ffffff;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.create-submit-btn {
+  display: flex;
+  background-color: white;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.create-submit-btn:hover {
+  background-color: #e4e4e7;
+}
+
+.create-header {
+  color: white;
+  width: 100%;
+  height: 5rem;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.create-preview-card {
+  position: relative;
+  width: min(450px, 100%);
+  max-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #070707;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.create-preview-image {
+  width: 100%;
+  height: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  display: block;
+}
+
+.create-remove-img-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+  z-index: 2;
+}
+
+.create-remove-img-btn:hover {
+  background-color: rgb(255, 0, 0, 0.6);
+}
+
+.create-header p {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .create-form {
+    flex-direction: column;
+  }
+
+  .create-header {
+    display: none;
+  }
+
+  .create-remove-img-btn {
+    background-color: rgb(255, 0, 0, 0.6);
+  }
+  .create-remove-img-btn:hover {
+  background-color: rgb(255, 0, 0);
+}
+
+}
