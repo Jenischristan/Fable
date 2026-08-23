@@ -1,10 +1,9 @@
 
-import NotificationTab from "../components/NotificationTab";
 import "./Home.css"
 function Home() {
   return (
     <main className="home-page">
-       <NotificationTab />
+     Home page is showing up
     </main>
   );
 }

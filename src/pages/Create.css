@@ -7,6 +7,24 @@
   background-color: #000000;
 }
 
+.create-header {
+  color: white;
+  width: 100%;
+  height: 5rem;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+}
+
+.create-header p {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
 .create-img-upload-container {
   display: flex;
   justify-content: center;
@@ -21,13 +39,14 @@
   align-items: center;
   padding: 2rem;
   flex-direction: row;
+  box-sizing: border-box;
 }
 
 .create-page-img-label {
   width: min(350px, 100%);
   aspect-ratio: 7 / 9;
   background-color: #070707;
-  color: #ffffff;
+  color: gray;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,7 +95,7 @@ input[type="file"]:focus-visible + .create-page-img-label {
 
 .create-page-img-label div p {
   font-size: 0.8rem;
-  padding: 0.5rem 1rem; /* Reduced padding to avoid text squishing */
+  padding: 0.5rem 1rem;
   text-align: center;
   opacity: 0.7;
 }
@@ -88,7 +107,6 @@ input[type="file"]:focus-visible + .create-page-img-label {
 
 .create-page-divider {
   height: 1px;
-
   background-color: rgba(255, 255, 255, 0.15);
 }
 
@@ -96,56 +114,100 @@ input[type="file"]:focus-visible + .create-page-img-label {
   display: flex;
   flex-direction: column;
   color: white;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
-  padding: 2rem;
+  max-width: 600px;
+  padding: 2rem 3rem;
+  box-sizing: border-box;
 }
 
 .create-form-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 1rem;
+  gap: 0.5rem;
+  box-sizing: border-box;
+}
+
+.create-form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  padding-left: 0.5rem;
 }
 
 .create-form-group input {
   background-color: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  padding: 1rem 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  padding: 0.85rem 1.25rem;
   border-radius: 999px;
   outline: none;
   color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  width: 100%;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
 }
 
 .create-form-group input:hover {
-  background-color: #090909;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .create-form-group input:focus {
   background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgb(255, 255, 255);
+  border-color: #ffffff;
 }
 
 .create-visibility-input {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.create-visibility-input > label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  padding-left: 0.5rem;
 }
 
 .create-radio {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .create-radio-label {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  padding: 0.85rem 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  cursor: pointer;
+  box-sizing: border-box;
   justify-content: center;
-  gap: 1rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.create-radio-label:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.create-radio-title {
+  font-size: 1rem;
+  color: white;
 }
 
 .create-desc-input {
@@ -191,6 +253,7 @@ input[type="file"]:focus-visible + .create-page-img-label {
 .create-submit-btn {
   display: flex;
   background-color: white;
+  color: black;
   border-radius: 999px;
   border: none;
   font-size: 1rem;
@@ -198,25 +261,18 @@ input[type="file"]:focus-visible + .create-page-img-label {
   font-weight: 600;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0.75rem;
+  padding: 0.85rem 1.5rem;
   width: 100%;
   box-sizing: border-box;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .create-submit-btn:hover {
   background-color: #e4e4e7;
 }
 
-.create-header {
-  color: white;
-  width: 100%;
-  height: 5rem;
-  padding: 1rem 3rem;
-  font-size: 1rem;
-  gap: 1rem;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+.create-submit-btn:active {
+  transform: scale(0.98);
 }
 
 .create-preview-card {
@@ -267,24 +323,63 @@ input[type="file"]:focus-visible + .create-page-img-label {
   background-color: rgb(255, 0, 0, 0.6);
 }
 
-.create-header p {
-  font-size: 1.5rem;
-}
-
 @media (max-width: 768px) {
-  .create-form {
-    flex-direction: column;
+  .create-header {
+    padding: 1rem 1.5rem;
+    height: 4rem;
   }
 
-  .create-header {
-    display: none;
+  .create-header p {
+    font-size: 1.25rem;
+  }
+
+  .create-form {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .create-img-upload-container {
+    padding: 1.5rem;
+  }
+
+  .create-inputs-container {
+    padding: 1.5rem;
   }
 
   .create-remove-img-btn {
     background-color: rgb(255, 0, 0, 0.6);
   }
+
   .create-remove-img-btn:hover {
-  background-color: rgb(255, 0, 0);
+    background-color: rgb(255, 0, 0);
+  }
 }
 
+@media (max-width: 480px) {
+  .create-header {
+    padding: 1rem;
+  }
+
+  .create-img-upload-container,
+  .create-form {
+    padding: 1.25rem 1rem;
+  }
+
+  .create-inputs-container {
+    padding: 1.25rem 1rem;
+    gap: 0.85rem;
+  }
+
+  .create-form-group input {
+    padding: 0.75rem 1rem;
+  }
+
+  .create-radio {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .create-submit-btn {
+    padding: 0.75rem 1rem;
+  }
 }

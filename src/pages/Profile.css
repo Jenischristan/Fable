@@ -1,7 +1,8 @@
 .profile-page {
-  height: 100dvh;
+  min-height: 100dvh;
   width: 100%;
-  background-color: black;
+  background-color: #000000;
+  box-sizing: border-box;
 }
 
 .profile-page-card {
@@ -13,6 +14,7 @@
   flex-direction: row;
   gap: 1.25rem;
   font-size: 2rem;
+  box-sizing: border-box;
 }
 
 .profile-page-card img {
@@ -20,6 +22,7 @@
   height: 150px;
   border-radius: 999px;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .profile-page-card-info {
@@ -27,6 +30,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.4rem;
+  box-sizing: border-box;
 }
 
 .profile-page-card-handle {
@@ -65,6 +69,7 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
+  box-sizing: border-box;
   transition: color 0.2s ease;
 }
 
@@ -90,11 +95,13 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.85rem 1.25rem;
   font-weight: 600;
   border-radius: 999px;
+  corner-shape: squircle;
   font-size: 1rem;
   margin-top: 0.25rem;
+  box-sizing: border-box;
   transition:
     background-color 0.2s ease,
     transform 0.1s ease;
@@ -105,7 +112,7 @@
 }
 
 .profile-card-edit-btn:active {
-  transform: scale(0.99);
+  transform: scale(0.97);
 }
 
 .profile-page-navigation {
@@ -115,6 +122,7 @@
   align-items: center;
   gap: 2rem;
   padding: 0 3rem;
+  box-sizing: border-box;
 }
 
 .profile-page-navigation button {
@@ -126,6 +134,7 @@
   border: none;
   padding: 0.75rem 0;
   cursor: pointer;
+  box-sizing: border-box;
   transition: color 0.25s ease;
 }
 
@@ -161,4 +170,45 @@
 .profile-page-navigation button.profile-btn-active::after {
   background-color: #ffffff;
   transform: translateX(-50%) scaleX(1);
+}
+
+@media (max-width: 768px) {
+  .profile-page-card {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .profile-page-navigation {
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page-card {
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.5rem;
+  }
+
+  .profile-page-card img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-page-card-bio {
+    max-width: 100%;
+  }
+
+  .profile-page-navigation {
+    padding: 0 1rem;
+    gap: 1rem;
+    overflow-x: auto;
+  }
+
+  .profile-page-navigation button {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 }

@@ -1,4 +1,4 @@
-import { IconPhotoUp, IconSparklesFilled, IconX } from "@tabler/icons-react";
+import { IconPhotoUp, IconX } from "@tabler/icons-react";
 import "./Create.css";
 import { useState } from "react";
 
@@ -26,10 +26,6 @@ export default function Create() {
 
   return (
     <main className="create-page">
-      <div className="create-header">
-       <IconSparklesFilled size={30} />
-        <p>Create Spark</p>
-      </div>
       <form className="create-form">
         <div className="create-img-upload-container">
           <input

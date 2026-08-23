@@ -1,8 +1,8 @@
-import "./Explore.jsx"
+import "./Explore.css"
 
 export default function Explore() {
     return (
-        <div>
+        <div className="explore-page">
             Explore is showing up
         </div>
     )
