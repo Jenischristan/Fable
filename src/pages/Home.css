@@ -1,3 +1,141 @@
 .home-page {
-    color: white;
+  width: 100%;
+  background: rgb(0, 0, 0);
+  margin: 0 auto;
+  padding: 1rem 1rem;
+}
+
+.home-masonry-item {
+  padding: 0rem;
+  position: relative;
+}
+
+.home-masonry-item img {
+  display: block;
+  width: 100%;
+  border-radius: 1rem;
+  height: auto;
+}
+
+.home-masonry-item-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.7rem 0.5rem;
+}
+
+.home-masonry-item-bottom-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+
+.home-masonry-item-overlay button {
+  color: rgb(255, 255, 255);
+  border: none;
+  cursor: pointer;
+  border-radius: 1rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  transition: background 0.2s ease;
+}
+
+.home-masonry-item-overlay button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.home-masonry-item-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  pointer-events: none;
+  padding: 0.5rem 0.5rem calc(0.5rem + 44px) 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.home-masonry-item-overlay > *:first-child {
+  align-self: flex-end;
+}
+
+.home-masonry-item-overlay button:has(svg) {
+  align-self: flex-end;
+}
+.home-more-popup {
+  background-color: rgba(20, 20, 20, 1);
+  z-index: 888;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: fixed;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  max-width: 280px;
+  min-width: 250px;
+}
+.home-more-popup p {
+  color: white;
+  font-size: 0.8rem;
+}
+
+.home-more-popup button {
+  background: none;
+  border: none;
+  width: 100%;
+  transition: background 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  color: white;
+}
+
+.home-more-popup button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+
+
+.home-masonry-item:hover .home-masonry-item-overlay {
+  opacity: 1;
+}
+
+.home-masonry-item-overlay button,
+.home-masonry-item-bottom button {
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.home-masonry-item-overlay button:active,
+.home-masonry-item-bottom button:active {
+  transform: scale(0.90);
+}
+
+
+.home-masonry-item-share {
+  border-radius: 999px !important;
+  padding: 0.5rem !important;
+}
+
+
+@media (max-width : 738px) {
+  .home-masonry-item-overlay {
+    display: none;
+  }
 }

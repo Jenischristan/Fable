@@ -19,6 +19,11 @@
   padding: 1rem;
 }
 
+.side-logo-container img{
+  width: 28px;
+  height: 28px;
+}
+
 .side-nav-btn:active {
   transform: scale(0.95);
 }
@@ -118,6 +123,7 @@
 
 .nav-wrapper {
   display: flex;
+  z-index: 999;
 }
 
 .notifications-header {

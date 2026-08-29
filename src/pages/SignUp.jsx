@@ -59,9 +59,9 @@ function SignUp() {
         <div className="signup-background-container">
           <Grainient
             className="grainient-rounded"
-            color1="#002fff"
+               color1="#c1c1c1"
             color2="#000000"
-            color3="#ffdd00"
+            color3="#0f8adc"
             timeSpeed={0.65}
             colorBalance={0.18}
             warpStrength={1}
@@ -83,7 +83,7 @@ function SignUp() {
             zoom={0.9}
           />
           <div className="signup-hero-text">
-            <span className="signup-hero-mark">Rune</span>
+            <span className="signup-hero-mark">Fable</span>
             <h2>Every image is something.</h2>
             <p>
               Save the marks that stay with you, and find your way back to them.

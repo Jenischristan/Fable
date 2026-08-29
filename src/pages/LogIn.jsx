@@ -12,6 +12,7 @@ function LogIn() {
     password: "",
   });
 
+
   const [errors, setErrors] = useState({});
 
   const validateFields = () => {
@@ -51,9 +52,9 @@ function LogIn() {
         <div className="login-background-container">
           <Grainient
             className="grainient-rounded"
-               color1="#3b82f6"
+               color1="#c1c1c1"
             color2="#000000"
-            color3="#ff2f00"
+            color3="#0f8adc"
             timeSpeed={0.65}
             colorBalance={0.18}
             warpStrength={1}
@@ -75,7 +76,7 @@ function LogIn() {
             zoom={0.9}
           />
           <div className="login-hero-text">
-            <span className="login-hero-mark">Rune</span>
+            <span className="login-hero-mark">Fable</span>
             <h2>Pick up right where you left off.</h2>
             <p>Your saved marks are exactly where you left them.</p>
           </div>

@@ -9,6 +9,7 @@ import Create from "./pages/Create";
 import BookMarks from "./pages/BookMarks";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import PostView from "./pages/PostView";
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/bookmarks" element={<BookMarks />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />}></Route>
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/post/:id" element={<PostView /> } />
         </Route>
       </Routes>
     </BrowserRouter>
