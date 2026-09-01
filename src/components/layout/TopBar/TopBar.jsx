@@ -1,5 +1,5 @@
 import "./TopBar.css";
-import profileImage from "../assets/profile.jpg";
+import profileImage from "../../../assets/profile.jpg";
 import {
   IconChevronDown,
   IconLogout,
@@ -7,7 +7,7 @@ import {
   IconSettingsFilled,
 } from "@tabler/icons-react";
 import { useRef, useState } from "react";
-import { useClickOutside } from "../hooks/useClickOutside";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 import { Link, NavLink } from "react-router-dom";
 
 function TopAccountPopUP() {

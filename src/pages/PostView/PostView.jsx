@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import "./PostView.css";
-import { posts } from "../mocks/postsData";
+import { posts } from "../../mocks/postsData";
 import {
   IconBookmark,
   IconDots,
@@ -28,6 +28,7 @@ export default function PostView() {
   const tags = post.tags || [];
   const name = `${post.author.firstName} ${post.author.lastName}`;
   const comments = post.comments;
+
 
   const handleClick = () => {
     console.log(comments);

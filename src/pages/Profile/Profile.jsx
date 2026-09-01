@@ -1,6 +1,5 @@
 import "./Profile.css";
-import ProfileImg from "../assets/profile.jpg";
-import { IconEdit } from "@tabler/icons-react";
+import ProfileImg from "../../assets/profile.jpg";
 import { useState } from "react";
 
 export default function Profile() {
@@ -8,27 +7,33 @@ export default function Profile() {
   return (
     <main className="profile-page">
       <div className="profile-page-card">
-        <img src={ProfileImg} alt="profile image" />
+        <div className="profile-page-avatar-container">
+          <img src={ProfileImg} alt="profile image" />
         <div className="profile-page-card-info">
-          <span className="profile-page-card-username">Clark Kent</span>
-          <span className="profile-page-card-handle">@clarkkent</span>
+          
+            <span className="profile-page-card-username">Clark Kent</span>
+            <span className="profile-page-card-handle">@clarkkent</span>
+        </div>
+         </div>
+        
+
           <p className="profile-page-card-bio">
             Just a guy from Kansas trying to make deadline.
           </p>
           <div className="profile-card-follow">
             <button>
-              <span className="profile-followers-count">0</span> Followers
+              <span className="profile-followers-count">0</span> <p className="profile-page-follow-text">Followers</p>
             </button>
             <span className="dot"></span>
             <button>
-              <span className="profile-following-count">0</span> Following
+              <span className="profile-following-count">0</span> <p className="profile-page-follow-text">Following</p>
             </button>
           </div>
-          <button className="profile-card-edit-btn">
+          {/* <button className="profile-card-edit-btn">
             <IconEdit size={20} />
             Edit Profile
-          </button>
-        </div>
+          </button> */}
+       
       </div>
       <div className="profile-page-navigation">
         <button

@@ -1,5 +1,5 @@
 import "./Home.css";
-import { posts } from "../mocks/postsData";
+import { posts } from "../../mocks/postsData";
 import { Masonry } from "masonic";
 import {
   IconDots,
@@ -12,7 +12,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import React from "react";
-import { useClickOutside } from "../hooks/useClickOutside";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 function MorePopUp({ position, ignoreRef, handler }) {
   const popUpRef = useRef(null);

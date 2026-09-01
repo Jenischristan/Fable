@@ -2,7 +2,7 @@ import "./SignUp.css";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Grainient from "../components/Grainient";
+import Grainient from "../../../components/ui/Grainient/Grainient";
 
 function SignUp() {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

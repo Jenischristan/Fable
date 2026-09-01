@@ -4,7 +4,7 @@ import {
   IconUser,
   IconUserFilled,
 } from "@tabler/icons-react";
-import defaultAvatar from "../assets/profile.jpg";
+import defaultAvatar from "../../assets/profile.jpg";
 import "./Settings.css";
 import { useState } from "react";
 

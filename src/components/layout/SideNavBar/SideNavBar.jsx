@@ -16,7 +16,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import "./SideNavBar.css";
-import logo from "../assets/logo.svg"
+import logo from "../../../assets/logo.svg"
 
 export default function SideNavBar() {
   const [showNotificationTab, setShowNotificationTab] = useState(false);

@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
-import LogIn from "./pages/LogIn";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import AppLayout from "./layouts/AppLayout";
-import Explore from "./pages/Explore";
-import Create from "./pages/Create";
-import BookMarks from "./pages/BookMarks";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import PostView from "./pages/PostView";
+import LogIn from "../pages/Auth/LogIn/LogIn";
+import SignUp from "../pages/Auth/SignUp/SignUp";
+import Home from "../pages/Home/Home";
+import AppLayout from "../layouts/AppLayout";
+import Explore from "../pages/Explore/Explore";
+import Create from "../pages/Create/Create";
+import BookMarks from "../pages/BookMarks/BookMarks";
+import Profile from "../pages/Profile/Profile";
+import Settings from "../pages/Settings/Settings";
+import PostView from "../pages/PostView/PostView";
 
 function App() {
   return (
