@@ -26,6 +26,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/post/:id" element={<PostView /> } />
+          <Route path="/user/:username" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -154,11 +154,12 @@ export default function SideNavBar() {
               className="close-panel-btn"
               onClick={() => setShowNotificationTab(false)}
             >
-              <IconX size={22} />
+              <IconX size={25} />
             </button>
           </div>
           <div className="notifications-content">
             <p className="notification-item">You have no new updates.</p>
+       
           </div>
         </aside>
       )}

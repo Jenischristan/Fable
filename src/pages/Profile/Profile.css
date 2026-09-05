@@ -1,14 +1,7 @@
-.profile-page {
-  min-height: 100dvh;
-  width: 100%;
-  background-color: #000000;
-  box-sizing: border-box;
-}
-
 .profile-page-card {
   display: flex;
   width: 100%;
-  padding: 3rem;
+  padding: 4rem;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
@@ -17,9 +10,9 @@
   box-sizing: border-box;
 }
 
-.profile-page-card img {
-  width: 150px;
-  height: 150px;
+.profile-page-user-avatar-image {
+  width: 120px;
+  height: 120px;
   border-radius: 999px;
   flex-shrink: 0;
   object-fit: cover;
@@ -29,23 +22,31 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 0.4rem;
   box-sizing: border-box;
 }
 
 .profile-page-card-handle {
   color: #a1a1aa;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 400;
   margin-top: -0.4rem;
 }
 
 .profile-page-card-bio {
   color: #d4d4d8;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 400;
   margin: 0.15rem 0 0.1rem;
   max-width: 40ch;
+}
+
+.profile-page-section-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .dot {
@@ -67,14 +68,19 @@
 
 .profile-card-follow button {
   color: gray;
-  font-size: 1rem;
+  font-size: 0.85rem;
   border: none;
   cursor: pointer;
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.35rem;
   background-color: transparent;
   box-sizing: border-box;
   transition: color 0.2s ease;
+}
+
+.profile-card-follow button p {
+  margin: 0;
 }
 
 .profile-card-follow button span {
@@ -98,53 +104,105 @@
   text-decoration: underline;
 }
 
-.profile-card-edit-btn {
-  background-color: #ffffff;
-  color: #000000;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.85rem 1.25rem;
-  font-weight: 600;
-  border-radius: 999px;
-  corner-shape: squircle;
-  font-size: 1rem;
-  margin-top: 0.25rem;
-  box-sizing: border-box;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
-}
-
-.profile-card-edit-btn:hover {
-  background-color: #e4e4e7;
-}
-
-.profile-card-edit-btn:active {
-  transform: scale(0.97);
-}
 
 .profile-page-navigation {
   display: flex;
   width: 100%;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 2rem;
   padding: 0 3rem;
   box-sizing: border-box;
 }
 
+
+.profile-page-more-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.profile-page-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.profile-page-more-btn:hover {
+  background-color: rgba(255, 255, 255,0.1);
+}
+
+.profile-page-more-btn:active {
+  transform: scale(0.97);
+}
+
+.profile-page-dots-vertical {
+  display: none;
+}
+
+.profile-page-actions-popup {
+  display: flex;
+  background: #131316;
+  border: 1px solid #1f1f23;
+  padding: 0.5rem 0.5rem;
+  min-width: 160px;
+  align-items: center;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  flex-direction: column;
+  border-radius: 1rem;
+  justify-content: center;
+  z-index: 20;
+}
+
+.profile-page-actions-popup p {
+  font-size: 0.8rem;
+  display: flex;
+  width: 100%;
+  padding: 0.5rem 1.25rem;
+  justify-content: flex-start;
+  color: gray;
+}
+
+.profile-page-actions-popup button {
+  display: flex;
+  align-items: center;
+  background:none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  color: white;
+  justify-content: flex-start;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem ;
+}
+
+
+.profile-page-actions-popup button:hover {
+  background: rgba(255, 255, 255,0.1);
+
+}
+
+.profile-page-actions-popup button:active {
+  transform: scale(0.96);
+  background: rgba(255, 255, 255,0.2);
+}
+
 .profile-page-navigation button {
   position: relative;
-  color: #a1a1aa;
+  color: gray;
   font-size: 1rem;
   font-weight: 500;
   background-color: transparent;
   border: none;
-  padding: 0.75rem 0;
+  padding: 0.75rem 2rem;
   cursor: pointer;
   box-sizing: border-box;
   transition: color 0.25s ease;
@@ -169,13 +227,12 @@
     background-color 0.25s ease;
 }
 
+
 .profile-page-avatar-container {
-   display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 1rem;
-   
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .profile-page-navigation button:not(.profile-btn-active):hover::after {
@@ -199,13 +256,48 @@
   transform: translateX(-50%) scaleX(1);
 }
 
+.profile-follow-actions button {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-weight: 600;
+  flex: 1;
+  max-width: 200px;
+  
+}
+
+.profile-follow-actions button:hover {
+  background-color: #e4e4e7;
+}
+
+.profile-follow-actions-share-btn {
+  background: #131316 !important;
+  color: white !important;
+  border: 1px solid #1f1f23 !important;
+}
+
+.profile-follow-actions-share-btn:hover {
+  background-color: rgb(18, 18, 21) !important;
+}
+
+.profile-follow-actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .profile-page-card {
     padding: 1.5rem;
     gap: 1rem;
   }
 
-   .profile-page-card img {
+  .profile-page-card img {
     width: 100px;
     height: 100px;
   }
@@ -214,6 +306,15 @@
     padding: 0 1.5rem;
     gap: 1.5rem;
   }
+
+    .profile-page-dots-horizontal {
+    display: none;
+  }
+
+  .profile-page-dots-vertical {
+    display: block;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -228,7 +329,7 @@
     flex-direction: row;
     align-items: center;
     gap: 1rem;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .profile-page-card img {
@@ -249,5 +350,10 @@
   .profile-page-navigation button {
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  .profile-page-actions-popup {
+    min-width: 150px;
+    max-width: calc(100vw - 2rem);
   }
 }

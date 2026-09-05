@@ -5,7 +5,7 @@ import {
   IconDots,
   IconDownload,
   IconFlag,
-  IconShare2,
+  IconShare3,
   IconThumbDown,
   IconThumbUp,
 } from "@tabler/icons-react";
@@ -61,6 +61,8 @@ const PostCard = React.memo(function PostCard({ data: post }) {
     top: 0,
     left: 0,
   });
+
+  const [isSaved, setIsSaved] = useState(post.isBookmarked)
 
   const [isLandscape, setIsLandscape] = useState(false);
 
@@ -127,6 +129,7 @@ const PostCard = React.memo(function PostCard({ data: post }) {
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setIsSaved(true)
   };
 
   const handleMore = (e) => {
@@ -156,12 +159,12 @@ const PostCard = React.memo(function PostCard({ data: post }) {
       </NavLink>
 
       <div className="home-masonry-item-overlay">
-        <button type="button" onClick={handleSave}>
-          {post.isBookmarked ? "Saved" : "Save"}
+        <button type="button" onClick={handleSave} className="home-overlay-save-btn">
+          {isSaved ? "Saved" : "Save"}
         </button>
         {!isLandscape && (
           <button className="home-masonry-item-share">
-            <IconShare2 />
+            <IconShare3 />
           </button>
         )}
       </div>
@@ -174,7 +177,7 @@ const PostCard = React.memo(function PostCard({ data: post }) {
           title="More actions"
           onClick={handleMore}
         >
-          <IconDots color="white" size={22} />
+          <IconDots size={25} />
         </button>
       </div>
       {isPopUpActive && (

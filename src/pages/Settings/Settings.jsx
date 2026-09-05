@@ -4,12 +4,14 @@ import {
   IconUser,
   IconUserFilled,
 } from "@tabler/icons-react";
-import defaultAvatar from "../../assets/profile.jpg";
 import "./Settings.css";
 import { useState } from "react";
+import { currentUser } from "../../mocks/usersData";
+
+const user = currentUser;
 
 function ProfileSection() {
-  const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
+  const [avatarPreview, setAvatarPreview] = useState(user.avatar);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -18,12 +20,30 @@ function ProfileSection() {
     }
   };
 
+  const [formData,setFormData] = useState({
+    firstName : user.firstName,
+    lastName : user.lastName,
+    username : user.username,
+    bio : user.bio,
+  })
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name] : value,
+    }));
+  }
+ 
 
   return (
     <section className="settings-profile-section">
       <div className="settings-profile-header">
         <h2>Edit Profile</h2>
-        <p>Update your public details. Anything saved here can be viewed by anyone on the platform.</p>
+        <p>
+          Update your public details. Anything saved here can be viewed by
+          anyone on the platform.
+        </p>
       </div>
 
       <form className="settings-profile-form">
@@ -34,7 +54,10 @@ function ProfileSection() {
             className="settings-profile-avatar"
           />
           <div className="settings-profile-avatar-actions">
-            <label htmlFor="avatar-upload" className="settings-avatar-upload-btn">
+            <label
+              htmlFor="avatar-upload"
+              className="settings-avatar-upload-btn"
+            >
               Upload new
             </label>
             <input
@@ -55,6 +78,8 @@ function ProfileSection() {
               name="firstName"
               id="first-name"
               placeholder=""
+              value={formData.firstName}
+              onChange={handleChange}
             />
           </div>
 
@@ -65,6 +90,8 @@ function ProfileSection() {
               name="lastName"
               id="last-name"
               placeholder=""
+              value={formData.lastName}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -75,7 +102,8 @@ function ProfileSection() {
             type="text"
             name="username"
             id="username"
-            placeholder=""
+            value={formData.username}
+            onChange={handleChange}
           />
         </div>
 
@@ -87,6 +115,8 @@ function ProfileSection() {
             name="bio"
             id="bio"
             placeholder=""
+            value={formData.bio}
+            onChange={handleChange}
           />
         </div>
 
@@ -104,6 +134,20 @@ function ProfileSection() {
 }
 
 function SecuritySection() {
+   const [formData,setFormData] = useState({
+
+    email : user.email,
+    dob : user.dob,
+    visibility : user.visibility
+  })
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name] : value,
+    }));
+  }
   return (
     <section className="settings-security-section">
       <div className="settings-security-header">
@@ -117,6 +161,8 @@ function SecuritySection() {
             type="email"
             name="email"
             id="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder=""
           />
         </div>
@@ -126,16 +172,12 @@ function SecuritySection() {
             type="password"
             name="new-password"
             id="new-password"
-            placeholder=""
+            placeholder="Enter a new password"
           />
         </div>
         <div className="settings-security-input-group">
           <label htmlFor="dob">Date of birth</label>
-          <input
-            type="date"
-            name="dob"
-            id="dob"
-          />
+          <input type="date" name="dob" id="dob" value={formData.dob} onChange={handleChange} />
         </div>
         <div className="settings-profile-visibility-input">
           <label>Account visibility</label>
@@ -146,7 +188,7 @@ function SecuritySection() {
                 name="visibility"
                 id="public"
                 value="public"
-                defaultChecked
+                defaultChecked={formData.visibility === "public"}
               />
               <span className="settings-security-radio-title">Public</span>
             </label>
@@ -156,6 +198,7 @@ function SecuritySection() {
                 name="visibility"
                 id="private"
                 value="private"
+                   defaultChecked={formData.visibility === "private"}
               />
               <span className="settings-security-radio-title">Private</span>
             </label>
@@ -166,16 +209,26 @@ function SecuritySection() {
           <div className="settings-security-danger-item">
             <div>
               <h3>Deactivate account</h3>
-              <p>Temporarily disable your account. You can reactivate it anytime by logging back in.</p>
+              <p>
+                Temporarily disable your account. You can reactivate it anytime
+                by logging back in.
+              </p>
             </div>
-            <button type="button" className="settings-btn-deactivate">Deactivate</button>
+            <button type="button" className="settings-btn-deactivate">
+              Deactivate
+            </button>
           </div>
           <div className="settings-security-danger-item">
             <div>
               <h3>Delete account</h3>
-              <p>Permanently delete your data and account. This action cannot be undone.</p>
+              <p>
+                Permanently delete your data and account. This action cannot be
+                undone.
+              </p>
             </div>
-            <button type="button" className="settings-btn-delete">Delete Account</button>
+            <button type="button" className="settings-btn-delete">
+              Delete Account
+            </button>
           </div>
         </div>
         <div className="settings-profile-form-actions">

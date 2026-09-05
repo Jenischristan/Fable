@@ -6,40 +6,33 @@
   background-color: #000000;
 }
 
-@media (max-width: 900px) {
-  .postview-page {
-    flex-direction: column;
-    height: auto;
-    min-height: 100%;
-    overflow: visible;
-  }
-}
-
 .postview-image-container {
   flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   background-color: #000000;
 }
 
+.postview-image-frame {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
+}
+
 .postview-image-container img {
+  display: block;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-@media (max-width: 900px) {
-  .postview-image-container {
-    flex: 0 0 auto;
-    width: 100%;
-    height: 45vh;
-    min-height: 260px;
-  }
-}
 
-/* Side panel container */
 .postview-main-container {
   position: relative;
   display: flex;
@@ -52,19 +45,6 @@
   background-color: #000000;
 }
 
-@media (max-width: 900px) {
-  .postview-main-container {
-    flex: 1 1 auto;
-    min-width: 0;
-    max-width: 100%;
-    width: 100%;
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    height: auto;
-  }
-}
-
-/* Scrollable container for main content */
 .postview-scrollable-content {
   flex: 1;
   min-height: 0;
@@ -102,14 +82,16 @@
   align-items: center;
   gap: 0.3rem;
   padding: 0.5rem 1.2rem;
+  border: 2px solid transparent;
   font-weight: 600;
   border-radius: 1rem;
   font-size: 0.9rem;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.postview-header button:active {
-  transform: scale(0.96);
+  box-sizing: border-box;
+  min-width: 100px;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .postview-header button:hover {
@@ -150,6 +132,7 @@
   color: white !important;
   max-width: 100%;
   overflow: hidden;
+
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -161,7 +144,17 @@
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
   white-space: nowrap;
+}
+
+.postview-avatar div a {
+  text-decoration: none;
+}
+
+.postview-avatar div a:hover {
+  text-decoration-color: gray !important;
+  text-decoration: underline;
 }
 
 .postview-main-desc {
@@ -188,6 +181,7 @@
 
 .postview-main-actions {
   display: flex;
+  position: relative;
   align-items: center;
   gap: 1rem;
 }
@@ -250,6 +244,7 @@
 .postview-comments-header {
   display: flex;
   align-items: center;
+  position: relative;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 1rem;
@@ -279,17 +274,16 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-
 .postview-comments-header button:active {
   background-color: rgba(255, 255, 255, 0.2);
 }
-
 
 /* Sticky Bottom Input Bar */
 .postview-comments-input-wrapper {
   position: sticky;
   bottom: 0;
   width: 100%;
+  z-index: 101;
   flex-shrink: 0;
   padding: 0.75rem 1rem;
   background-color: #000000;
@@ -315,7 +309,9 @@
   border-radius: 999px;
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .postview-comments-input-section input::placeholder {
@@ -328,8 +324,8 @@
 }
 
 .postview-comments-input-section button {
-  background-color: #ffffff;
-  color: #000000;
+  background-color:#131316;
+  color: #ffffff;
   width: 50px;
   height: 50px;
   display: flex;
@@ -354,6 +350,8 @@
   display: flex;
   gap: 0.5rem;
   min-width: 0;
+  align-items: center;
+
   flex-wrap: wrap;
 }
 
@@ -392,7 +390,7 @@
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .postview-comment-content {
@@ -434,3 +432,223 @@
   color: white;
   font-size: 0.7rem;
 }
+
+.postview-commenter-details a {
+  text-decoration: none;
+}
+
+.postview-liked-icon {
+  color: #e5484d !important;
+}
+
+.postview-unfollow-btn {
+  background-color: transparent !important;
+  color: white !important;
+  border-color: gray !important;
+  transition:
+    background 0.2s ease,
+    border 0.2s ease !important;
+}
+
+.postview-unfollow-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: white !important;
+}
+
+.postview-sort-popup {
+  background: #131316;
+  border: 1px solid #1f1f23;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  border-radius: 1rem;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
+  min-width: 200px;
+  padding: 0.5rem 0.5rem;
+  max-width: 230px;
+
+}
+
+.postview-sort-popup button {
+  color: white;
+  background: transparent;
+  padding: 1rem;
+  cursor: pointer;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border: none;
+}
+
+
+.postview-sort-popup button p {
+  font-size: 0.8rem;
+  color: gray;
+  font-weight: 400 !important;
+}
+
+
+body.scroll-locked {
+  overflow: hidden;
+}
+
+.postview-maximize-btn {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem;
+  left: calc(0.5rem + 1rem);
+  bottom: calc(0.5rem + 1rem);
+  border-radius: 1rem;
+  z-index: 1;
+}
+
+
+.postview-image-maximized {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.92);
+  z-index: 9999;
+}
+
+.postview-image-maximized img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.postview-image-maximized button {
+  color: white;
+  background-color: rgba(2, 2, 2, 0.6);
+  backdrop-filter: blur(12px);
+  border: none;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  padding: 0.6rem;
+  transition: background-color 0.2s ease;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.postview-image-maximized button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+.postview-more-popup-window {
+
+  min-width: 230px;
+  z-index: 99;
+    border: 1px solid #1f1f23;
+  background: #131316;
+  position: absolute;
+  top: 100%;
+  margin-top: 0.5rem;
+  border-radius: 1rem;
+}
+
+.postview-more-popup-window div {
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.postview-more-popup-window button {
+  border-radius: 1rem !important;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  font-size: 0.9rem;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background 0.2s ease;
+}
+
+.postview-more-popup-window button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.postview-more-popup-window button:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.postview-back-btn {
+  background-color: #1313166a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  z-index: 999;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  padding: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.postview-back-btn:active {
+  transform: scale(0.96);
+}
+
+
+@media (max-width: 900px) {
+  .postview-page {
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+   .postview-image-container {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 45vh;
+    min-height: 260px;
+  }
+    .postview-main-container {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    height: auto;
+  }
+
+   .postview-maximize-btn {
+    display: none;
+  } 
+
+}
+
+

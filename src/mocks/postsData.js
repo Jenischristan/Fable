@@ -46,6 +46,48 @@ export const posts = [
         likesCount: 45,
         isLiked: false,
         createdAt: "2026-08-26T15:10:00Z"
+      },
+        {
+        id: "comment_00777",
+        author: {
+          id: "user_104",
+          firstName: "Clark",
+          lastName: "Kent",
+          username: "ckent",
+          avatar: "https://picsum.photos/seed/user_104/800/800"
+        },
+        content: "Great shot, Diana!",
+        likesCount: 512,
+        isLiked: true,
+        createdAt: "2026-08-25T12:00:00Z"
+      },
+      {
+        id: "comment_00888",
+        author: {
+          id: "user_105",
+          firstName: "Bruce",
+          lastName: "Wayne",
+          username: "bwayne",
+          avatar: "https://picsum.photos/seed/user_105/800/800"
+        },
+        content: "Looks expensive to restore.",
+        likesCount: 890,
+        isLiked: false,
+        createdAt: "2026-08-25T12:30:00Z"
+      },
+      {
+        id: "comment_009999",
+        author: {
+          id: "user_106",
+          firstName: "Lois",
+          lastName: "Lane",
+          username: "llane",
+          avatar: "https://picsum.photos/seed/user_106/800/800"
+        },
+        content: "Which city is this?",
+        likesCount: 34,
+        isLiked: false,
+        createdAt: "2026-08-25T13:00:00Z"
       }
     ]
   },

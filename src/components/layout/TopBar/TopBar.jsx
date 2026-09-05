@@ -1,5 +1,4 @@
 import "./TopBar.css";
-import profileImage from "../../../assets/profile.jpg";
 import {
   IconChevronDown,
   IconLogout,
@@ -9,17 +8,20 @@ import {
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import { Link, NavLink } from "react-router-dom";
+import { currentUser} from "../../../mocks/usersData";
+
+const user = currentUser
 
 function TopAccountPopUP() {
   return (
     <div className="topbar-account-popup">
       <p>Logged in as</p>
       <div className="top-popup-account-container">
-        <img src={profileImage} alt="Profile image" />
+        <img src={user.avatar} alt="Profile image" />
         <div className="top-popup-account-texts">
-          <h4>Clark Kent</h4>
-          <p>public</p>
-          <p>clarkkent@email.com</p>
+          <h4>{`${user.firstName} ${user.lastName}`}</h4>
+          <p>{`${user.visibility}`}</p>
+          <p>{`${user.email}`}</p>
         </div>
       </div>
       <div className="topbar-popup-profile-settings">
@@ -58,7 +60,7 @@ export default function TopBar() {
 
       <div className="topbar-profile-container" ref={popupRef}>
         <Link to="/profile" title="Profile">
-          <img title="Your profile" src={profileImage} alt="profile-img" />
+          <img title="Your profile" src={user.avatar} alt="profile-img" />
         </Link>
 
         <button
