@@ -1,7 +1,7 @@
 import {} from "@tabler/icons-react";
-import "./BookMarks.css";
+import "./Bookmarks.css";
 
-export default function BookMarks() {
+export default function Bookmarks() {
   return (
     <main className="bookmarks-page">
 

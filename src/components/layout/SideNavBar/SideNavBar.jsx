@@ -16,10 +16,19 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import "./SideNavBar.css";
-import logo from "../../../assets/logo.svg"
+import logo from "../../../assets/icons/logo.svg"
 
 export default function SideNavBar() {
   const [showNotificationTab, setShowNotificationTab] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClosing = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowNotificationTab(false)
+      setIsClosing(false)   
+    }, 280);
+  }
 
   const getNavClass = ({ isActive }) =>
     isActive ? "side-nav-btn nav-btn-active" : "side-nav-btn";
@@ -147,12 +156,14 @@ export default function SideNavBar() {
 
       {/* Notifications Drawer */}
       {showNotificationTab && (
-        <aside className="notifications-panel">
+        <aside className={`notifications-panel ${
+            isClosing ? "panel-closing" : "panel-open"
+          }`}>
           <div className="notifications-header">
             <h3>Notifications</h3>
             <button
               className="close-panel-btn"
-              onClick={() => setShowNotificationTab(false)}
+              onClick={handleClosing}
             >
               <IconX size={25} />
             </button>

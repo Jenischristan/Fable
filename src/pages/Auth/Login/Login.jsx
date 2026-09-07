@@ -1,29 +1,22 @@
-import "./SignUp.css";
+import "./Login.css";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Grainient from "../../../components/ui/Grainient/Grainient";
 
-function SignUp() {
+function Login() {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const [passShow, setPassShow] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
   });
+
 
   const [errors, setErrors] = useState({});
 
   const validateFields = () => {
     let fieldError = {};
-    if (!formData.firstName) {
-      fieldError.firstName = "First name is required";
-    }
-    if (!formData.lastName) {
-      fieldError.lastName = "Last name is required";
-    }
     if (!formData.email) {
       fieldError.email = "Email is required";
     } else if (!emailRegex.test(formData.email)) {
@@ -54,9 +47,9 @@ function SignUp() {
   };
 
   return (
-    <main className="signup-page">
-      <div className="signup-container">
-        <div className="signup-background-container">
+    <main className="login-page">
+      <div className="login-container">
+        <div className="login-background-container">
           <Grainient
             className="grainient-rounded"
                color1="#c1c1c1"
@@ -82,56 +75,20 @@ function SignUp() {
             centerOffsetY={0}
             zoom={0.9}
           />
-          <div className="signup-hero-text">
-            <span className="signup-hero-mark">Fable</span>
-            <h2>Every image is something.</h2>
-            <p>
-              Save the marks that stay with you, and find your way back to them.
-            </p>
+          <div className="login-hero-text">
+            <span className="login-hero-mark">Fable</span>
+            <h2>Pick up right where you left off.</h2>
+            <p>Your saved marks are exactly where you left them.</p>
           </div>
         </div>
 
-        <div className="signup-cord">
-          <div className="signup-card">
-            <div className="signup-header">
-              <h1>Let's get you set up</h1>
+        <div className="login-cord">
+          <div className="login-card">
+            <div className="login-header">
+              <h1>Welcome back</h1>
             </div>
-            <form action="" className="signup-form" onSubmit={handleSubmit}>
-              <div className="signup-name-group">
-                <div className="signup-form-group">
-                  <label htmlFor="first-name">First Name</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    id="first-name"
-                    value={formData.firstName}
-                    placeholder="Clark"
-                    autoFocus
-                    onChange={handleChange}
-                  />
-                  {errors.firstName && (
-                    <span className="signup-error-text">
-                      {errors.firstName}
-                    </span>
-                  )}
-                </div>
-                <div className="signup-form-group">
-                  <label htmlFor="last-name">Last Name</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    id="last-name"
-                    placeholder="Kent"
-                    onChange={handleChange}
-                  />
-                  {errors.lastName && (
-                    <span className="signup-error-text">{errors.lastName}</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="signup-form-group">
+            <form action="" className="login-form" onSubmit={handleSubmit}>
+              <div className="login-form-group">
                 <label htmlFor="email">Email</label>
                 <input
                   type="email"
@@ -139,53 +96,56 @@ function SignUp() {
                   id="email"
                   value={formData.email}
                   placeholder="e.g. clarkkent@email.com"
+                  autoFocus
                   onChange={handleChange}
                 />
                 {errors.email && (
-                  <span className="signup-error-text">{errors.email}</span>
+                  <span className="login-error-text">{errors.email}</span>
                 )}
               </div>
-              <div className="signup-form-group">
-                <span className="signup-pass">
-                  <label htmlFor="password">Password</label>{" "}
+
+              <div className="login-form-group">
+                <div className="login-pass">
+                  <label htmlFor="password">Password</label>
                   {passShow ? (
                     <IconEye
                       size={20}
-                      className="signup-pass-show-icon"
-                      onClick={() => {
-                        setPassShow(!passShow);
-                      }}
+                      className="login-pass-show-icon"
+                      onClick={() => setPassShow(!passShow)}
                     />
                   ) : (
                     <IconEyeClosed
                       size={20}
-                      className="signup-pass-show-icon"
-                      onClick={() => {
-                        setPassShow(!passShow);
-                      }}
+                      className="login-pass-show-icon"
+                      onClick={() => setPassShow(!passShow)}
                     />
                   )}
-                </span>
+                </div>
                 <input
                   type={passShow ? "text" : "password"}
                   name="password"
-                  value={formData.password}
                   id="password"
-                  placeholder="8+ characters"
+                  value={formData.password}
+                  placeholder="Enter your password"
                   onChange={handleChange}
                 />
                 {errors.password && (
-                  <span className="signup-error-text">{errors.password}</span>
+                  <span className="login-error-text">{errors.password}</span>
                 )}
               </div>
-              <button type="submit" className="signup-btn">
-                Create account
+
+              <div className="login-forgot">
+                <a href="/forgot-password">Forgot password?</a>
+              </div>
+
+              <button type="submit" className="login-btn">
+                Log In
               </button>
             </form>
           </div>
-          <div className="signup-login-footer">
+          <div className="login-signup-footer">
             <p>
-              Already have an account? <Link to="/login"> Log in</Link>
+              Don't have an account? <Link to="/signup">Sign up</Link>
             </p>
           </div>
         </div>
@@ -194,4 +154,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Login;

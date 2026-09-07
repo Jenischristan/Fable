@@ -11,21 +11,23 @@
   corner-shape: squircle;
   border: 2px solid transparent;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
+    color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .side-logo-container {
   padding: 1rem;
 }
 
-.side-logo-container img{
+.side-logo-container img {
   width: 28px;
   height: 28px;
 }
 
 .side-nav-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.93);
+  transition: transform 0.08s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .nav-btn-active {
@@ -73,7 +75,6 @@
   border: none;
 }
 
-
 .nav-wrapper {
   display: flex;
   z-index: 999;
@@ -98,6 +99,9 @@
   cursor: pointer;
   padding: 0.5rem 0.5rem;
   border-radius: 999px;
+  transition:
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    scale 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .notifications-header button:hover {
@@ -105,7 +109,8 @@
 }
 
 .notifications-header button:active {
-  scale: 0.97;
+  scale: 0.93;
+  transition: scale 0.08s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .notifications-content {
@@ -122,9 +127,63 @@
   flex-direction: column;
   background-color: black;
   min-width: 350px;
+  z-index: -1;
   max-width: 380px;
+  will-change: transform, opacity;
 }
 
+.notifications-panel.panel-open {
+  animation: slideInLeft 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.notifications-panel.panel-closing {
+  animation: slideOutLeft 0.28s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-8%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0%) ;
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-8%) ;
+    opacity: 0;
+  }
+}
+
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%) ;
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0) ;
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%) ;
+    opacity: 0;
+  }
+}
 
 @media (max-width: 768px) {
   .side-nav {
@@ -150,7 +209,6 @@
     align-items: center;
   }
 
-  
   .side-nav-main {
     flex-direction: row;
     width: 100%;
@@ -174,8 +232,7 @@
     display: none;
   }
 
-
-  .notifications-panel {
+ .notifications-panel {
     position: fixed;
     left: 0;
     right: 0;
@@ -187,12 +244,19 @@
     max-width: 100%;
     max-height: 60dvh;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-right: none;
     border-radius: 1rem 1rem 0 0;
     z-index: 100;
     box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
-    animation: slideUp 0.22s ease;
   }
 
+  .notifications-panel.panel-open {
+    animation: slideUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .notifications-panel.panel-closing {
+    animation: slideDown 0.28s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+  }
   .notifications-content {
     overflow-y: auto;
     flex: 1;
@@ -203,10 +267,5 @@
   .notifications-header {
     padding: 1.25rem 1.5rem 1rem;
     flex-shrink: 0;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
   }
 }

@@ -17,14 +17,14 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 function MorePopUp({ position, ignoreRef, handler }) {
   const popUpRef = useRef(null);
   useClickOutside(popUpRef, handler, ignoreRef);
-  const handelPopUpClick = (e) => {
+  const handlePopUpClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
   return (
     <div
       className="home-more-popup"
-      onClick={handelPopUpClick}
+      onClick={handlePopUpClick}
       style={{
         top: position.top,
         left: position.left,
@@ -62,8 +62,8 @@ const PostCard = React.memo(function PostCard({ data: post }) {
     left: 0,
   });
 
-  const [isSaved, setIsSaved] = useState(post.isBookmarked)
-
+  const [isSaved, setIsSaved] = useState(post.isBookmarked);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
 
   const calculatePopUpPos = () => {
@@ -129,7 +129,7 @@ const PostCard = React.memo(function PostCard({ data: post }) {
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsSaved(true)
+    setIsSaved(true);
   };
 
   const handleMore = (e) => {
@@ -143,43 +143,64 @@ const PostCard = React.memo(function PostCard({ data: post }) {
     setIsPopUpActive((prev) => !prev);
   };
 
-  const handleLandscape = (e) => {
+  const handleImageLoading = (e) => {
     setIsLandscape(e.target.naturalWidth > e.target.naturalHeight);
+    setIsImageLoaded(true);
   };
 
   return (
     <div className="home-masonry-item">
-      <NavLink to={`/post/${post.id}`} state={{post}}>
+      <NavLink to={`/post/${post.id}`} state={{ post }}>
+        {!isImageLoaded && (
+          <div
+            className="home-image-skeleton"
+            style={{
+              aspectRatio:
+                post.width && post.height
+                  ? `${post.width} / ${post.height}`
+                  : "16 / 9",
+            }}
+          />
+        )}
+
         <img
           src={post.url}
           alt={post.description || "Post"}
           loading="lazy"
-          onLoad={handleLandscape}
+          onLoad={handleImageLoading}
         />
       </NavLink>
+      {isImageLoaded && (
+        <>
+          <div className="home-masonry-item-overlay">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="home-overlay-save-btn"
+            >
+              {isSaved ? "Saved" : "Save"}
+            </button>
+            {!isLandscape && (
+              <button className="home-masonry-item-share">
+                <IconShare3 />
+              </button>
+            )}
+          </div>
 
-      <div className="home-masonry-item-overlay">
-        <button type="button" onClick={handleSave} className="home-overlay-save-btn">
-          {isSaved ? "Saved" : "Save"}
-        </button>
-        {!isLandscape && (
-          <button className="home-masonry-item-share">
-            <IconShare3 />
-          </button>
-        )}
-      </div>
+          <div className="home-masonry-item-bottom">
+            <button
+              type="button"
+              ref={btnRef}
+              className="home-masonry-item-bottom-button"
+              title="More actions"
+              onClick={handleMore}
+            >
+              <IconDots size={25} />
+            </button>
+          </div>
+        </>
+      )}
 
-      <div className="home-masonry-item-bottom">
-        <button
-          type="button"
-          ref={btnRef}
-          className="home-masonry-item-bottom-button"
-          title="More actions"
-          onClick={handleMore}
-        >
-          <IconDots size={25} />
-        </button>
-      </div>
       {isPopUpActive && (
         <MorePopUp
           position={popUpPos}
