@@ -1,11 +1,13 @@
 import "./Profile.css";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { currentUser, users } from "../../mocks/usersData";
-import { countFormatter } from "../../helpers/countFormatter";
+import {  users } from "../../mocks/data/users";
+import { countFormatter } from "../../utils/countFormatter";
 import { IconDots, IconDotsVertical } from "@tabler/icons-react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { getCurrentUser } from "../../mocks/api";
 export default function Profile() {
+  const currentUser = getCurrentUser()
   const { username } = useParams();
   const displayUser = username
     ? users.find((u) => u.username.toLowerCase() === username.toLowerCase()) ||

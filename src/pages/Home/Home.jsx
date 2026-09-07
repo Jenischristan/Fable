@@ -1,5 +1,5 @@
 import "./Home.css";
-import { posts } from "../../mocks/postsData";
+import { getAllPosts } from "../../mocks/api";
 import { Masonry } from "masonic";
 import {
   IconDots,
@@ -213,6 +213,7 @@ const PostCard = React.memo(function PostCard({ data: post }) {
 });
 
 function Home() {
+  const posts = getAllPosts();
   return (
     <main className="home-page">
       <Masonry

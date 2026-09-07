@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "./PostView.css";
-import { posts } from "../../mocks/postsData";
+import { getPostById } from "../../mocks/api";
 import {
   IconArrowLeft,
   IconBookmark,
@@ -14,17 +14,19 @@ import {
   IconSend,
   IconX,
 } from "@tabler/icons-react";
-import { countFormatter } from "../../helpers/countFormatter";
-import { timeFormatter } from "../../helpers/timeFormatter";
+import { countFormatter } from "../../utils/countFormatter";
+import { timeFormatter } from "../../utils/timeFormatter";
 import { useRef, useState } from "react";
-import { currentUser, getUserById } from "../../mocks/usersData";
+import {  getUserById } from "../../mocks/api";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { getCurrentUser } from "../../mocks/api";
 
 export default function PostView() {
+  const currentUser = getCurrentUser()
   const location = useLocation();
   const { id } = useParams();
   const post =
-    location.state?.post || posts.find((p) => String(p.id) === String(id));
+    location.state?.post || getPostById(String(id));
 
   const [isPostLiked, setIsPostLiked] = useState(post.isLiked);
   const [postLikeCount, setPostLikeCount] = useState(post.likesCount);

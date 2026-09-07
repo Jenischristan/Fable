@@ -8,9 +8,10 @@ import {
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import { Link, NavLink } from "react-router-dom";
-import { currentUser} from "../../../mocks/usersData";
+import { getCurrentUser } from "../../../mocks/api";
 
-const user = currentUser
+
+const user = getCurrentUser()
 
 function TopAccountPopUP() {
   return (

@@ -6,9 +6,9 @@ import {
 } from "@tabler/icons-react";
 import "./Settings.css";
 import { useState } from "react";
-import { currentUser } from "../../mocks/usersData";
+import { getCurrentUser } from "../../mocks/api";
 
-const user = currentUser;
+const user = getCurrentUser();
 
 function ProfileSection() {
   const [avatarPreview, setAvatarPreview] = useState(user.avatar);
