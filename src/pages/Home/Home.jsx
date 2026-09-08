@@ -1,5 +1,5 @@
 import "./Home.css";
-import { getAllPosts } from "../../mocks/api";
+import {  getCurrentUser, getHomePostFeed, isPostSavedBy } from "../../mocks/api";
 import { Masonry } from "masonic";
 import {
   IconDots,
@@ -54,7 +54,7 @@ function MorePopUp({ position, ignoreRef, handler }) {
 
 const PostCard = React.memo(function PostCard({ data: post }) {
   const [isPopUpActive, setIsPopUpActive] = useState(false);
-
+  const user = getCurrentUser()
   const btnRef = useRef(null);
 
   const [popUpPos, setPopUpPos] = useState({
@@ -62,7 +62,7 @@ const PostCard = React.memo(function PostCard({ data: post }) {
     left: 0,
   });
 
-  const [isSaved, setIsSaved] = useState(post.isBookmarked);
+  const [isSaved, setIsSaved] = useState(() => isPostSavedBy(user?.id,post.id));
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
 
@@ -155,16 +155,13 @@ const PostCard = React.memo(function PostCard({ data: post }) {
           <div
             className="home-image-skeleton"
             style={{
-              aspectRatio:
-                post.width && post.height
-                  ? `${post.width} / ${post.height}`
-                  : "16 / 9",
+              aspectRatio: post.aspectRatio || "16/9"
             }}
           />
         )}
 
         <img
-          src={post.url}
+          src={post.imageUrl}
           alt={post.description || "Post"}
           loading="lazy"
           onLoad={handleImageLoading}
@@ -213,13 +210,13 @@ const PostCard = React.memo(function PostCard({ data: post }) {
 });
 
 function Home() {
-  const posts = getAllPosts();
+  const posts = getHomePostFeed();
   return (
     <main className="home-page">
       <Masonry
         items={posts}
         render={PostCard}
-        itemKey={(data) => data.id}
+        itemKey={(data) => data?.id}
         columnGutter={16}
         columnWidth={180}
         maxColumnCount={5}

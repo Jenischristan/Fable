@@ -18,7 +18,7 @@ function TopAccountPopUP() {
     <div className="topbar-account-popup">
       <p>Logged in as</p>
       <div className="top-popup-account-container">
-        <img src={user.avatar} alt="Profile image" />
+        <img src={user.avatarUrl} alt="Profile image" />
         <div className="top-popup-account-texts">
           <h4>{`${user.firstName} ${user.lastName}`}</h4>
           <p>{`${user.visibility}`}</p>
@@ -61,7 +61,7 @@ export default function TopBar() {
 
       <div className="topbar-profile-container" ref={popupRef}>
         <Link to="/profile" title="Profile">
-          <img title="Your profile" src={user.avatar} alt="profile-img" />
+          <img title="Your profile" src={user.avatarUrl} alt="profile-img" />
         </Link>
 
         <button

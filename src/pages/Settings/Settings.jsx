@@ -7,11 +7,12 @@ import {
 import "./Settings.css";
 import { useState } from "react";
 import { getCurrentUser } from "../../mocks/api";
+import { dateFormatter } from "../../utils/dateFormatter";
 
 const user = getCurrentUser();
 
 function ProfileSection() {
-  const [avatarPreview, setAvatarPreview] = useState(user.avatar);
+  const [avatarPreview, setAvatarPreview] = useState(user.avatarUrl);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -137,7 +138,7 @@ function SecuritySection() {
    const [formData,setFormData] = useState({
 
     email : user.email,
-    dob : user.dob,
+    dob : dateFormatter(user.dob),
     visibility : user.visibility
   })
 
