@@ -84,6 +84,13 @@ export default function PostView() {
     return <div>Post not found</div>;
   }
 
+  if(post.visibility === "private" && !isFollowingPostUploader) {
+    return <div>
+      This post is private
+    </div>
+  }
+
+
   const tags = post.tags || [];
   const name = `${postUploader?.firstName} ${postUploader?.lastName}`;
 

@@ -10,6 +10,11 @@ export const getUserById = (userId) => {
   return users.find((u) => u.id === userId) || null;
 };
 
+export const getUserByUsername = (username) => {
+  return users.find((u) => u.username === username) || null;
+};
+
+
 export const getPostById = (postId) => {
   return posts.find((p) => p.id === postId) || null;
 };
@@ -35,3 +40,39 @@ export const getPostCommentsById = (postId) => {
   return comments.filter((c) => c.postId === postId) || null;
 };
 
+export const getCreatedPostsById = (userId) => {
+
+
+  const user = getUserById(userId);
+
+  if (!user || !user.createdPosts) {
+    return [];
+  }
+
+
+  const mappedPosts = user.createdPosts.map((id) => {
+    const post = getPostById(id);
+    return post;
+  });
+
+  return mappedPosts.filter(Boolean);
+};
+
+
+export const getSavedPostsById = (userId) => {
+
+
+  const user = getUserById(userId);
+
+  if (!user || !user.bookmarkedPosts) {
+    return [];
+  }
+
+
+  const mappedPosts = user.bookmarkedPosts.map((id) => {
+    const post = getPostById(id);
+    return post;
+  });
+
+  return mappedPosts.filter(Boolean);
+};

@@ -1,14 +1,25 @@
 export const posts = [
   {
-    id: "post_101",
+    id: "post_001",
     authorId: "user_001",
     title: "City Exploration",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1062/600/900",
     aspectRatio: 0.66,
-    tags: ["speed", "morning", "fitness"],
+    tags: [
+      "speed",
+      "morning",
+      "fitness"
+    ],
     likesCount: 2,
-    likedBy: ["user_001", "user_004"],
+    likedBy: [
+      "user_001",
+      "user_004"
+    ],
+    savedBy: [
+      "user_001",
+      "user_024"
+    ],
     commentsCount: 5,
     description: "Running through everything",
     isCommentsDisabled: false,
@@ -16,15 +27,26 @@ export const posts = [
     createdAt: "2026-09-06T15:30:00.000Z"
   },
   {
-    id: "post_102",
+    id: "post_002",
     authorId: "user_002",
     title: "Golden Hour Serenity",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1015/600/800",
     aspectRatio: 0.75,
-    tags: ["sunset", "goldenhour", "vibes"],
+    tags: [
+      "sunset",
+      "goldenhour",
+      "vibes"
+    ],
     likesCount: 3,
-    likedBy: ["user_005", "user_014", "user_022"],
+    likedBy: [
+      "user_005",
+      "user_014",
+      "user_022"
+    ],
+    savedBy: [
+      "user_008"
+    ],
     commentsCount: 8,
     description: "Caught the last rays of sun reflecting off the harbor waters.",
     isCommentsDisabled: false,
@@ -32,15 +54,26 @@ export const posts = [
     createdAt: "2026-08-02T19:42:15.000Z"
   },
   {
-    id: "post_103",
+    id: "post_003",
     authorId: "user_003",
     title: "Workspace Setup 2026",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1025/800/1000",
     aspectRatio: 0.8,
-    tags: ["workspace", "minimalism", "tech"],
+    tags: [
+      "workspace",
+      "minimalism",
+      "tech"
+    ],
     likesCount: 5,
-    likedBy: ["user_002", "user_006", "user_013", "user_019", "user_025"],
+    likedBy: [
+      "user_002",
+      "user_006",
+      "user_013",
+      "user_019",
+      "user_025"
+    ],
+    savedBy: [],
     commentsCount: 12,
     description: "Minimal desk setup for maximum focus and coding sessions.",
     isCommentsDisabled: false,
@@ -48,15 +81,25 @@ export const posts = [
     createdAt: "2026-08-03T11:15:30.000Z"
   },
   {
-    id: "post_104",
+    id: "post_004",
     authorId: "user_004",
     title: "Homemade Sourdough",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1039/800/800",
-    aspectRatio: 1.0,
-    tags: ["baking", "sourdough", "foodie"],
+    aspectRatio: 1,
+    tags: [
+      "baking",
+      "sourdough",
+      "foodie"
+    ],
     likesCount: 4,
-    likedBy: ["user_001", "user_007", "user_018", "user_026"],
+    likedBy: [
+      "user_001",
+      "user_007",
+      "user_018",
+      "user_026"
+    ],
+    savedBy: [],
     commentsCount: 6,
     description: "Finally nailed the crumb on this 72-hour cold fermented loaf!",
     isCommentsDisabled: false,
@@ -64,15 +107,30 @@ export const posts = [
     createdAt: "2026-08-04T08:22:04.000Z"
   },
   {
-    id: "post_105",
+    id: "post_005",
     authorId: "user_005",
     title: "Neon Nights in Shibuya",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1043/1000/800",
     aspectRatio: 1.25,
-    tags: ["tokyo", "streetphotography", "neon"],
+    tags: [
+      "tokyo",
+      "streetphotography",
+      "neon"
+    ],
     likesCount: 6,
-    likedBy: ["user_003", "user_009", "user_011", "user_017", "user_024", "user_030"],
+    likedBy: [
+      "user_003",
+      "user_009",
+      "user_011",
+      "user_017",
+      "user_024",
+      "user_030"
+    ],
+    savedBy: [
+      "user_003",
+      "user_018"
+    ],
     commentsCount: 14,
     description: "The city truly never sleeps when the neon lights take over.",
     isCommentsDisabled: false,
@@ -80,15 +138,27 @@ export const posts = [
     createdAt: "2026-08-05T22:50:11.000Z"
   },
   {
-    id: "post_106",
+    id: "post_006",
     authorId: "user_006",
     title: "Weekend Trail Run",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1050/800/600",
     aspectRatio: 1.33,
-    tags: ["trailrunning", "nature", "mountains"],
+    tags: [
+      "trailrunning",
+      "nature",
+      "mountains"
+    ],
     likesCount: 3,
-    likedBy: ["user_012", "user_015", "user_021"],
+    likedBy: [
+      "user_012",
+      "user_015",
+      "user_021"
+    ],
+    savedBy: [
+      "user_001",
+      "user_002"
+    ],
     commentsCount: 4,
     description: "15km through misty pines and steep ridges. Recharged.",
     isCommentsDisabled: false,
@@ -96,15 +166,23 @@ export const posts = [
     createdAt: "2026-08-06T07:10:49.000Z"
   },
   {
-    id: "post_107",
+    id: "post_007",
     authorId: "user_007",
     title: "Morning Pour Over",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1056/900/506",
     aspectRatio: 1.78,
-    tags: ["coffee", "coffeelover", "morning"],
+    tags: [
+      "coffee",
+      "coffeelover",
+      "morning"
+    ],
     likesCount: 2,
-    likedBy: ["user_002", "user_020"],
+    likedBy: [
+      "user_002",
+      "user_020"
+    ],
+    savedBy: [],
     commentsCount: 3,
     description: "Ethiopian single origin beans with notes of bergamot and jasmine.",
     isCommentsDisabled: false,
@@ -112,15 +190,24 @@ export const posts = [
     createdAt: "2026-08-07T06:34:18.000Z"
   },
   {
-    id: "post_108",
+    id: "post_008",
     authorId: "user_008",
     title: "Urban Architecture",
     visibility: "private",
     imageUrl: "https://picsum.photos/id/1069/600/900",
     aspectRatio: 0.66,
-    tags: ["architecture", "design", "urban"],
+    tags: [
+      "architecture",
+      "design",
+      "urban"
+    ],
     likesCount: 1,
-    likedBy: ["user_011"],
+    likedBy: [
+      "user_011"
+    ],
+    savedBy: [
+      "user_020"
+    ],
     commentsCount: 2,
     description: "Geometric lines and concrete shadows in the modern arts district.",
     isCommentsDisabled: false,
@@ -128,15 +215,25 @@ export const posts = [
     createdAt: "2026-08-08T14:18:22.000Z"
   },
   {
-    id: "post_109",
+    id: "post_009",
     authorId: "user_009",
     title: "Indie Game Dev Log #4",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1074/600/800",
     aspectRatio: 0.75,
-    tags: ["gamedev", "indiegame", "pixelart"],
+    tags: [
+      "gamedev",
+      "indiegame",
+      "pixelart"
+    ],
     likesCount: 4,
-    likedBy: ["user_003", "user_006", "user_016", "user_025"],
+    likedBy: [
+      "user_003",
+      "user_006",
+      "user_016",
+      "user_025"
+    ],
+    savedBy: [],
     commentsCount: 9,
     description: "Finished designing the boss fight animations today. Thoughts?",
     isCommentsDisabled: false,
@@ -144,15 +241,28 @@ export const posts = [
     createdAt: "2026-08-09T18:05:44.000Z"
   },
   {
-    id: "post_110",
+    id: "post_010",
     authorId: "user_010",
     title: "Coastal Breeze",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1080/800/1000",
     aspectRatio: 0.8,
-    tags: ["ocean", "coastal", "travel"],
+    tags: [
+      "ocean",
+      "coastal",
+      "travel"
+    ],
     likesCount: 5,
-    likedBy: ["user_004", "user_008", "user_010", "user_023", "user_027"],
+    likedBy: [
+      "user_004",
+      "user_008",
+      "user_010",
+      "user_023",
+      "user_027"
+    ],
+    savedBy: [
+      "user_021"
+    ],
     commentsCount: 7,
     description: "Nothing beats the soothing sound of crashing waves on a quiet shore.",
     isCommentsDisabled: false,
@@ -160,15 +270,27 @@ export const posts = [
     createdAt: "2026-08-10T16:40:02.000Z"
   },
   {
-    id: "post_111",
+    id: "post_011",
     authorId: "user_011",
     title: "Plant Corner Refresh",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1084/800/800",
-    aspectRatio: 1.0,
-    tags: ["plants", "houseplants", "greenery"],
+    aspectRatio: 1,
+    tags: [
+      "plants",
+      "houseplants",
+      "greenery"
+    ],
     likesCount: 3,
-    likedBy: ["user_005", "user_007", "user_014"],
+    likedBy: [
+      "user_005",
+      "user_007",
+      "user_014"
+    ],
+    savedBy: [
+      "user_008",
+      "user_014"
+    ],
     commentsCount: 5,
     description: "Repotted the monstera deliciosa and pothos into terracotta.",
     isCommentsDisabled: false,
@@ -176,15 +298,27 @@ export const posts = [
     createdAt: "2026-08-11T12:12:39.000Z"
   },
   {
-    id: "post_112",
+    id: "post_012",
     authorId: "user_012",
     title: "Vintage Film Capture",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1011/1000/800",
     aspectRatio: 1.25,
-    tags: ["filmphotography", "35mm", "analog"],
+    tags: [
+      "filmphotography",
+      "35mm",
+      "analog"
+    ],
     likesCount: 4,
-    likedBy: ["user_002", "user_017", "user_020", "user_030"],
+    likedBy: [
+      "user_002",
+      "user_017",
+      "user_020",
+      "user_030"
+    ],
+    savedBy: [
+      "user_009"
+    ],
     commentsCount: 6,
     description: "Shot on 35mm Kodak Portra 400. Love the warm grainy tones.",
     isCommentsDisabled: false,
@@ -192,15 +326,26 @@ export const posts = [
     createdAt: "2026-08-12T15:27:51.000Z"
   },
   {
-    id: "post_113",
+    id: "post_013",
     authorId: "user_013",
     title: "Street Food Adventures",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1016/800/600",
     aspectRatio: 1.33,
-    tags: ["foodporn", "tacos", "streetfood"],
+    tags: [
+      "foodporn",
+      "tacos",
+      "streetfood"
+    ],
     likesCount: 2,
-    likedBy: ["user_001", "user_026"],
+    likedBy: [
+      "user_001",
+      "user_026"
+    ],
+    savedBy: [
+      "user_001",
+      "user_025"
+    ],
     commentsCount: 0,
     description: "Authentic spicy pork tacos from the street vendor down 5th Ave.",
     isCommentsDisabled: true,
@@ -208,15 +353,29 @@ export const posts = [
     createdAt: "2026-08-13T20:19:10.000Z"
   },
   {
-    id: "post_114",
+    id: "post_014",
     authorId: "user_014",
     title: "Late Night Coding",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1020/900/506",
     aspectRatio: 1.78,
-    tags: ["coding", "developer", "nightowl"],
+    tags: [
+      "coding",
+      "developer",
+      "nightowl"
+    ],
     likesCount: 5,
-    likedBy: ["user_003", "user_006", "user_014", "user_019", "user_028"],
+    likedBy: [
+      "user_003",
+      "user_006",
+      "user_014",
+      "user_019",
+      "user_028"
+    ],
+    savedBy: [
+      "user_014",
+      "user_023"
+    ],
     commentsCount: 11,
     description: "Solving algorithmic bottlenecks at 2 AM with synthwave on repeat.",
     isCommentsDisabled: false,
@@ -224,15 +383,26 @@ export const posts = [
     createdAt: "2026-08-14T02:08:44.000Z"
   },
   {
-    id: "post_115",
+    id: "post_015",
     authorId: "user_015",
     title: "Abstract Watercolor",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1024/600/900",
     aspectRatio: 0.66,
-    tags: ["art", "watercolor", "creativity"],
+    tags: [
+      "art",
+      "watercolor",
+      "creativity"
+    ],
     likesCount: 3,
-    likedBy: ["user_010", "user_020", "user_027"],
+    likedBy: [
+      "user_010",
+      "user_020",
+      "user_027"
+    ],
+    savedBy: [
+      "user_005"
+    ],
     commentsCount: 4,
     description: "Experimenting with wet-on-wet pigments and organic flow textures.",
     isCommentsDisabled: false,
@@ -240,15 +410,29 @@ export const posts = [
     createdAt: "2026-08-15T10:45:19.000Z"
   },
   {
-    id: "post_116",
+    id: "post_016",
     authorId: "user_016",
     title: "Summit Panorama",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1029/600/800",
     aspectRatio: 0.75,
-    tags: ["hiking", "adventure", "summit"],
+    tags: [
+      "hiking",
+      "adventure",
+      "summit"
+    ],
     likesCount: 6,
-    likedBy: ["user_007", "user_009", "user_015", "user_021", "user_024", "user_029"],
+    likedBy: [
+      "user_007",
+      "user_009",
+      "user_015",
+      "user_021",
+      "user_024",
+      "user_029"
+    ],
+    savedBy: [
+      "user_025"
+    ],
     commentsCount: 13,
     description: "Standing above the clouds after a 4-hour pre-dawn scramble.",
     isCommentsDisabled: false,
@@ -256,15 +440,27 @@ export const posts = [
     createdAt: "2026-08-16T09:31:00.000Z"
   },
   {
-    id: "post_117",
+    id: "post_017",
     authorId: "user_017",
     title: "Mechanical Keyboard Build",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1033/800/1000",
     aspectRatio: 0.8,
-    tags: ["mechanicalkeyboards", "keebs", "custom"],
+    tags: [
+      "mechanicalkeyboards",
+      "keebs",
+      "custom"
+    ],
     likesCount: 4,
-    likedBy: ["user_003", "user_013", "user_019", "user_025"],
+    likedBy: [
+      "user_003",
+      "user_013",
+      "user_019",
+      "user_025"
+    ],
+    savedBy: [
+      "user_003"
+    ],
     commentsCount: 8,
     description: "Lubed Holy Panda switches on brass plate. Pure thock.",
     isCommentsDisabled: false,
@@ -272,15 +468,25 @@ export const posts = [
     createdAt: "2026-08-17T17:14:27.000Z"
   },
   {
-    id: "post_118",
+    id: "post_018",
     authorId: "user_018",
     title: "Book of the Month",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1037/800/800",
-    aspectRatio: 1.0,
-    tags: ["books", "reading", "fiction"],
+    aspectRatio: 1,
+    tags: [
+      "books",
+      "reading",
+      "fiction"
+    ],
     likesCount: 2,
-    likedBy: ["user_004", "user_005"],
+    likedBy: [
+      "user_004",
+      "user_005"
+    ],
+    savedBy: [
+      "user_012"
+    ],
     commentsCount: 5,
     description: "Just finished reading 'Klara and the Sun'. Truly deeply moving.",
     isCommentsDisabled: false,
@@ -288,15 +494,27 @@ export const posts = [
     createdAt: "2026-08-18T13:52:10.000Z"
   },
   {
-    id: "post_119",
+    id: "post_019",
     authorId: "user_019",
     title: "Retro Motorcycle Restoration",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1041/1000/800",
     aspectRatio: 1.25,
-    tags: ["motorcycle", "vintage", "garage"],
+    tags: [
+      "motorcycle",
+      "vintage",
+      "garage"
+    ],
     likesCount: 3,
-    likedBy: ["user_008", "user_017", "user_029"],
+    likedBy: [
+      "user_008",
+      "user_017",
+      "user_029"
+    ],
+    savedBy: [
+      "user_009",
+      "user_020"
+    ],
     commentsCount: 7,
     description: "Bolted on the custom polished exhaust. Almost ready to ride.",
     isCommentsDisabled: false,
@@ -304,15 +522,29 @@ export const posts = [
     createdAt: "2026-08-19T18:24:55.000Z"
   },
   {
-    id: "post_120",
+    id: "post_020",
     authorId: "user_020",
     title: "Autumn Forest Walk",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1048/800/600",
     aspectRatio: 1.33,
-    tags: ["autumn", "fallfoliage", "peaceful"],
+    tags: [
+      "autumn",
+      "fallfoliage",
+      "peaceful"
+    ],
     likesCount: 5,
-    likedBy: ["user_001", "user_002", "user_010", "user_018", "user_027"],
+    likedBy: [
+      "user_001",
+      "user_002",
+      "user_010",
+      "user_018",
+      "user_027"
+    ],
+    savedBy: [
+      "user_015",
+      "user_024"
+    ],
     commentsCount: 6,
     description: "Golden foliage carpeting every footstep through the woods.",
     isCommentsDisabled: false,
@@ -320,15 +552,27 @@ export const posts = [
     createdAt: "2026-08-20T11:09:40.000Z"
   },
   {
-    id: "post_121",
+    id: "post_021",
     authorId: "user_021",
     title: "Macro Flora",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1052/900/506",
     aspectRatio: 1.78,
-    tags: ["macrophotography", "flowers", "details"],
+    tags: [
+      "macrophotography",
+      "flowers",
+      "details"
+    ],
     likesCount: 3,
-    likedBy: ["user_007", "user_012", "user_023"],
+    likedBy: [
+      "user_007",
+      "user_012",
+      "user_023"
+    ],
+    savedBy: [
+      "user_013",
+      "user_030"
+    ],
     commentsCount: 3,
     description: "Water droplets resting on morning petals under macro lens.",
     isCommentsDisabled: false,
@@ -336,15 +580,23 @@ export const posts = [
     createdAt: "2026-08-21T08:17:33.000Z"
   },
   {
-    id: "post_122",
+    id: "post_022",
     authorId: "user_022",
     title: "Street Market Palette",
     visibility: "private",
     imageUrl: "https://picsum.photos/id/1057/600/900",
     aspectRatio: 0.66,
-    tags: ["travel", "culture", "market"],
+    tags: [
+      "travel",
+      "culture",
+      "market"
+    ],
     likesCount: 2,
-    likedBy: ["user_014", "user_024"],
+    likedBy: [
+      "user_014",
+      "user_024"
+    ],
+    savedBy: [],
     commentsCount: 2,
     description: "Vibrant spices and fresh citrus piled high at the bazaar.",
     isCommentsDisabled: false,
@@ -352,15 +604,27 @@ export const posts = [
     createdAt: "2026-08-22T14:40:19.000Z"
   },
   {
-    id: "post_123",
+    id: "post_023",
     authorId: "user_023",
     title: "Lo-Fi Studio Beats",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1060/600/800",
     aspectRatio: 0.75,
-    tags: ["musicproduction", "lofi", "beats"],
+    tags: [
+      "musicproduction",
+      "lofi",
+      "beats"
+    ],
     likesCount: 4,
-    likedBy: ["user_003", "user_010", "user_016", "user_030"],
+    likedBy: [
+      "user_003",
+      "user_010",
+      "user_016",
+      "user_030"
+    ],
+    savedBy: [
+      "user_021"
+    ],
     commentsCount: 9,
     description: "Crafting chill chord progressions on the Rhodes electric piano.",
     isCommentsDisabled: false,
@@ -368,15 +632,29 @@ export const posts = [
     createdAt: "2026-08-23T23:12:05.000Z"
   },
   {
-    id: "post_124",
+    id: "post_024",
     authorId: "user_024",
     title: "Midnight Cyberpunk Vibes",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1067/800/1000",
     aspectRatio: 0.8,
-    tags: ["cyberpunk", "aesthetic", "night"],
+    tags: [
+      "cyberpunk",
+      "aesthetic",
+      "night"
+    ],
     likesCount: 5,
-    likedBy: ["user_006", "user_009", "user_011", "user_028", "user_030"],
+    likedBy: [
+      "user_006",
+      "user_009",
+      "user_011",
+      "user_028",
+      "user_030"
+    ],
+    savedBy: [
+      "user_012",
+      "user_028"
+    ],
     commentsCount: 10,
     description: "Rain reflections on wet tarmac under magenta streetlamps.",
     isCommentsDisabled: false,
@@ -384,15 +662,27 @@ export const posts = [
     createdAt: "2026-08-24T01:55:18.000Z"
   },
   {
-    id: "post_125",
+    id: "post_025",
     authorId: "user_025",
     title: "Handcrafted Wood Bowl",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1070/800/800",
-    aspectRatio: 1.0,
-    tags: ["woodworking", "craft", "handmade"],
+    aspectRatio: 1,
+    tags: [
+      "woodworking",
+      "craft",
+      "handmade"
+    ],
     likesCount: 3,
-    likedBy: ["user_013", "user_025", "user_029"],
+    likedBy: [
+      "user_013",
+      "user_025",
+      "user_029"
+    ],
+    savedBy: [
+      "user_003",
+      "user_023"
+    ],
     commentsCount: 4,
     description: "Turned walnut bowl finished with food-safe beeswax oil.",
     isCommentsDisabled: false,
@@ -400,15 +690,27 @@ export const posts = [
     createdAt: "2026-08-25T16:04:47.000Z"
   },
   {
-    id: "post_126",
+    id: "post_026",
     authorId: "user_026",
     title: "Cat Nap Session",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1076/1000/800",
     aspectRatio: 1.25,
-    tags: ["cats", "catsofinstagram", "cozy"],
+    tags: [
+      "cats",
+      "catsofinstagram",
+      "cozy"
+    ],
     likesCount: 6,
-    likedBy: ["user_001", "user_004", "user_005", "user_012", "user_018", "user_022"],
+    likedBy: [
+      "user_001",
+      "user_004",
+      "user_005",
+      "user_012",
+      "user_018",
+      "user_022"
+    ],
+    savedBy: [],
     commentsCount: 15,
     description: "Milo finding the single patch of sunlight on the rug.",
     isCommentsDisabled: false,
@@ -416,15 +718,25 @@ export const posts = [
     createdAt: "2026-08-26T12:37:21.000Z"
   },
   {
-    id: "post_127",
+    id: "post_027",
     authorId: "user_027",
     title: "Skyline Reflections",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1081/800/600",
     aspectRatio: 1.33,
-    tags: ["cityscape", "skyline", "reflections"],
+    tags: [
+      "cityscape",
+      "skyline",
+      "reflections"
+    ],
     likesCount: 2,
-    likedBy: ["user_002", "user_027"],
+    likedBy: [
+      "user_002",
+      "user_027"
+    ],
+    savedBy: [
+      "user_010"
+    ],
     commentsCount: 3,
     description: "Glass skyscrapers shimmering in the midday sun.",
     isCommentsDisabled: false,
@@ -432,15 +744,29 @@ export const posts = [
     createdAt: "2026-08-27T13:48:12.000Z"
   },
   {
-    id: "post_128",
+    id: "post_028",
     authorId: "user_028",
     title: "Fresh Pasta Night",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1018/900/506",
     aspectRatio: 1.78,
-    tags: ["pasta", "italianfood", "cooking"],
+    tags: [
+      "pasta",
+      "italianfood",
+      "cooking"
+    ],
     likesCount: 4,
-    likedBy: ["user_008", "user_013", "user_026", "user_028"],
+    likedBy: [
+      "user_008",
+      "user_013",
+      "user_026",
+      "user_028"
+    ],
+    savedBy: [
+      "user_004",
+      "user_008",
+      "user_028"
+    ],
     commentsCount: 8,
     description: "Rolling out fettuccine from scratch with farm eggs and semolina.",
     isCommentsDisabled: false,
@@ -448,15 +774,26 @@ export const posts = [
     createdAt: "2026-08-28T19:20:30.000Z"
   },
   {
-    id: "post_129",
+    id: "post_029",
     authorId: "user_029",
     title: "Foggy Mountain Pass",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1021/600/900",
     aspectRatio: 0.66,
-    tags: ["fog", "moody", "wilderness"],
+    tags: [
+      "fog",
+      "moody",
+      "wilderness"
+    ],
     likesCount: 3,
-    likedBy: ["user_007", "user_015", "user_021"],
+    likedBy: [
+      "user_007",
+      "user_015",
+      "user_021"
+    ],
+    savedBy: [
+      "user_015"
+    ],
     commentsCount: 5,
     description: "Dense fog rolling through switchbacks at 2,000 meters.",
     isCommentsDisabled: false,
@@ -464,15 +801,26 @@ export const posts = [
     createdAt: "2026-08-01T05:45:11.000Z"
   },
   {
-    id: "post_130",
+    id: "post_030",
     authorId: "user_030",
     title: "Ceramic Wheel Practice",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1027/600/800",
     aspectRatio: 0.75,
-    tags: ["ceramics", "pottery", "handmade"],
+    tags: [
+      "ceramics",
+      "pottery",
+      "handmade"
+    ],
     likesCount: 2,
-    likedBy: ["user_016", "user_020"],
+    likedBy: [
+      "user_016",
+      "user_020"
+    ],
+    savedBy: [
+      "user_006",
+      "user_012"
+    ],
     commentsCount: 4,
     description: "Throwing speckled stoneware mugs. Getting more consistent shapes!",
     isCommentsDisabled: false,
@@ -480,15 +828,29 @@ export const posts = [
     createdAt: "2026-08-02T15:10:59.000Z"
   },
   {
-    id: "post_131",
+    id: "post_031",
     authorId: "user_001",
     title: "Stargazing the Milky Way",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1031/800/1000",
     aspectRatio: 0.8,
-    tags: ["astrophotography", "stars", "nightsky"],
+    tags: [
+      "astrophotography",
+      "stars",
+      "nightsky"
+    ],
     likesCount: 6,
-    likedBy: ["user_003", "user_009", "user_012", "user_016", "user_023", "user_030"],
+    likedBy: [
+      "user_003",
+      "user_009",
+      "user_012",
+      "user_016",
+      "user_023",
+      "user_030"
+    ],
+    savedBy: [
+      "user_007"
+    ],
     commentsCount: 12,
     description: "Clear alpine skies far away from city light pollution.",
     isCommentsDisabled: false,
@@ -496,15 +858,28 @@ export const posts = [
     createdAt: "2026-08-03T23:38:40.000Z"
   },
   {
-    id: "post_132",
+    id: "post_032",
     authorId: "user_002",
     title: "Contemporary Interior Design",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1035/800/800",
-    aspectRatio: 1.0,
-    tags: ["interiordesign", "home", "aesthetic"],
+    aspectRatio: 1,
+    tags: [
+      "interiordesign",
+      "home",
+      "aesthetic"
+    ],
     likesCount: 4,
-    likedBy: ["user_004", "user_006", "user_019", "user_027"],
+    likedBy: [
+      "user_004",
+      "user_006",
+      "user_019",
+      "user_027"
+    ],
+    savedBy: [
+      "user_023",
+      "user_030"
+    ],
     commentsCount: 7,
     description: "Living room redesign focusing on warm woods and linen textures.",
     isCommentsDisabled: false,
@@ -512,15 +887,27 @@ export const posts = [
     createdAt: "2026-08-04T16:15:22.000Z"
   },
   {
-    id: "post_133",
+    id: "post_033",
     authorId: "user_003",
     title: "Sunday Brunch Spread",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1040/1000/800",
     aspectRatio: 1.25,
-    tags: ["brunch", "weekend", "delicious"],
+    tags: [
+      "brunch",
+      "weekend",
+      "delicious"
+    ],
     likesCount: 3,
-    likedBy: ["user_001", "user_013", "user_026"],
+    likedBy: [
+      "user_001",
+      "user_013",
+      "user_026"
+    ],
+    savedBy: [
+      "user_003",
+      "user_020"
+    ],
     commentsCount: 5,
     description: "Avocado toast, poached eggs, and fresh grapefruit juice.",
     isCommentsDisabled: false,
@@ -528,15 +915,26 @@ export const posts = [
     createdAt: "2026-08-05T11:00:18.000Z"
   },
   {
-    id: "post_134",
+    id: "post_034",
     authorId: "user_004",
     title: "Subway Commute Moments",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1045/800/600",
     aspectRatio: 1.33,
-    tags: ["streetphotography", "subway", "candid"],
+    tags: [
+      "streetphotography",
+      "subway",
+      "candid"
+    ],
     likesCount: 2,
-    likedBy: ["user_002", "user_030"],
+    likedBy: [
+      "user_002",
+      "user_030"
+    ],
+    savedBy: [
+      "user_018",
+      "user_024"
+    ],
     commentsCount: 3,
     description: "Candid captures of urban life in motion beneath the city streets.",
     isCommentsDisabled: false,
@@ -544,15 +942,28 @@ export const posts = [
     createdAt: "2026-08-06T08:45:50.000Z"
   },
   {
-    id: "post_135",
+    id: "post_035",
     authorId: "user_005",
     title: "Desert Dunes",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1049/900/506",
     aspectRatio: 1.78,
-    tags: ["desert", "landscape", "travelphotography"],
+    tags: [
+      "desert",
+      "landscape",
+      "travelphotography"
+    ],
     likesCount: 5,
-    likedBy: ["user_008", "user_015", "user_021", "user_024", "user_028"],
+    likedBy: [
+      "user_008",
+      "user_015",
+      "user_021",
+      "user_024",
+      "user_028"
+    ],
+    savedBy: [
+      "user_015"
+    ],
     commentsCount: 9,
     description: "Endless rippling sand waves carved by desert winds.",
     isCommentsDisabled: false,
@@ -560,15 +971,25 @@ export const posts = [
     createdAt: "2026-08-07T17:50:09.000Z"
   },
   {
-    id: "post_136",
+    id: "post_036",
     authorId: "user_006",
     title: "Vinyl Record Listening",
     visibility: "private",
     imageUrl: "https://picsum.photos/id/1054/600/900",
     aspectRatio: 0.66,
-    tags: ["vinyl", "audiophile", "jazz"],
+    tags: [
+      "vinyl",
+      "audiophile",
+      "jazz"
+    ],
     likesCount: 2,
-    likedBy: ["user_010", "user_017"],
+    likedBy: [
+      "user_010",
+      "user_017"
+    ],
+    savedBy: [
+      "user_030"
+    ],
     commentsCount: 4,
     description: "Spinning jazz classics through vintage tube amplifiers.",
     isCommentsDisabled: false,
@@ -576,15 +997,27 @@ export const posts = [
     createdAt: "2026-08-08T21:10:44.000Z"
   },
   {
-    id: "post_137",
+    id: "post_037",
     authorId: "user_007",
     title: "Sunset Sail",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1058/600/800",
     aspectRatio: 0.75,
-    tags: ["sailing", "boating", "sunset"],
+    tags: [
+      "sailing",
+      "boating",
+      "sunset"
+    ],
     likesCount: 3,
-    likedBy: ["user_004", "user_007", "user_014"],
+    likedBy: [
+      "user_004",
+      "user_007",
+      "user_014"
+    ],
+    savedBy: [
+      "user_008",
+      "user_018"
+    ],
     commentsCount: 6,
     description: "Catching the evening wind out past the bay lighthouse.",
     isCommentsDisabled: false,
@@ -592,15 +1025,28 @@ export const posts = [
     createdAt: "2026-08-09T19:33:17.000Z"
   },
   {
-    id: "post_138",
+    id: "post_038",
     authorId: "user_008",
     title: "Cybersecurity Lab Setup",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1063/800/1000",
     aspectRatio: 0.8,
-    tags: ["infosec", "cybersecurity", "networking"],
+    tags: [
+      "infosec",
+      "cybersecurity",
+      "networking"
+    ],
     likesCount: 4,
-    likedBy: ["user_003", "user_011", "user_014", "user_028"],
+    likedBy: [
+      "user_003",
+      "user_011",
+      "user_014",
+      "user_028"
+    ],
+    savedBy: [
+      "user_025",
+      "user_027"
+    ],
     commentsCount: 0,
     description: "Configuring network virtual machines for penetration testing tests.",
     isCommentsDisabled: true,
@@ -608,15 +1054,27 @@ export const posts = [
     createdAt: "2026-08-10T14:22:01.000Z"
   },
   {
-    id: "post_139",
+    id: "post_039",
     authorId: "user_009",
     title: "Salsa Night Energy",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1071/800/800",
-    aspectRatio: 1.0,
-    tags: ["dance", "salsa", "latinmusic"],
+    aspectRatio: 1,
+    tags: [
+      "dance",
+      "salsa",
+      "latinmusic"
+    ],
     likesCount: 3,
-    likedBy: ["user_010", "user_022", "user_026"],
+    likedBy: [
+      "user_010",
+      "user_022",
+      "user_026"
+    ],
+    savedBy: [
+      "user_008",
+      "user_027"
+    ],
     commentsCount: 8,
     description: "Incredible live brass orchestra and social dancing all night.",
     isCommentsDisabled: false,
@@ -624,15 +1082,26 @@ export const posts = [
     createdAt: "2026-08-11T23:05:42.000Z"
   },
   {
-    id: "post_140",
+    id: "post_040",
     authorId: "user_010",
     title: "Quiet Rainy Afternoon",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1077/1000/800",
     aspectRatio: 1.25,
-    tags: ["rainyday", "cozy", "relax"],
+    tags: [
+      "rainyday",
+      "cozy",
+      "relax"
+    ],
     likesCount: 5,
-    likedBy: ["user_001", "user_005", "user_018", "user_020", "user_027"],
+    likedBy: [
+      "user_001",
+      "user_005",
+      "user_018",
+      "user_020",
+      "user_027"
+    ],
+    savedBy: [],
     commentsCount: 11,
     description: "Reading near the rain-streaked window with hot chamomile tea.",
     isCommentsDisabled: false,
@@ -640,15 +1109,25 @@ export const posts = [
     createdAt: "2026-08-12T16:40:33.000Z"
   },
   {
-    id: "post_141",
+    id: "post_041",
     authorId: "user_011",
     title: "Architectural Brutalism",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1082/800/600",
     aspectRatio: 1.33,
-    tags: ["architecture", "brutalism", "design"],
+    tags: [
+      "architecture",
+      "brutalism",
+      "design"
+    ],
     likesCount: 2,
-    likedBy: ["user_009", "user_019"],
+    likedBy: [
+      "user_009",
+      "user_019"
+    ],
+    savedBy: [
+      "user_009"
+    ],
     commentsCount: 3,
     description: "Raw concrete geometric patterns against clear blue skies.",
     isCommentsDisabled: false,
@@ -656,15 +1135,25 @@ export const posts = [
     createdAt: "2026-08-13T12:18:29.000Z"
   },
   {
-    id: "post_142",
+    id: "post_042",
     authorId: "user_012",
     title: "Farmers Market Haul",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1012/900/506",
     aspectRatio: 1.78,
-    tags: ["organic", "farmersmarket", "fresh"],
+    tags: [
+      "organic",
+      "farmersmarket",
+      "fresh"
+    ],
     likesCount: 4,
-    likedBy: ["user_004", "user_013", "user_018", "user_023"],
+    likedBy: [
+      "user_004",
+      "user_013",
+      "user_018",
+      "user_023"
+    ],
+    savedBy: [],
     commentsCount: 7,
     description: "Organic heirloom tomatoes, sourdough bread, and wild lavender.",
     isCommentsDisabled: false,
@@ -672,15 +1161,28 @@ export const posts = [
     createdAt: "2026-08-14T10:55:04.000Z"
   },
   {
-    id: "post_143",
+    id: "post_043",
     authorId: "user_013",
     title: "Monochrome Shadows",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1019/600/900",
     aspectRatio: 0.66,
-    tags: ["bnw", "blackandwhite", "monochrome"],
+    tags: [
+      "bnw",
+      "blackandwhite",
+      "monochrome"
+    ],
     likesCount: 3,
-    likedBy: ["user_002", "user_011", "user_020"],
+    likedBy: [
+      "user_002",
+      "user_011",
+      "user_020"
+    ],
+    savedBy: [
+      "user_019",
+      "user_023",
+      "user_029"
+    ],
     commentsCount: 4,
     description: "High contrast black and white play between shadow and light.",
     isCommentsDisabled: false,
@@ -688,15 +1190,29 @@ export const posts = [
     createdAt: "2026-08-15T18:02:19.000Z"
   },
   {
-    id: "post_144",
+    id: "post_044",
     authorId: "user_014",
     title: "Dolomites Exploration",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1023/600/800",
     aspectRatio: 0.75,
-    tags: ["dolomites", "alps", "wandermore"],
+    tags: [
+      "dolomites",
+      "alps",
+      "wandermore"
+    ],
     likesCount: 6,
-    likedBy: ["user_006", "user_008", "user_015", "user_021", "user_024", "user_029"],
+    likedBy: [
+      "user_006",
+      "user_008",
+      "user_015",
+      "user_021",
+      "user_024",
+      "user_029"
+    ],
+    savedBy: [
+      "user_021"
+    ],
     commentsCount: 14,
     description: "Dramatic jagged limestone peaks rising into the storm clouds.",
     isCommentsDisabled: false,
@@ -704,15 +1220,27 @@ export const posts = [
     createdAt: "2026-08-16T14:12:48.000Z"
   },
   {
-    id: "post_145",
+    id: "post_045",
     authorId: "user_015",
     title: "Tea Ceremony Moments",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1028/800/1000",
     aspectRatio: 0.8,
-    tags: ["matcha", "teatime", "mindfulness"],
+    tags: [
+      "matcha",
+      "teatime",
+      "mindfulness"
+    ],
     likesCount: 4,
-    likedBy: ["user_005", "user_010", "user_016", "user_027"],
+    likedBy: [
+      "user_005",
+      "user_010",
+      "user_016",
+      "user_027"
+    ],
+    savedBy: [
+      "user_029"
+    ],
     commentsCount: 5,
     description: "Appreciating the meditative art of brewing Japanese matcha.",
     isCommentsDisabled: false,
@@ -720,15 +1248,30 @@ export const posts = [
     createdAt: "2026-08-17T09:20:15.000Z"
   },
   {
-    id: "post_146",
+    id: "post_046",
     authorId: "user_016",
     title: "Fitness PR Day",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1032/800/800",
-    aspectRatio: 1.0,
-    tags: ["fitness", "gym", "strength"],
+    aspectRatio: 1,
+    tags: [
+      "fitness",
+      "gym",
+      "strength"
+    ],
     likesCount: 5,
-    likedBy: ["user_001", "user_007", "user_009", "user_015", "user_021"],
+    likedBy: [
+      "user_001",
+      "user_007",
+      "user_009",
+      "user_015",
+      "user_021"
+    ],
+    savedBy: [
+      "user_005",
+      "user_009",
+      "user_015"
+    ],
     commentsCount: 10,
     description: "Hit a new deadlift personal best today. Consistency pays off!",
     isCommentsDisabled: false,
@@ -736,15 +1279,24 @@ export const posts = [
     createdAt: "2026-08-18T17:30:52.000Z"
   },
   {
-    id: "post_147",
+    id: "post_047",
     authorId: "user_017",
     title: "Retro Synth Setup",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1038/1000/800",
     aspectRatio: 1.25,
-    tags: ["synth", "synthesizer", "electronic"],
+    tags: [
+      "synth",
+      "synthesizer",
+      "electronic"
+    ],
     likesCount: 3,
-    likedBy: ["user_003", "user_010", "user_025"],
+    likedBy: [
+      "user_003",
+      "user_010",
+      "user_025"
+    ],
+    savedBy: [],
     commentsCount: 6,
     description: "Analog synthesizers and patch cables creating retro 80s wave.",
     isCommentsDisabled: false,
@@ -752,15 +1304,28 @@ export const posts = [
     createdAt: "2026-08-19T21:44:11.000Z"
   },
   {
-    id: "post_148",
+    id: "post_048",
     authorId: "user_018",
     title: "Bicycle Century Ride",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1044/800/600",
     aspectRatio: 1.33,
-    tags: ["cycling", "roadbike", "endurance"],
+    tags: [
+      "cycling",
+      "roadbike",
+      "endurance"
+    ],
     likesCount: 4,
-    likedBy: ["user_001", "user_009", "user_015", "user_022"],
+    likedBy: [
+      "user_001",
+      "user_009",
+      "user_015",
+      "user_022"
+    ],
+    savedBy: [
+      "user_009",
+      "user_018"
+    ],
     commentsCount: 8,
     description: "100 miles completed across scenic rolling countryside roads.",
     isCommentsDisabled: false,
@@ -768,15 +1333,29 @@ export const posts = [
     createdAt: "2026-08-20T15:05:37.000Z"
   },
   {
-    id: "post_149",
+    id: "post_049",
     authorId: "user_019",
     title: "Nordic Winter Cabin",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1051/900/506",
     aspectRatio: 1.78,
-    tags: ["winter", "cabin", "nordic"],
+    tags: [
+      "winter",
+      "cabin",
+      "nordic"
+    ],
     likesCount: 5,
-    likedBy: ["user_002", "user_008", "user_012", "user_024", "user_030"],
+    likedBy: [
+      "user_002",
+      "user_008",
+      "user_012",
+      "user_024",
+      "user_030"
+    ],
+    savedBy: [
+      "user_014",
+      "user_029"
+    ],
     commentsCount: 9,
     description: "Snow-covered wooden cabin surrounded by silent pine trees.",
     isCommentsDisabled: false,
@@ -784,15 +1363,28 @@ export const posts = [
     createdAt: "2026-08-21T18:14:02.000Z"
   },
   {
-    id: "post_150",
+    id: "post_050",
     authorId: "user_020",
     title: "Rooftop Sunset Gathering",
     visibility: "public",
     imageUrl: "https://picsum.photos/id/1055/600/900",
     aspectRatio: 0.66,
-    tags: ["rooftop", "sunset", "friends"],
+    tags: [
+      "rooftop",
+      "sunset",
+      "friends"
+    ],
     likesCount: 4,
-    likedBy: ["user_004", "user_006", "user_019", "user_026"],
+    likedBy: [
+      "user_004",
+      "user_006",
+      "user_019",
+      "user_026"
+    ],
+    savedBy: [
+      "user_008",
+      "user_012"
+    ],
     commentsCount: 12,
     description: "Good friends, cold drinks, and skyline views as dusk falls.",
     isCommentsDisabled: false,

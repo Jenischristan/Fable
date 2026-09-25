@@ -14,14 +14,38 @@ export const users = [
     followersCount: 3,
     followingCount: 2,
     uploadsCount: 2,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_007", "user_008"],
-    blockedByUsers: ["user_011", "user_012"],
-    bookmarkedPosts: ["post_001", "post_002"],
-    createdPosts: ["post_003", "post_004"],
-    pendingFollowRequests: ["user_006"],
-    followerList: ["user_002", "user_003", "user_004"],
-    followingList: ["user_004", "user_005"]
+    bookmarkedCount: 3,
+    blockedUsers: [
+      "user_007",
+      "user_008"
+    ],
+    blockedByUsers: [
+      "user_007",
+      "user_008",
+      "user_011",
+      "user_012"
+    ],
+    bookmarkedPosts: [
+      "post_001",
+      "post_006",
+      "post_013"
+    ],
+    createdPosts: [
+      "post_001",
+      "post_031"
+    ],
+    pendingFollowRequests: [
+      "user_006"
+    ],
+    followerList: [
+      "user_002",
+      "user_003",
+      "user_004"
+    ],
+    followingList: [
+      "user_004",
+      "user_005"
+    ]
   },
   {
     id: "user_002",
@@ -35,17 +59,40 @@ export const users = [
     joinedAt: "2026-02-14T08:12:19.452Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 4,
+    followersCount: 6,
     followingCount: 3,
-    uploadsCount: 3,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_018"],
-    blockedByUsers: ["user_025"],
-    bookmarkedPosts: ["post_012", "post_045"],
-    createdPosts: ["post_006", "post_007", "post_008"],
-    pendingFollowRequests: ["user_019"],
-    followerList: ["user_001", "user_003", "user_010", "user_015"],
-    followingList: ["user_001", "user_008", "user_014"]
+    uploadsCount: 2,
+    bookmarkedCount: 1,
+    blockedUsers: [
+      "user_018"
+    ],
+    blockedByUsers: [
+      "user_018",
+      "user_025"
+    ],
+    bookmarkedPosts: [
+      "post_006"
+    ],
+    createdPosts: [
+      "post_002",
+      "post_032"
+    ],
+    pendingFollowRequests: [
+      "user_019"
+    ],
+    followerList: [
+      "user_003",
+      "user_004",
+      "user_006",
+      "user_010",
+      "user_014",
+      "user_015"
+    ],
+    followingList: [
+      "user_001",
+      "user_008",
+      "user_014"
+    ]
   },
   {
     id: "user_003",
@@ -61,15 +108,41 @@ export const users = [
     isDeactivated: false,
     followersCount: 5,
     followingCount: 4,
-    uploadsCount: 4,
-    bookmarkedCount: 3,
-    blockedUsers: ["user_022"],
-    blockedByUsers: [],
-    bookmarkedPosts: ["post_020", "post_031", "post_089"],
-    createdPosts: ["post_011", "post_012", "post_013", "post_014"],
-    pendingFollowRequests: ["user_009", "user_027"],
-    followerList: ["user_001", "user_002", "user_007", "user_012", "user_020"],
-    followingList: ["user_001", "user_002", "user_006", "user_018"]
+    uploadsCount: 2,
+    bookmarkedCount: 4,
+    blockedUsers: [
+      "user_022"
+    ],
+    blockedByUsers: [
+      "user_022"
+    ],
+    bookmarkedPosts: [
+      "post_005",
+      "post_017",
+      "post_025",
+      "post_033"
+    ],
+    createdPosts: [
+      "post_003",
+      "post_033"
+    ],
+    pendingFollowRequests: [
+      "user_009",
+      "user_027"
+    ],
+    followerList: [
+      "user_006",
+      "user_007",
+      "user_009",
+      "user_012",
+      "user_020"
+    ],
+    followingList: [
+      "user_001",
+      "user_002",
+      "user_006",
+      "user_018"
+    ]
   },
   {
     id: "user_004",
@@ -86,14 +159,26 @@ export const users = [
     followersCount: 2,
     followingCount: 3,
     uploadsCount: 2,
-    bookmarkedCount: 4,
+    bookmarkedCount: 1,
     blockedUsers: [],
-    blockedByUsers: ["user_001"],
-    bookmarkedPosts: ["post_003", "post_054", "post_078", "post_102"],
-    createdPosts: ["post_016", "post_017"],
+    blockedByUsers: [],
+    bookmarkedPosts: [
+      "post_028"
+    ],
+    createdPosts: [
+      "post_004",
+      "post_034"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_001", "user_005"],
-    followingList: ["user_001", "user_002", "user_016"]
+    followerList: [
+      "user_001",
+      "user_005"
+    ],
+    followingList: [
+      "user_001",
+      "user_002",
+      "user_016"
+    ]
   },
   {
     id: "user_005",
@@ -107,17 +192,33 @@ export const users = [
     joinedAt: "2026-04-18T14:02:59.712Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 2,
     followingCount: 2,
-    uploadsCount: 3,
-    bookmarkedCount: 1,
-    blockedUsers: ["user_013"],
+    uploadsCount: 2,
+    bookmarkedCount: 2,
+    blockedUsers: [
+      "user_013"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_041"],
-    createdPosts: ["post_021", "post_022", "post_023"],
-    pendingFollowRequests: ["user_028"],
-    followerList: ["user_001", "user_004", "user_019"],
-    followingList: ["user_004", "user_011"]
+    bookmarkedPosts: [
+      "post_015",
+      "post_046"
+    ],
+    createdPosts: [
+      "post_005",
+      "post_035"
+    ],
+    pendingFollowRequests: [
+      "user_028"
+    ],
+    followerList: [
+      "user_001",
+      "user_019"
+    ],
+    followingList: [
+      "user_004",
+      "user_011"
+    ]
   },
   {
     id: "user_006",
@@ -131,17 +232,37 @@ export const users = [
     joinedAt: "2026-05-12T16:47:33.119Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 4,
+    followersCount: 6,
     followingCount: 5,
-    uploadsCount: 1,
-    bookmarkedCount: 3,
+    uploadsCount: 2,
+    bookmarkedCount: 1,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_007", "post_066", "post_114"],
-    createdPosts: ["post_026"],
-    pendingFollowRequests: ["user_001"],
-    followerList: ["user_003", "user_008", "user_013", "user_024"],
-    followingList: ["user_002", "user_003", "user_007", "user_015", "user_029"]
+    bookmarkedPosts: [
+      "post_030"
+    ],
+    createdPosts: [
+      "post_006",
+      "post_036"
+    ],
+    pendingFollowRequests: [
+      "user_001"
+    ],
+    followerList: [
+      "user_003",
+      "user_007",
+      "user_008",
+      "user_013",
+      "user_024",
+      "user_029"
+    ],
+    followingList: [
+      "user_002",
+      "user_003",
+      "user_007",
+      "user_015",
+      "user_029"
+    ]
   },
   {
     id: "user_007",
@@ -155,17 +276,37 @@ export const users = [
     joinedAt: "2026-02-27T09:15:08.534Z",
     visibility: "private",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 3,
     followingCount: 3,
     uploadsCount: 2,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_001"],
-    blockedByUsers: ["user_001"],
-    bookmarkedPosts: ["post_019", "post_083"],
-    createdPosts: ["post_031", "post_032"],
-    pendingFollowRequests: ["user_014", "user_021"],
-    followerList: ["user_006", "user_017"],
-    followingList: ["user_003", "user_006", "user_022"]
+    bookmarkedCount: 1,
+    blockedUsers: [
+      "user_001"
+    ],
+    blockedByUsers: [
+      "user_001"
+    ],
+    bookmarkedPosts: [
+      "post_031"
+    ],
+    createdPosts: [
+      "post_007",
+      "post_037"
+    ],
+    pendingFollowRequests: [
+      "user_014",
+      "user_021"
+    ],
+    followerList: [
+      "user_006",
+      "user_015",
+      "user_017"
+    ],
+    followingList: [
+      "user_003",
+      "user_006",
+      "user_022"
+    ]
   },
   {
     id: "user_008",
@@ -181,15 +322,36 @@ export const users = [
     isDeactivated: false,
     followersCount: 3,
     followingCount: 2,
-    uploadsCount: 4,
-    bookmarkedCount: 5,
-    blockedUsers: ["user_001"],
-    blockedByUsers: ["user_001"],
-    bookmarkedPosts: ["post_002", "post_018", "post_050", "post_095", "post_130"],
-    createdPosts: ["post_036", "post_037", "post_038", "post_039"],
+    uploadsCount: 2,
+    bookmarkedCount: 6,
+    blockedUsers: [
+      "user_001"
+    ],
+    blockedByUsers: [
+      "user_001"
+    ],
+    bookmarkedPosts: [
+      "post_002",
+      "post_011",
+      "post_028",
+      "post_037",
+      "post_039",
+      "post_050"
+    ],
+    createdPosts: [
+      "post_008",
+      "post_038"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_002", "user_011", "user_026"],
-    followingList: ["user_006", "user_013"]
+    followerList: [
+      "user_002",
+      "user_011",
+      "user_026"
+    ],
+    followingList: [
+      "user_006",
+      "user_013"
+    ]
   },
   {
     id: "user_009",
@@ -205,15 +367,38 @@ export const users = [
     isDeactivated: false,
     followersCount: 4,
     followingCount: 4,
-    uploadsCount: 3,
-    bookmarkedCount: 2,
+    uploadsCount: 2,
+    bookmarkedCount: 5,
     blockedUsers: [],
-    blockedByUsers: ["user_028"],
-    bookmarkedPosts: ["post_014", "post_110"],
-    createdPosts: ["post_041", "post_042", "post_043"],
-    pendingFollowRequests: ["user_030"],
-    followerList: ["user_010", "user_018", "user_023", "user_027"],
-    followingList: ["user_003", "user_012", "user_017", "user_025"]
+    blockedByUsers: [
+      "user_028"
+    ],
+    bookmarkedPosts: [
+      "post_012",
+      "post_019",
+      "post_041",
+      "post_046",
+      "post_048"
+    ],
+    createdPosts: [
+      "post_009",
+      "post_039"
+    ],
+    pendingFollowRequests: [
+      "user_030"
+    ],
+    followerList: [
+      "user_010",
+      "user_018",
+      "user_023",
+      "user_027"
+    ],
+    followingList: [
+      "user_003",
+      "user_012",
+      "user_017",
+      "user_025"
+    ]
   },
   {
     id: "user_010",
@@ -227,17 +412,35 @@ export const users = [
     joinedAt: "2026-03-29T18:55:04.912Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 4,
     followingCount: 3,
     uploadsCount: 2,
-    bookmarkedCount: 3,
-    blockedUsers: ["user_015"],
+    bookmarkedCount: 1,
+    blockedUsers: [
+      "user_015"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_025", "post_062", "post_140"],
-    createdPosts: ["post_046", "post_047"],
-    pendingFollowRequests: ["user_016"],
-    followerList: ["user_002", "user_014", "user_029"],
-    followingList: ["user_002", "user_009", "user_021"]
+    bookmarkedPosts: [
+      "post_027"
+    ],
+    createdPosts: [
+      "post_010",
+      "post_040"
+    ],
+    pendingFollowRequests: [
+      "user_016"
+    ],
+    followerList: [
+      "user_014",
+      "user_016",
+      "user_021",
+      "user_029"
+    ],
+    followingList: [
+      "user_002",
+      "user_009",
+      "user_021"
+    ]
   },
   {
     id: "user_011",
@@ -253,15 +456,29 @@ export const users = [
     isDeactivated: false,
     followersCount: 3,
     followingCount: 2,
-    uploadsCount: 3,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_001"],
+    uploadsCount: 2,
+    bookmarkedCount: 0,
+    blockedUsers: [
+      "user_001"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_005", "post_072"],
-    createdPosts: ["post_051", "post_052", "post_053"],
-    pendingFollowRequests: ["user_008"],
-    followerList: ["user_005", "user_016", "user_028"],
-    followingList: ["user_008", "user_020"]
+    bookmarkedPosts: [],
+    createdPosts: [
+      "post_011",
+      "post_041"
+    ],
+    pendingFollowRequests: [
+      "user_008"
+    ],
+    followerList: [
+      "user_005",
+      "user_016",
+      "user_028"
+    ],
+    followingList: [
+      "user_008",
+      "user_020"
+    ]
   },
   {
     id: "user_012",
@@ -273,19 +490,40 @@ export const users = [
     bio: "Just here for the memes and cute animal videos 🐕",
     avatarUrl: "https://picsum.photos/seed/ameliawright/200/200",
     joinedAt: "2026-08-01T10:04:19.388Z",
-    visibility: "public",
+    visibility: "private",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 3,
     followingCount: 4,
-    uploadsCount: 1,
+    uploadsCount: 2,
     bookmarkedCount: 4,
-    blockedUsers: ["user_001"],
+    blockedUsers: [
+      "user_001"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_015", "post_033", "post_088", "post_124"],
-    createdPosts: ["post_056"],
-    pendingFollowRequests: ["user_023"],
-    followerList: ["user_003", "user_009"],
-    followingList: ["user_003", "user_014", "user_022", "user_030"]
+    bookmarkedPosts: [
+      "post_018",
+      "post_024",
+      "post_030",
+      "post_050"
+    ],
+    createdPosts: [
+      "post_012",
+      "post_042"
+    ],
+    pendingFollowRequests: [
+      "user_023"
+    ],
+    followerList: [
+      "user_009",
+      "user_022",
+      "user_030"
+    ],
+    followingList: [
+      "user_003",
+      "user_014",
+      "user_022",
+      "user_030"
+    ]
   },
   {
     id: "user_013",
@@ -299,17 +537,34 @@ export const users = [
     joinedAt: "2026-05-23T20:18:47.781Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 4,
+    followersCount: 5,
     followingCount: 3,
     uploadsCount: 2,
-    bookmarkedCount: 2,
+    bookmarkedCount: 1,
     blockedUsers: [],
-    blockedByUsers: ["user_005"],
-    bookmarkedPosts: ["post_009", "post_058"],
-    createdPosts: ["post_061", "post_062"],
+    blockedByUsers: [
+      "user_005"
+    ],
+    bookmarkedPosts: [
+      "post_021"
+    ],
+    createdPosts: [
+      "post_013",
+      "post_043"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_006", "user_008", "user_017", "user_025"],
-    followingList: ["user_006", "user_019", "user_027"]
+    followerList: [
+      "user_008",
+      "user_017",
+      "user_019",
+      "user_025",
+      "user_027"
+    ],
+    followingList: [
+      "user_006",
+      "user_019",
+      "user_027"
+    ]
   },
   {
     id: "user_014",
@@ -323,17 +578,36 @@ export const users = [
     joinedAt: "2026-04-09T12:35:10.142Z",
     visibility: "private",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 2,
     followingCount: 3,
-    uploadsCount: 3,
-    bookmarkedCount: 1,
-    blockedUsers: ["user_020"],
+    uploadsCount: 2,
+    bookmarkedCount: 3,
+    blockedUsers: [
+      "user_020"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_097"],
-    createdPosts: ["post_066", "post_067", "post_068"],
-    pendingFollowRequests: ["user_007", "user_018"],
-    followerList: ["user_002", "user_010", "user_012"],
-    followingList: ["user_002", "user_010", "user_024"]
+    bookmarkedPosts: [
+      "post_011",
+      "post_014",
+      "post_049"
+    ],
+    createdPosts: [
+      "post_014",
+      "post_044"
+    ],
+    pendingFollowRequests: [
+      "user_007",
+      "user_018"
+    ],
+    followerList: [
+      "user_002",
+      "user_012"
+    ],
+    followingList: [
+      "user_002",
+      "user_010",
+      "user_024"
+    ]
   },
   {
     id: "user_015",
@@ -349,15 +623,34 @@ export const users = [
     isDeactivated: false,
     followersCount: 3,
     followingCount: 2,
-    uploadsCount: 4,
-    bookmarkedCount: 3,
+    uploadsCount: 2,
+    bookmarkedCount: 4,
     blockedUsers: [],
-    blockedByUsers: ["user_010"],
-    bookmarkedPosts: ["post_029", "post_080", "post_135"],
-    createdPosts: ["post_071", "post_072", "post_073", "post_074"],
-    pendingFollowRequests: ["user_026"],
-    followerList: ["user_002", "user_006", "user_021"],
-    followingList: ["user_002", "user_007"]
+    blockedByUsers: [
+      "user_010"
+    ],
+    bookmarkedPosts: [
+      "post_020",
+      "post_029",
+      "post_035",
+      "post_046"
+    ],
+    createdPosts: [
+      "post_015",
+      "post_045"
+    ],
+    pendingFollowRequests: [
+      "user_026"
+    ],
+    followerList: [
+      "user_006",
+      "user_021",
+      "user_026"
+    ],
+    followingList: [
+      "user_002",
+      "user_007"
+    ]
   },
   {
     id: "user_016",
@@ -374,14 +667,26 @@ export const users = [
     followersCount: 2,
     followingCount: 3,
     uploadsCount: 2,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_024"],
+    bookmarkedCount: 0,
+    blockedUsers: [
+      "user_024"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_044", "post_108"],
-    createdPosts: ["post_076", "post_077"],
+    bookmarkedPosts: [],
+    createdPosts: [
+      "post_016",
+      "post_046"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_004", "user_010"],
-    followingList: ["user_010", "user_011", "user_023"]
+    followerList: [
+      "user_004",
+      "user_023"
+    ],
+    followingList: [
+      "user_010",
+      "user_011",
+      "user_023"
+    ]
   },
   {
     id: "user_017",
@@ -395,17 +700,28 @@ export const users = [
     joinedAt: "2026-02-08T22:09:51.637Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 4,
+    followersCount: 2,
     followingCount: 2,
-    uploadsCount: 3,
-    bookmarkedCount: 5,
+    uploadsCount: 2,
+    bookmarkedCount: 0,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_017", "post_052", "post_079", "post_118", "post_149"],
-    createdPosts: ["post_081", "post_082", "post_083"],
-    pendingFollowRequests: ["user_005"],
-    followerList: ["user_007", "user_009", "user_013", "user_022"],
-    followingList: ["user_007", "user_013"]
+    bookmarkedPosts: [],
+    createdPosts: [
+      "post_017",
+      "post_047"
+    ],
+    pendingFollowRequests: [
+      "user_005"
+    ],
+    followerList: [
+      "user_009",
+      "user_022"
+    ],
+    followingList: [
+      "user_007",
+      "user_013"
+    ]
   },
   {
     id: "user_018",
@@ -419,17 +735,39 @@ export const users = [
     joinedAt: "2026-06-27T14:42:01.815Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 3,
     followingCount: 3,
     uploadsCount: 2,
-    bookmarkedCount: 3,
-    blockedUsers: ["user_002"],
-    blockedByUsers: ["user_002"],
-    bookmarkedPosts: ["post_022", "post_064", "post_131"],
-    createdPosts: ["post_086", "post_087"],
-    pendingFollowRequests: ["user_014"],
-    followerList: ["user_003", "user_028"],
-    followingList: ["user_009", "user_019", "user_029"]
+    bookmarkedCount: 4,
+    blockedUsers: [
+      "user_002"
+    ],
+    blockedByUsers: [
+      "user_002"
+    ],
+    bookmarkedPosts: [
+      "post_005",
+      "post_034",
+      "post_037",
+      "post_048"
+    ],
+    createdPosts: [
+      "post_018",
+      "post_048"
+    ],
+    pendingFollowRequests: [
+      "user_014"
+    ],
+    followerList: [
+      "user_003",
+      "user_028",
+      "user_029"
+    ],
+    followingList: [
+      "user_009",
+      "user_019",
+      "user_029"
+    ]
   },
   {
     id: "user_019",
@@ -443,17 +781,32 @@ export const users = [
     joinedAt: "2026-01-05T08:31:16.299Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 2,
     followingCount: 4,
-    uploadsCount: 3,
-    bookmarkedCount: 2,
+    uploadsCount: 2,
+    bookmarkedCount: 1,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_038", "post_092"],
-    createdPosts: ["post_091", "post_092", "post_093"],
-    pendingFollowRequests: ["user_002"],
-    followerList: ["user_005", "user_013", "user_018"],
-    followingList: ["user_005", "user_013", "user_020", "user_026"]
+    bookmarkedPosts: [
+      "post_043"
+    ],
+    createdPosts: [
+      "post_019",
+      "post_049"
+    ],
+    pendingFollowRequests: [
+      "user_002"
+    ],
+    followerList: [
+      "user_013",
+      "user_018"
+    ],
+    followingList: [
+      "user_005",
+      "user_013",
+      "user_020",
+      "user_026"
+    ]
   },
   {
     id: "user_020",
@@ -467,17 +820,34 @@ export const users = [
     joinedAt: "2026-05-18T19:22:45.560Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 2,
     followingCount: 2,
     uploadsCount: 2,
-    bookmarkedCount: 4,
+    bookmarkedCount: 3,
     blockedUsers: [],
-    blockedByUsers: ["user_014"],
-    bookmarkedPosts: ["post_004", "post_049", "post_105", "post_144"],
-    createdPosts: ["post_096", "post_097"],
-    pendingFollowRequests: ["user_011"],
-    followerList: ["user_003", "user_011", "user_019"],
-    followingList: ["user_003", "user_021"]
+    blockedByUsers: [
+      "user_014"
+    ],
+    bookmarkedPosts: [
+      "post_008",
+      "post_019",
+      "post_033"
+    ],
+    createdPosts: [
+      "post_020",
+      "post_050"
+    ],
+    pendingFollowRequests: [
+      "user_011"
+    ],
+    followerList: [
+      "user_011",
+      "user_019"
+    ],
+    followingList: [
+      "user_003",
+      "user_021"
+    ]
   },
   {
     id: "user_021",
@@ -495,13 +865,32 @@ export const users = [
     followingCount: 3,
     uploadsCount: 1,
     bookmarkedCount: 3,
-    blockedUsers: ["user_029"],
+    blockedUsers: [
+      "user_029"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_013", "post_074", "post_121"],
-    createdPosts: ["post_101"],
-    pendingFollowRequests: ["user_007"],
-    followerList: ["user_010", "user_015", "user_020", "user_030"],
-    followingList: ["user_010", "user_015", "user_025"]
+    bookmarkedPosts: [
+      "post_010",
+      "post_023",
+      "post_044"
+    ],
+    createdPosts: [
+      "post_021"
+    ],
+    pendingFollowRequests: [
+      "user_007"
+    ],
+    followerList: [
+      "user_010",
+      "user_020",
+      "user_025",
+      "user_030"
+    ],
+    followingList: [
+      "user_010",
+      "user_015",
+      "user_025"
+    ]
   },
   {
     id: "user_022",
@@ -517,15 +906,29 @@ export const users = [
     isDeactivated: false,
     followersCount: 3,
     followingCount: 3,
-    uploadsCount: 3,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_003"],
-    blockedByUsers: ["user_003"],
-    bookmarkedPosts: ["post_036", "post_085"],
-    createdPosts: ["post_106", "post_107", "post_108"],
+    uploadsCount: 1,
+    bookmarkedCount: 0,
+    blockedUsers: [
+      "user_003"
+    ],
+    blockedByUsers: [
+      "user_003"
+    ],
+    bookmarkedPosts: [],
+    createdPosts: [
+      "post_022"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_007", "user_012", "user_017"],
-    followingList: ["user_012", "user_017", "user_028"]
+    followerList: [
+      "user_007",
+      "user_012",
+      "user_028"
+    ],
+    followingList: [
+      "user_012",
+      "user_017",
+      "user_028"
+    ]
   },
   {
     id: "user_023",
@@ -539,17 +942,32 @@ export const users = [
     joinedAt: "2026-03-02T13:48:30.129Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 1,
     followingCount: 3,
-    uploadsCount: 2,
-    bookmarkedCount: 1,
+    uploadsCount: 1,
+    bookmarkedCount: 4,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_068"],
-    createdPosts: ["post_111", "post_112"],
-    pendingFollowRequests: ["user_012"],
-    followerList: ["user_009", "user_016"],
-    followingList: ["user_009", "user_016", "user_030"]
+    bookmarkedPosts: [
+      "post_014",
+      "post_025",
+      "post_032",
+      "post_043"
+    ],
+    createdPosts: [
+      "post_023"
+    ],
+    pendingFollowRequests: [
+      "user_012"
+    ],
+    followerList: [
+      "user_016"
+    ],
+    followingList: [
+      "user_009",
+      "user_016",
+      "user_030"
+    ]
   },
   {
     id: "user_024",
@@ -563,17 +981,30 @@ export const users = [
     joinedAt: "2026-07-26T21:11:05.892Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 1,
     followingCount: 2,
-    uploadsCount: 4,
+    uploadsCount: 1,
     bookmarkedCount: 3,
     blockedUsers: [],
-    blockedByUsers: ["user_016"],
-    bookmarkedPosts: ["post_027", "post_060", "post_116"],
-    createdPosts: ["post_116", "post_117", "post_118", "post_119"],
+    blockedByUsers: [
+      "user_016"
+    ],
+    bookmarkedPosts: [
+      "post_001",
+      "post_020",
+      "post_034"
+    ],
+    createdPosts: [
+      "post_024"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_006", "user_014"],
-    followingList: ["user_006", "user_027"]
+    followerList: [
+      "user_014"
+    ],
+    followingList: [
+      "user_006",
+      "user_027"
+    ]
   },
   {
     id: "user_025",
@@ -587,17 +1018,33 @@ export const users = [
     joinedAt: "2026-06-16T17:34:21.018Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 2,
     followingCount: 2,
-    uploadsCount: 2,
-    bookmarkedCount: 2,
-    blockedUsers: ["user_002"],
+    uploadsCount: 1,
+    bookmarkedCount: 3,
+    blockedUsers: [
+      "user_002"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_040", "post_129"],
-    createdPosts: ["post_121", "post_122"],
-    pendingFollowRequests: ["user_030"],
-    followerList: ["user_009", "user_013", "user_021"],
-    followingList: ["user_013", "user_021"]
+    bookmarkedPosts: [
+      "post_013",
+      "post_016",
+      "post_038"
+    ],
+    createdPosts: [
+      "post_025"
+    ],
+    pendingFollowRequests: [
+      "user_030"
+    ],
+    followerList: [
+      "user_009",
+      "user_021"
+    ],
+    followingList: [
+      "user_013",
+      "user_021"
+    ]
   },
   {
     id: "user_026",
@@ -611,17 +1058,26 @@ export const users = [
     joinedAt: "2026-05-04T09:07:49.653Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 1,
     followingCount: 2,
-    uploadsCount: 3,
-    bookmarkedCount: 4,
+    uploadsCount: 1,
+    bookmarkedCount: 0,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_010", "post_053", "post_098", "post_142"],
-    createdPosts: ["post_126", "post_127", "post_128"],
-    pendingFollowRequests: ["user_015"],
-    followerList: ["user_008", "user_019"],
-    followingList: ["user_008", "user_015"]
+    bookmarkedPosts: [],
+    createdPosts: [
+      "post_026"
+    ],
+    pendingFollowRequests: [
+      "user_015"
+    ],
+    followerList: [
+      "user_019"
+    ],
+    followingList: [
+      "user_008",
+      "user_015"
+    ]
   },
   {
     id: "user_027",
@@ -635,17 +1091,30 @@ export const users = [
     joinedAt: "2026-02-18T18:29:02.376Z",
     visibility: "public",
     isDeactivated: false,
-    followersCount: 3,
+    followersCount: 2,
     followingCount: 2,
-    uploadsCount: 2,
-    bookmarkedCount: 3,
+    uploadsCount: 1,
+    bookmarkedCount: 2,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_035", "post_081", "post_138"],
-    createdPosts: ["post_131", "post_132"],
-    pendingFollowRequests: ["user_003"],
-    followerList: ["user_009", "user_013", "user_024"],
-    followingList: ["user_009", "user_013"]
+    bookmarkedPosts: [
+      "post_038",
+      "post_039"
+    ],
+    createdPosts: [
+      "post_027"
+    ],
+    pendingFollowRequests: [
+      "user_003"
+    ],
+    followerList: [
+      "user_013",
+      "user_024"
+    ],
+    followingList: [
+      "user_009",
+      "user_013"
+    ]
   },
   {
     id: "user_028",
@@ -659,17 +1128,32 @@ export const users = [
     joinedAt: "2026-08-20T12:58:37.490Z",
     visibility: "private",
     isDeactivated: false,
-    followersCount: 2,
+    followersCount: 1,
     followingCount: 3,
     uploadsCount: 1,
     bookmarkedCount: 2,
-    blockedUsers: ["user_009"],
+    blockedUsers: [
+      "user_009"
+    ],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_055", "post_113"],
-    createdPosts: ["post_136"],
-    pendingFollowRequests: ["user_005"],
-    followerList: ["user_011", "user_022"],
-    followingList: ["user_011", "user_018", "user_022"]
+    bookmarkedPosts: [
+      "post_024",
+      "post_028"
+    ],
+    createdPosts: [
+      "post_028"
+    ],
+    pendingFollowRequests: [
+      "user_005"
+    ],
+    followerList: [
+      "user_022"
+    ],
+    followingList: [
+      "user_011",
+      "user_018",
+      "user_022"
+    ]
   },
   {
     id: "user_029",
@@ -685,15 +1169,30 @@ export const users = [
     isDeactivated: true,
     followersCount: 2,
     followingCount: 3,
-    uploadsCount: 3,
-    bookmarkedCount: 2,
+    uploadsCount: 1,
+    bookmarkedCount: 3,
     blockedUsers: [],
-    blockedByUsers: ["user_021"],
-    bookmarkedPosts: ["post_048", "post_126"],
-    createdPosts: ["post_141", "post_142", "post_143"],
+    blockedByUsers: [
+      "user_021"
+    ],
+    bookmarkedPosts: [
+      "post_043",
+      "post_045",
+      "post_049"
+    ],
+    createdPosts: [
+      "post_029"
+    ],
     pendingFollowRequests: [],
-    followerList: ["user_006", "user_018"],
-    followingList: ["user_006", "user_010", "user_018"]
+    followerList: [
+      "user_006",
+      "user_018"
+    ],
+    followingList: [
+      "user_006",
+      "user_010",
+      "user_018"
+    ]
   },
   {
     id: "user_030",
@@ -709,14 +1208,29 @@ export const users = [
     isDeactivated: false,
     followersCount: 2,
     followingCount: 2,
-    uploadsCount: 2,
+    uploadsCount: 1,
     bookmarkedCount: 3,
     blockedUsers: [],
     blockedByUsers: [],
-    bookmarkedPosts: ["post_016", "post_070", "post_147"],
-    createdPosts: ["post_146", "post_147"],
-    pendingFollowRequests: ["user_009", "user_025"],
-    followerList: ["user_012", "user_023"],
-    followingList: ["user_012", "user_021"]
+    bookmarkedPosts: [
+      "post_021",
+      "post_032",
+      "post_036"
+    ],
+    createdPosts: [
+      "post_030"
+    ],
+    pendingFollowRequests: [
+      "user_009",
+      "user_025"
+    ],
+    followerList: [
+      "user_012",
+      "user_023"
+    ],
+    followingList: [
+      "user_012",
+      "user_021"
+    ]
   }
 ];

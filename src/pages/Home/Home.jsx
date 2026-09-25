@@ -1,5 +1,5 @@
 import "./Home.css";
-import {  getCurrentUser, getHomePostFeed, isPostSavedBy } from "../../mocks/api";
+import { getCurrentUser, getHomePostFeed, isPostSavedBy } from "../../mocks/api";
 import { Masonry } from "masonic";
 import {
   IconDots,
@@ -70,20 +70,29 @@ const PostCard = React.memo(function PostCard({ data: post }) {
     if (!btnRef.current) return null;
     const rect = btnRef.current.getBoundingClientRect();
     const popupWidth = 280;
-    const popupHeight = 210;
+    const popupHeight = 240;
     const spacing = 8;
-    let top = rect.bottom + spacing;
-    let left = rect.left;
+    const padding = 8;
 
-    if (top + popupHeight > window.innerHeight) {
+    const buttonCenterX = rect.left + rect.width / 2;
+    let left = buttonCenterX - popupWidth / 2;
+
+    let top = rect.bottom + spacing;
+    if (top + popupHeight > window.innerHeight - padding) {
       top = rect.top - popupHeight - spacing;
     }
-    if (left + popupWidth > window.innerWidth) {
-      left = rect.right - popupWidth;
+
+    top = Math.max(padding, top);
+
+    if (left < padding) {
+      left = padding;
+    } else if (left + popupWidth > window.innerWidth - padding) {
+      left = window.innerWidth - popupWidth - padding;
     }
-    left = Math.max(8, left);
+
     return { top, left };
   };
+
   useEffect(() => {
     if (!isPopUpActive) return;
 
