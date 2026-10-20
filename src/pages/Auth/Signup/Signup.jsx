@@ -3,6 +3,7 @@ import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Grainient from "../../../components/ui/Grainient/Grainient";
+import { signup } from "../../../mocks/api";
 
 function Signup() {
   const navigate = useNavigate();
@@ -50,8 +51,13 @@ function Signup() {
       setErrors(validationErrors);
       return;
     }
+    const userId = signup(formData);
+    if (!userId) {
+      setErrors({ email: "An account with this email already exists" });
+      return;
+    }
     setErrors({});
-    navigate("/home");
+    navigate("/home", { replace: true });
   };
 
   return (

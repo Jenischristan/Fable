@@ -10,6 +10,7 @@ const SQL_MAP = {
   '\0': '\\0', '\b': '\\b', '\t': '\\t', '\n': '\\n', '\r': '\\r',
   '\x1a': '\\Z', '"': '\\"', "'": "\\'", '\\': '\\\\',
 };
+// eslint-disable-next-line no-control-regex
 const esc = (v) => String(v).replace(/[\0\x08\x09\x1a\n\r"'\\]/g, (m) => SQL_MAP[m]);
 
 function runSql(sql) {

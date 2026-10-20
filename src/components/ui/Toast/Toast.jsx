@@ -1,14 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./Toast.css";
 
 export default function Toast({ message, onClose, duration = 2500 }) {
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (!message) return;
     const timer = setTimeout(() => {
-      onClose?.();
+      onCloseRef.current?.();
     }, duration);
     return () => clearTimeout(timer);
-  }, [message, onClose, duration]);
+  }, [message, duration]);
 
   if (!message) return null;
 

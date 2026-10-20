@@ -282,6 +282,19 @@
   background-color: #e4e4e7;
 }
 
+.profile-follow-actions-pending,
+.profile-follow-actions button.profile-follow-actions-pending {
+  background-color: #e4e4e7 !important;
+  color: #71717a !important;
+  cursor: default !important;
+  opacity: 0.8;
+}
+
+.profile-follow-actions-pending:hover,
+.profile-follow-actions button.profile-follow-actions-pending:hover {
+  background-color: #e4e4e7 !important;
+}
+
 .profile-follow-actions-share-btn {
   background: #131316 !important;
   color: white !important;
@@ -299,12 +312,17 @@
 }
 
 .profile-page-section {
-  padding: 3rem;
+  padding: 4rem;
+  box-sizing: border-box;
 }
 @media (max-width: 768px) {
   .profile-page-card {
     padding: 1.5rem;
     gap: 1rem;
+  }
+
+  .profile-page-section {
+    padding: 1.5rem;
   }
 
   .profile-page-card img {
@@ -333,6 +351,10 @@
     padding: 1.25rem 1rem;
     align-items: flex-start;
     font-size: 1.5rem;
+  }
+
+  .profile-page-section {
+    padding: 1rem;
   }
 
   .profile-page-avatar-container {

@@ -172,8 +172,13 @@
 }
 
 
-@media (max-width : 738px) {
+@media (max-width: 768px) {
   .home-masonry-item-overlay {
-    display: none;
-    }
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .home-masonry-item-overlay button {
+    pointer-events: auto;
+  }
 }

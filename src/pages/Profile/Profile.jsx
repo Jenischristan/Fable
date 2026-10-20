@@ -11,14 +11,18 @@ import {
   IconShare3,
 } from "@tabler/icons-react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useMockData } from "../../hooks/useMockData";
 import {
+  blockUser,
   getCreatedPostsById,
   getCurrentUser,
   getSavedPostsById,
   getUserById,
   getUserByUsername,
+  hasPendingFollowRequest,
   isFollowedBy,
   isPostSavedBy,
+  setFollowUser,
   togglePostSaved,
 } from "../../mocks/api";
 import { Masonry } from "masonic";
@@ -268,6 +272,7 @@ const PostCard = React.memo(function PostCard({ data: post, onToast, onReport })
 });
 
 export default function Profile() {
+  useMockData();
   const navigate = useNavigate();
   const user = getCurrentUser();
   const { username, tab } = useParams();
@@ -281,25 +286,14 @@ export default function Profile() {
   const sectionRef = useRef(null);
 
   const [sectionWidth, setSectionWidth] = useState(() => window.innerWidth);
-  const [isFollowing, setIsFollowing] = useState(() =>
-    user && displayUser ? isFollowedBy(user.id, displayUser.id) : false,
-  );
-  const [prevDisplayUserId, setPrevDisplayUserId] = useState(
-    displayUser?.id ?? null,
-  );
   const [toastMessage, setToastMessage] = useState("");
   const [dialog, setDialog] = useState(null);
   const [listModal, setListModal] = useState(null);
 
-  if (displayUser?.id !== prevDisplayUserId) {
-    setPrevDisplayUserId(displayUser?.id ?? null);
-    setIsFollowing(
-      user && displayUser ? isFollowedBy(user.id, displayUser.id) : false,
-    );
-    setDialog(null);
-    setListModal(null);
-    setIsActionsPopupActive(false);
-  }
+  const isFollowing =
+    user && displayUser ? isFollowedBy(user.id, displayUser.id) : false;
+  const hasPendingRequest =
+    user && displayUser ? hasPendingFollowRequest(user.id, displayUser.id) : false;
 
   const handlePostToast = (msg) => setToastMessage(msg);
   const handlePostReport = (post) => setDialog({ type: "report-post", post });
@@ -322,8 +316,10 @@ export default function Profile() {
   const handleFollowClick = () => {
     if (isFollowing) {
       setDialog({ type: "unfollow" });
-    } else {
-      setIsFollowing(true);
+    } else if (isPrivate) {
+      setDialog({ type: "follow-request" });
+    } else if (user && displayUser) {
+      setFollowUser(user.id, displayUser.id, true);
       setToastMessage(`Following @${displayUser.username}.`);
     }
   };
@@ -355,18 +351,19 @@ export default function Profile() {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    const initialWidth = sectionRef.current.getBoundingClientRect().width;
-    if (initialWidth > 0) {
-      setSectionWidth(initialWidth);
-    }
+    const measure = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const style = window.getComputedStyle(el);
+      const padLeft = parseFloat(style.paddingLeft) || 0;
+      const padRight = parseFloat(style.paddingRight) || 0;
+      const contentWidth = el.clientWidth - padLeft - padRight;
+      if (contentWidth > 0) setSectionWidth(contentWidth);
+    };
 
-    const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        if (entry.contentRect.width > 0) {
-          setSectionWidth(entry.contentRect.width);
-        }
-      }
-    });
+    measure();
+
+    const observer = new ResizeObserver(measure);
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
@@ -500,6 +497,10 @@ export default function Profile() {
             <button type="button" onClick={handleFollowClick}>
               UnFollow
             </button>
+          ) : hasPendingRequest ? (
+            <button type="button" disabled className="profile-follow-actions-pending">
+              Request Sent
+            </button>
           ) : isPrivate ? (
             <button type="button" onClick={handleSendRequest}>
               Send Request
@@ -564,7 +565,7 @@ export default function Profile() {
         confirmLabel="Unfollow"
         danger
         onConfirm={() => {
-          setIsFollowing(false);
+          if (user && displayUser) setFollowUser(user.id, displayUser.id, false);
           setToastMessage(`Unfollowed @${displayUser.username}.`);
         }}
         onClose={() => setDialog(null)}
@@ -575,9 +576,10 @@ export default function Profile() {
         title="Send follow request?"
         message={`@${displayUser.username} has a private profile. They'll need to approve your request before you can see their posts.`}
         confirmLabel="Send request"
-        onConfirm={() =>
-          setToastMessage(`Follow request sent to @${displayUser.username}.`)
-        }
+        onConfirm={() => {
+          if (user && displayUser) setFollowUser(user.id, displayUser.id, true);
+          setToastMessage(`Follow request sent to @${displayUser.username}.`);
+        }}
         onClose={() => setDialog(null)}
       />
 
@@ -587,9 +589,11 @@ export default function Profile() {
         message="They won't be able to follow you, message you, or see your posts. They won't be notified."
         confirmLabel="Block"
         danger
-        onConfirm={() =>
-          setToastMessage(`Blocked @${displayUser.username}.`)
-        }
+        onConfirm={() => {
+          if (user && displayUser) blockUser(user.id, displayUser.id);
+          setToastMessage(`Blocked @${displayUser.username}.`);
+          navigate("/home");
+        }}
         onClose={() => setDialog(null)}
       />
 

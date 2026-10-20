@@ -7,6 +7,8 @@ import {
   IconShare3,
 } from "@tabler/icons-react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useMockData } from "../../hooks/useMockData";
+import { useMasonryColumnWidth } from "../../hooks/useMasonryColumnWidth";
 import {
   getCurrentUser,
   getSavedPostsById,
@@ -218,9 +220,11 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
 });
 
 export default function Bookmarks() {
+  useMockData();
   const user = getCurrentUser();
   const [toastMessage, setToastMessage] = useState("");
-  const [saveTick, setSaveTick] = useState(0);
+  const containerRef = useRef(null);
+  const columnWidth = useMasonryColumnWidth(containerRef);
 
   const posts = getSavedPostsById(user?.id);
 
@@ -231,7 +235,7 @@ export default function Bookmarks() {
         <p>Your saved posts, all in one place.</p>
       </div>
 
-      <div className="bookmarks-container">
+      <div className="bookmarks-container" ref={containerRef}>
         {posts.length === 0 ? (
           <div className="bookmarks-empty">
             <p>Nothing saved yet.</p>
@@ -239,22 +243,13 @@ export default function Bookmarks() {
           </div>
         ) : (
           <Masonry
-            key={saveTick}
             items={posts}
             render={({ data, index }) => (
-              <PostCard
-                data={data}
-                index={index}
-                onToast={(msg) => {
-                  setToastMessage(msg);
-                  setSaveTick((t) => t + 1);
-                }}
-              />
+              <PostCard data={data} index={index} onToast={setToastMessage} />
             )}
             itemKey={(data, index) => data?.id ?? index}
             columnGutter={16}
-            columnWidth={180}
-            maxColumnCount={5}
+            columnWidth={columnWidth}
           />
         )}
       </div>

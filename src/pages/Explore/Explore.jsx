@@ -4,8 +4,11 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import { Masonry } from "masonic";
 import { IconDots, IconHash, IconShare3 } from "@tabler/icons-react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useMockData } from "../../hooks/useMockData";
+import { useMasonryColumnWidth } from "../../hooks/useMasonryColumnWidth";
 import {
   getCurrentUser,
+  getRecommendedCreators,
   getTrendingTags,
   isPostSavedBy,
   searchPosts,
@@ -217,11 +220,15 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
 });
 
 export default function Explore() {
+  useMockData();
   const [searchParams, setSearchParams] = useSearchParams();
   const [toastMessage, setToastMessage] = useState("");
+  const postsSectionRef = useRef(null);
+  const columnWidth = useMasonryColumnWidth(postsSectionRef);
 
   const query = (searchParams.get("q") || "").trim();
   const trendingTags = getTrendingTags(10);
+  const creators = getRecommendedCreators(6);
   const posts = searchPosts(query);
 
   const handleClearSearch = () => {
@@ -260,7 +267,32 @@ export default function Explore() {
         </section>
       )}
 
-      <section className="explore-posts-section">
+      {!query && creators.length > 0 && (
+        <section className="explore-creators-section">
+          <h2>Creators to Follow</h2>
+          <div className="explore-creators-grid">
+            {creators.map((creator) => (
+              <NavLink
+                key={creator.id}
+                to={`/user/${creator.username}`}
+                className="explore-creator-card"
+              >
+                <img src={creator.avatarUrl} alt={creator.username} />
+                <div className="explore-creator-info">
+                  <span className="explore-creator-name">
+                    {`${creator.firstName} ${creator.lastName}`}
+                  </span>
+                  <span className="explore-creator-handle">
+                    @{creator.username}
+                  </span>
+                </div>
+              </NavLink>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="explore-posts-section" ref={postsSectionRef}>
         <div className="explore-posts-header">
           <h2>
             {query
@@ -291,8 +323,7 @@ export default function Explore() {
             )}
             itemKey={(data, index) => data?.id ?? index}
             columnGutter={16}
-            columnWidth={180}
-            maxColumnCount={5}
+            columnWidth={columnWidth}
           />
         )}
       </section>

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Grainient from "../../../components/ui/Grainient/Grainient";
 import Modal from "../../../components/ui/Modal/Modal";
 import Toast from "../../../components/ui/Toast/Toast";
-import { mockCredentials } from "../../../mocks/data/credentials";
+import { login } from "../../../mocks/api";
 
 function Login() {
   const navigate = useNavigate();
@@ -50,19 +50,15 @@ function Login() {
       return;
     }
 
-    const cred = mockCredentials.find(
-      (c) =>
-        c.email === formData.email.trim().toLowerCase() &&
-        c.password === formData.password,
-    );
+    const userId = login(formData.email, formData.password);
 
-    if (!cred) {
+    if (!userId) {
       setErrors({ email: "Invalid email or password" });
       return;
     }
 
     setErrors({});
-    navigate("/home");
+    navigate("/home", { replace: true });
   };
 
   const openForgotPassword = () => {

@@ -15,9 +15,11 @@ import {
 } from "@tabler/icons-react";
 import { countFormatter } from "../../utils/countFormatter";
 import { timeFormatter } from "../../utils/timeFormatter";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useMockData } from "../../hooks/useMockData";
 import {
+  addComment,
   getCurrentUser,
   getUserById,
   getPostById,
@@ -25,6 +27,9 @@ import {
   isPostSavedBy,
   isFollowedBy,
   getPostCommentsById,
+  setFollowUser,
+  toggleCommentLiked,
+  togglePostLiked,
   togglePostSaved,
 } from "../../mocks/api";
 import defaultProfileImage from "/src/assets/default_profile.jpg";
@@ -36,35 +41,23 @@ import {
   shareContent,
   shareMessageFor,
 } from "../../utils/shareActions";
+
 export default function PostView() {
+  const storeVersion = useMockData();
   const user = getCurrentUser();
   const location = useLocation();
   const { id } = useParams();
-  const post = location.state?.post || (id ? getPostById(String(id)) : null);
+  const post = getPostById(String(id)) || location.state?.post || null;
   const postUploader = post?.authorId ? getUserById(post.authorId) : null;
-  const [isPostLiked, setIsPostLiked] = useState(() =>
-    user && post ? isPostLikedBy(user.id, post.id) : false,
-  );
-  const [postLikeCount, setPostLikeCount] = useState(post?.likesCount ?? 0);
-  const [postCommentCount, setPostCommentCount] = useState(
-    post?.commentsCount ?? 0,
-  );
-  const [isPostSaved, setIsPostSaved] = useState(() =>
-    user && post ? isPostSavedBy(user.id, post.id) : false,
-  );
-  const [isFollowingPostUploader, setIsFollowingPostUploader] = useState(() =>
-    user && post ? isFollowedBy(user.id, post.authorId) : false,
-  );
+
   const [commentInput, setCommentInput] = useState("");
-  const [postComments, setPostComments] = useState(() =>
-    post ? getPostCommentsById(post.id) : [],
-  );
   const [isSortPopupOn, setIsSortPopupOn] = useState(false);
   const [isImageMaximized, setIsImageMaximized] = useState(false);
   const [isMorePopupOn, setIsMorePopupOn] = useState(false);
   const [moreBtnCenter, setMoreBtnCenter] = useState(0);
   const [toastMessage, setToastMessage] = useState("");
   const [dialog, setDialog] = useState(null);
+  const [sortMode, setSortMode] = useState("default");
   const sortPopupRef = useRef(null);
   const sortPopupBtn = useRef(null);
   const imageFrameRef = useRef(null);
@@ -88,6 +81,27 @@ export default function PostView() {
     },
     morePopupBtn,
   );
+
+  const isPostLiked = user && post ? isPostLikedBy(user.id, post.id) : false;
+  const isPostSaved = user && post ? isPostSavedBy(user.id, post.id) : false;
+  const isFollowingPostUploader =
+    user && post ? isFollowedBy(user.id, post.authorId) : false;
+  const rawComments = useMemo(
+    () => (post ? getPostCommentsById(post.id) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [post?.id, storeVersion],
+  );
+  const postComments = useMemo(() => {
+    const list = [...rawComments];
+    if (sortMode === "popularity") {
+      list.sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0));
+    } else if (sortMode === "latest") {
+      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    return list;
+  }, [rawComments, sortMode]);
+  const postLikeCount = post?.likesCount ?? 0;
+  const postCommentCount = postComments.length;
 
   if (!user) {
     return (
@@ -114,22 +128,24 @@ export default function PostView() {
     );
   }
 
+  if (postUploader?.blockedUsers?.includes(user.id)) {
+    return (
+      <main className="postview-page">
+        <div className="postview-notice">This post is unavailable.</div>
+      </main>
+    );
+  }
 
   const tags = post.tags || [];
   const name = `${postUploader?.firstName} ${postUploader?.lastName}`;
 
   const handlePostLike = () => {
-    setIsPostLiked(!isPostLiked);
-    if (isPostLiked) {
-      setPostLikeCount(postLikeCount - 1);
-    } else {
-      setPostLikeCount(postLikeCount + 1);
-    }
+    if (post.isLikesHidden && !isOwnPost) return;
+    togglePostLiked(user.id, post.id);
   };
 
   const handleSave = () => {
     const nowSaved = togglePostSaved(user?.id, post.id);
-    setIsPostSaved(nowSaved);
     setToastMessage(
       nowSaved ? "Saved to bookmarks." : "Removed from bookmarks.",
     );
@@ -139,7 +155,7 @@ export default function PostView() {
     if (isFollowingPostUploader) {
       setDialog({ type: "unfollow" });
     } else {
-      setIsFollowingPostUploader(true);
+      setFollowUser(user.id, post.authorId, true);
       setToastMessage(`Following @${postUploader?.username}.`);
     }
   };
@@ -180,53 +196,30 @@ export default function PostView() {
   };
 
   const handleCommentLike = (commentId) => {
-    setPostComments((prevComments) =>
-      prevComments.map((c) => {
-        if (c.id !== commentId) return c;
-        const likedBy = Array.isArray(c.likedBy) ? [...c.likedBy] : [];
-        const liked = likedBy.includes(user.id);
-        const nextLikedBy = liked
-          ? likedBy.filter((uid) => uid !== user.id)
-          : [...likedBy, user.id];
-        return {
-          ...c,
-          likedBy: nextLikedBy,
-          likesCount: Math.max(0, (c.likesCount || 0) + (liked ? -1 : 1)),
-        };
-      }),
-    );
+    toggleCommentLiked(user.id, commentId);
   };
 
   const handleSortByPopularity = () => {
     setIsSortPopupOn(false);
-    setPostComments((prevComments) =>
-      [...prevComments].sort((a, b) => b.likesCount - a.likesCount),
-    );
+    setSortMode("popularity");
   };
   const handleSortByLatest = () => {
     setIsSortPopupOn(false);
-    setPostComments((prevComments) =>
-      [...prevComments].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-      ),
-    );
+    setSortMode("latest");
   };
 
   const handleCommentSend = () => {
     if (!commentInput.trim()) return;
-    const totalComment = {
-      id: `comment_${Date.now()}`,
-      postId: post.id,
-      authorId: user.id,
-      content: commentInput.trim(),
-      createdAt: new Date().toISOString(),
-      likesCount: 0,
-      likedBy: [],
-      isDeleted: false,
-    };
+    if (post.isCommentsDisabled && !isOwnPost) return;
+    addComment(post.id, user.id, commentInput.trim());
     setCommentInput("");
-    setPostComments([totalComment, ...postComments]);
-    setPostCommentCount((prev) => prev + 1);
+  };
+
+  const handleCommentKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleCommentSend();
+    }
   };
 
   const handleImageLoad = (e) => {
@@ -235,6 +228,9 @@ export default function PostView() {
       imageFrameRef.current.style.aspectRatio = `${naturalWidth} / ${naturalHeight}`;
     }
   };
+
+  const showCommentInput = !post.isCommentsDisabled || isOwnPost;
+  const showLikeControl = !post.isLikesHidden || isOwnPost;
 
   return (
     <main className="postview-page">
@@ -303,16 +299,18 @@ export default function PostView() {
             </div>
 
             <div className="postview-main-actions">
-              <div className="postview-actions-div">
-                <button aria-label="Like" onClick={handlePostLike}>
-                  {isPostLiked ? (
-                    <IconHeartFilled className="postview-liked-icon" />
-                  ) : (
-                    <IconHeart />
-                  )}
-                </button>
-                <p>{countFormatter(postLikeCount)}</p>
-              </div>
+              {showLikeControl && (
+                <div className="postview-actions-div">
+                  <button aria-label="Like" onClick={handlePostLike}>
+                    {isPostLiked ? (
+                      <IconHeartFilled className="postview-liked-icon" />
+                    ) : (
+                      <IconHeart />
+                    )}
+                  </button>
+                  <p>{countFormatter(postLikeCount)}</p>
+                </div>
+              )}
               <div className="postview-actions-div">
                 <button
                   aria-label="Comments"
@@ -378,17 +376,21 @@ export default function PostView() {
           <section className="postview-comments-section">
             <div className="postview-comments-header">
               <span>
-                Comments ({countFormatter(postCommentCount)})
+                {postCommentCount > 0
+                  ? `Comments (${countFormatter(postCommentCount)})`
+                  : "Comments"}
               </span>
-              <button
-                onClick={() => {
-                  setIsSortPopupOn(!isSortPopupOn);
-                }}
-                ref={sortPopupBtn}
-              >
-                <IconFilter2 size={18} className="comments-sort-btn" />
-                <p>Sort by</p>
-              </button>
+              {postCommentCount > 0 && (
+                <button
+                  onClick={() => {
+                    setIsSortPopupOn(!isSortPopupOn);
+                  }}
+                  ref={sortPopupBtn}
+                >
+                  <IconFilter2 size={18} className="comments-sort-btn" />
+                  <p>Sort by</p>
+                </button>
+              )}
               {isSortPopupOn && (
                 <div className="postview-sort-popup" ref={sortPopupRef}>
                   <button onClick={handleSortByPopularity}>
@@ -461,22 +463,25 @@ export default function PostView() {
           </section>
         </div>
 
-        <div className="postview-comments-input-wrapper">
-          <div className="postview-comments-input-section">
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              onChange={(e) => {
-                setCommentInput(e.target.value);
-              }}
-              ref={commentInputRef}
-              value={commentInput}
-            />
-            <button aria-label="Send comment" onClick={handleCommentSend}>
-              <IconSend size={25} stroke={2} />
-            </button>
+        {showCommentInput && (
+          <div className="postview-comments-input-wrapper">
+            <div className="postview-comments-input-section">
+              <input
+                type="text"
+                placeholder="Add a comment..."
+                onChange={(e) => {
+                  setCommentInput(e.target.value);
+                }}
+                onKeyDown={handleCommentKeyDown}
+                ref={commentInputRef}
+                value={commentInput}
+              />
+              <button aria-label="Send comment" onClick={handleCommentSend}>
+                <IconSend size={25} stroke={2} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {isImageMaximized && (
         <div className="postview-image-maximized">
@@ -500,7 +505,7 @@ export default function PostView() {
         confirmLabel="Unfollow"
         danger
         onConfirm={() => {
-          setIsFollowingPostUploader(false);
+          setFollowUser(user.id, post.authorId, false);
           setToastMessage(`Unfollowed @${postUploader?.username}.`);
         }}
         onClose={() => setDialog(null)}

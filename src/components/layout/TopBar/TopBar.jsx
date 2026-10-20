@@ -8,13 +8,11 @@ import {
 } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { getCurrentUser } from "../../../mocks/api";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { getCurrentUser, logout } from "../../../mocks/api";
+import { useMockData } from "../../../hooks/useMockData";
 
-
-const user = getCurrentUser()
-
-function TopAccountPopUP({ onLogout, onClose }) {
+function TopAccountPopUP({ user, onLogout, onClose }) {
   return (
     <div className="topbar-account-popup">
       <p>Logged in as</p>
@@ -50,9 +48,19 @@ function TopAccountPopUP({ onLogout, onClose }) {
 }
 
 export default function TopBar() {
+  useMockData();
   const navigate = useNavigate();
+  const location = useLocation();
+  const user = getCurrentUser();
   const [isPopUpActive, setIsPopUpActive] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const urlQuery = new URLSearchParams(location.search).get("q") || "";
+  const [searchDraft, setSearchDraft] = useState(null);
+  const [prevSearch, setPrevSearch] = useState(location.search);
+  if (prevSearch !== location.search) {
+    setPrevSearch(location.search);
+    setSearchDraft(null);
+  }
+  const searchQuery = searchDraft ?? urlQuery;
   const popupRef = useRef(null);
 
   useClickOutside(popupRef, () => {
@@ -70,8 +78,11 @@ export default function TopBar() {
   };
 
   const handleLogout = () => {
+    logout();
     navigate("/login");
   };
+
+  if (!user) return null;
 
   return (
     <div className="topbar-div">
@@ -81,7 +92,7 @@ export default function TopBar() {
           type="text"
           placeholder="Search"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => setSearchDraft(e.target.value)}
         />
       </form>
 
@@ -111,6 +122,7 @@ export default function TopBar() {
 
         {isPopUpActive && (
           <TopAccountPopUP
+            user={user}
             onLogout={handleLogout}
             onClose={() => setIsPopUpActive(false)}
           />

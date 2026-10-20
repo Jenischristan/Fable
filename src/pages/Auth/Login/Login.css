@@ -109,7 +109,8 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
+  max-width: 380px;
   gap: 1.15rem;
 }
 

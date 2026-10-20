@@ -1,16 +1,73 @@
-# React + Vite
+# Fable
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Pinterest-style image-sharing single-page app built with React 19 + Vite. Frontend-only with a mock data layer — no real backend required.
 
-Currently, two official plugins are available:
+## Getting started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+The dev server runs at `http://localhost:5173/`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Seeded account
 
-## Expanding the ESLint configuration
+| Field    | Value                    |
+| -------- | ------------------------ |
+| Email    | `jenischristan@email.com` |
+| Password | `password123`            |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+You can also sign up for a new account at `/signup`.
+
+## Commands
+
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start the Vite dev server            |
+| `npm run lint`    | Run ESLint                           |
+| `npm run build`   | Production build to `dist/`          |
+| `npm run preview` | Preview the production build         |
+
+No tests or typecheck are configured.
+
+## Features
+
+- **Feed** — masonry home feed with responsive column widths
+- **Explore** — search posts and creators, trending tags
+- **Post view** — likes, comments (with sorting), bookmark, follow, share/download/report
+- **Bookmarks** — saved posts, persisted to the mock store
+- **Profile** — own and other users' profiles, follow/unfollow, follow requests for private accounts, block/unblock
+- **Notifications** — follow requests with accept/decline, mark-all-read, clear-all
+- **Create** — new post form
+- **Settings** — edit profile, account visibility, change password, deactivate/delete account
+- **Auth** — login, signup, logout, route guards, session persisted in `localStorage`
+
+## Architecture
+
+```
+src/
+├── app/AppRoutes.jsx        # All routes + auth guards + 404
+├── layouts/AppLayout.jsx    # SideNavBar + TopBar + Outlet
+├── pages/<Name>/            # One folder per page (JSX + CSS)
+├── components/
+│   ├── layout/              # TopBar, SideNavBar
+│   └── ui/                  # Toast, Modal, ConfirmDialog, Grainient
+├── mocks/
+│   ├── api.js               # All data reads/writes (single source of truth)
+│   ├── store.js             # Pub/sub store over fixture arrays
+│   ├── auth.js              # Session (localStorage), login/signup/logout
+│   └── data/                # Static fixtures: users, posts, comments, ...
+├── hooks/                   # useMockData, useClickOutside, useMasonryColumnWidth
+└── utils/                   # date/time/count formatters, shareActions
+```
+
+- **Data**: every page reads through `src/mocks/api.js`. Mutations go through the same module and notify subscribers; components re-render via `useMockData()` (a `useSyncExternalStore` wrapper).
+- **Session**: current user id is stored in `localStorage` under `fable_session_user_id`. Passwords live only in the mock credentials fixture.
+- **Routing**: all routes live in `src/app/AppRoutes.jsx`. `/login` and `/signup` are standalone; everything else nests under `AppLayout` behind `RequireAuth`.
+
+## Notes
+
+- `server/` is a separate Express stub (port 5000) not wired to the frontend — ignore it.
+- Mock images come from `picsum.photos`.
+- Two router packages are installed (`react-router` v8, `react-router-dom` v7). All imports use `react-router-dom`.

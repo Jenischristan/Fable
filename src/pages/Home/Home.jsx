@@ -13,6 +13,8 @@ import { NavLink } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import React from "react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { useMockData } from "../../hooks/useMockData";
+import { useMasonryColumnWidth } from "../../hooks/useMasonryColumnWidth";
 import Toast from "../../components/ui/Toast/Toast";
 import ConfirmDialog from "../../components/ui/ConfirmDialog/ConfirmDialog";
 import { REPORT_REASONS } from "../../utils/reportReasons";
@@ -56,11 +58,10 @@ function MorePopUp({ position, ignoreRef, handler, onShowMore, onShowLess, onDow
   );
 }
 
-const PostCard = React.memo(function PostCard({ data: post }) {
+const PostCard = React.memo(function PostCard({ data: post, onToast }) {
   const [isPopUpActive, setIsPopUpActive] = useState(false);
   const user = getCurrentUser()
   const btnRef = useRef(null);
-  const [toastMessage, setToastMessage] = useState("");
   const [isReportOpen, setIsReportOpen] = useState(false);
 
   const [popUpPos, setPopUpPos] = useState({
@@ -175,17 +176,17 @@ const PostCard = React.memo(function PostCard({ data: post }) {
       url: `${window.location.origin}/post/${post.id}`,
     });
     const msg = shareMessageFor(result);
-    if (msg) setToastMessage(msg);
+    if (msg) onToast?.(msg);
   };
 
   const handleShowMore = () => {
     closePopUp();
-    setToastMessage("We'll show more like this.");
+    onToast?.("We'll show more like this.");
   };
 
   const handleShowLess = () => {
     closePopUp();
-    setToastMessage("We'll show fewer like this.");
+    onToast?.("We'll show fewer like this.");
   };
 
   const handleDownload = async () => {
@@ -194,7 +195,7 @@ const PostCard = React.memo(function PostCard({ data: post }) {
       post.imageUrl,
       `${(post.title || "post").replace(/\s+/g, "-").toLowerCase()}.jpg`,
     );
-    setToastMessage(
+    onToast?.(
       ok ? "Download started." : "Opened image in a new tab.",
     );
   };
@@ -271,14 +272,14 @@ const PostCard = React.memo(function PostCard({ data: post }) {
         />
       )}
 
-      <Toast message={toastMessage} onClose={() => setToastMessage("")} />
+      <Toast message="" onClose={() => {}} />
       <ConfirmDialog
         open={isReportOpen}
         title="Report this image?"
         message="Why are you reporting this? Your report is anonymous."
         options={REPORT_REASONS}
         confirmLabel="Submit report"
-        onConfirm={() => setToastMessage("Report submitted. Thank you.")}
+        onConfirm={() => onToast?.("Report submitted. Thank you.")}
         onClose={() => setIsReportOpen(false)}
       />
     </div>
@@ -286,17 +287,24 @@ const PostCard = React.memo(function PostCard({ data: post }) {
 });
 
 function Home() {
+  useMockData();
+  const containerRef = useRef(null);
   const posts = getHomePostFeed();
+  const columnWidth = useMasonryColumnWidth(containerRef);
+  const [toastMessage, setToastMessage] = useState("");
+
   return (
-    <main className="home-page">
+    <main className="home-page" ref={containerRef}>
       <Masonry
         items={posts}
-        render={PostCard}
-        itemKey={(data) => data?.id}
+        render={({ data, index }) => (
+          <PostCard data={data} index={index} onToast={setToastMessage} />
+        )}
+        itemKey={(data, index) => data?.id ?? index}
         columnGutter={16}
-        columnWidth={180}
-        maxColumnCount={5}
+        columnWidth={columnWidth}
       />
+      <Toast message={toastMessage} onClose={() => setToastMessage("")} />
     </main>
   );
 }

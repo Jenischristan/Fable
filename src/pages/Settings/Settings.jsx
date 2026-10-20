@@ -7,14 +7,20 @@ import {
 import "./Settings.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser } from "../../mocks/api";
+import {
+  deactivateAccount,
+  deleteAccount,
+  getCurrentUser,
+  updateCurrentUser,
+} from "../../mocks/api";
+import { useMockData } from "../../hooks/useMockData";
 import { dateFormatter } from "../../utils/dateFormatter";
 import Toast from "../../components/ui/Toast/Toast";
 import ConfirmDialog from "../../components/ui/ConfirmDialog/ConfirmDialog";
 
-const user = getCurrentUser();
-
 function ProfileSection({ showToast }) {
+  useMockData();
+  const user = getCurrentUser();
   const [avatarPreview, setAvatarPreview] = useState(user.avatarUrl);
 
   const initialProfile = {
@@ -42,12 +48,23 @@ function ProfileSection({ showToast }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const updates = { ...formData };
+    if (avatarPreview && avatarPreview !== user.avatarUrl) {
+      updates.avatarUrl = avatarPreview;
+    }
+    updateCurrentUser(updates);
     showToast("Profile updated.");
   };
 
   const handleReset = () => {
-    setFormData(initialProfile);
-    setAvatarPreview(user.avatarUrl);
+    const current = getCurrentUser();
+    setFormData({
+      firstName: current.firstName,
+      lastName: current.lastName,
+      username: current.username,
+      bio: current.bio,
+    });
+    setAvatarPreview(current.avatarUrl);
   };
 
   return (
@@ -148,11 +165,14 @@ function ProfileSection({ showToast }) {
 }
 
 function SecuritySection({ showToast }) {
+  useMockData();
   const navigate = useNavigate();
+  const user = getCurrentUser();
   const initialSecurity = {
     email: user.email,
     dob: dateFormatter(user.dob),
     visibility: user.visibility,
+    password: "",
   };
   const [formData, setFormData] = useState(initialSecurity);
   const [dialog, setDialog] = useState(null);
@@ -167,11 +187,27 @@ function SecuritySection({ showToast }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const updates = {
+      email: formData.email,
+      dob: formData.dob,
+      visibility: formData.visibility,
+    };
+    if (formData.password) {
+      updates.password = formData.password;
+    }
+    updateCurrentUser(updates);
+    setFormData((prev) => ({ ...prev, password: "" }));
     showToast("Account settings saved.");
   };
 
   const handleReset = () => {
-    setFormData(initialSecurity);
+    const current = getCurrentUser();
+    setFormData({
+      email: current.email,
+      dob: dateFormatter(current.dob),
+      visibility: current.visibility,
+      password: "",
+    });
   };
 
   return (
@@ -196,9 +232,11 @@ function SecuritySection({ showToast }) {
           <label htmlFor="new-password">New password</label>
           <input
             type="password"
-            name="new-password"
+            name="password"
             id="new-password"
             placeholder="Enter a new password"
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
         <div className="settings-security-input-group">
@@ -289,7 +327,10 @@ function SecuritySection({ showToast }) {
         message="Your profile and posts will be hidden until you log back in. Nothing is deleted."
         confirmLabel="Deactivate"
         danger
-        onConfirm={() => showToast("Account deactivated. Log in again to reactivate.")}
+        onConfirm={() => {
+          deactivateAccount();
+          navigate("/login");
+        }}
         onClose={() => setDialog(null)}
       />
 
@@ -300,7 +341,12 @@ function SecuritySection({ showToast }) {
         options={["I understand this is permanent", "Keep my account"]}
         confirmLabel="Delete account"
         danger
-        onConfirm={() => navigate("/login")}
+        onConfirm={(value) => {
+          if (value === "I understand this is permanent") {
+            deleteAccount();
+            navigate("/login");
+          }
+        }}
         onClose={() => setDialog(null)}
       />
     </section>

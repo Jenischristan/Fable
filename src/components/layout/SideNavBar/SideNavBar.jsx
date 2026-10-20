@@ -16,22 +16,28 @@ import {
   IconX,
   IconChecks,
   IconTrash,
+  IconUserCheck,
 } from "@tabler/icons-react";
 import "./SideNavBar.css";
 import logo from "../../../assets/icons/logo.svg";
 import {
-  getCurrentUser,
-  getUserById,
-  getNotificationsByUserId,
+  acceptFollowRequest,
+  clearNotifications,
+  declineFollowRequest,
   getCommentById,
+  getCurrentUser,
+  getNotificationsByUserId,
+  getUserById,
+  markAllNotificationsRead,
+  markNotificationRead,
+  removeNotification,
 } from "../../../mocks/api";
 import { NOTIFICATION_TYPE } from "../../../mocks/data/notifications";
 import { timeFormatter } from "../../../utils/timeFormatter";
 import defaultProfileImage from "../../../assets/default_profile.jpg";
 import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useMockData } from "../../../hooks/useMockData";
 import ConfirmDialog from "../../ui/ConfirmDialog/ConfirmDialog";
-
-const user = getCurrentUser();
 
 const formatNotificationMessage = (notif) => {
   const actor = getUserById(notif.actorId);
@@ -58,18 +64,19 @@ const formatNotificationMessage = (notif) => {
 };
 
 export default function SideNavBar() {
+  useMockData();
   const navigate = useNavigate();
+  const user = getCurrentUser();
   const [showNotificationTab, setShowNotificationTab] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [items, setItems] = useState(() =>
-    getNotificationsByUserId(user?.id).map((n) => ({ ...n })),
-  );
   const [isClearConfirmOpen, setIsClearConfirmOpen] = useState(false);
 
   const closeTimerRef = useRef(null);
   const bellBtnRef = useRef(null);
   const panelRef = useRef(null);
 
+  const items = user ? getNotificationsByUserId(user.id) : [];
+  const pendingRequests = user?.pendingFollowRequests || [];
   const unreadCount = items.filter((n) => !n.isRead).length;
 
   const closeNotifications = () => {
@@ -96,23 +103,31 @@ export default function SideNavBar() {
   };
 
   const markAllRead = () => {
-    setItems((prev) => prev.map((n) => ({ ...n, isRead: true })));
+    if (user) markAllNotificationsRead(user.id);
   };
 
   const removeItem = (e, id) => {
     e.stopPropagation();
-    setItems((prev) => prev.filter((n) => n.id !== id));
+    removeNotification(id);
   };
 
   const clearAll = () => {
-    setItems([]);
+    if (user) clearNotifications(user.id);
     setIsClearConfirmOpen(false);
   };
 
+  const handleAcceptRequest = (e, requesterId) => {
+    e.stopPropagation();
+    if (user) acceptFollowRequest(user.id, requesterId);
+  };
+
+  const handleDeclineRequest = (e, requesterId) => {
+    e.stopPropagation();
+    if (user) declineFollowRequest(user.id, requesterId);
+  };
+
   const handleOpenItem = (notif) => {
-    setItems((prev) =>
-      prev.map((n) => (n.id === notif.id ? { ...n, isRead: true } : n)),
-    );
+    markNotificationRead(notif.id);
 
     if (notif.targetType === "post" && notif.targetId) {
       closeNotifications();
@@ -298,7 +313,7 @@ export default function SideNavBar() {
             </button>
           </div>
 
-          {items.length > 0 && (
+          {(items.length > 0 || pendingRequests.length > 0) && (
             <div className="notifications-actions">
               <button
                 type="button"
@@ -320,7 +335,55 @@ export default function SideNavBar() {
           )}
 
           <div className="notifications-content">
-            {items.length === 0 ? (
+            {pendingRequests.length > 0 && (
+              <div className="follow-requests-section">
+                <h4 className="follow-requests-title">Follow requests</h4>
+                {pendingRequests.map((requesterId) => {
+                  const requester = getUserById(requesterId);
+                  if (!requester) return null;
+                  return (
+                    <div key={`req_${requesterId}`} className="notification-item">
+                      <img
+                        src={requester.avatarUrl || defaultProfileImage}
+                        alt={requester.username || "User"}
+                        onError={(e) => {
+                          e.currentTarget.src = defaultProfileImage;
+                        }}
+                      />
+                      <div className="notification-item-body">
+                        <p className="notification-item-message">
+                          {`${requester.firstName} ${requester.lastName} wants to follow you.`}
+                        </p>
+                        <div className="follow-request-actions">
+                          <button
+                            type="button"
+                            className="follow-request-accept"
+                            onClick={(e) => handleAcceptRequest(e, requesterId)}
+                            aria-label="Accept follow request"
+                            title="Accept"
+                          >
+                            <IconUserCheck size={16} />
+                            Accept
+                          </button>
+                          <button
+                            type="button"
+                            className="follow-request-decline"
+                            onClick={(e) => handleDeclineRequest(e, requesterId)}
+                            aria-label="Decline follow request"
+                            title="Decline"
+                          >
+                            <IconX size={16} />
+                            Decline
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {items.length === 0 && pendingRequests.length === 0 ? (
               <p className="notification-empty">You have no new updates.</p>
             ) : (
               items.map((notif) => {
