@@ -5,6 +5,7 @@
   min-height: 100dvh;
   box-sizing: border-box;
   background-color: #000000;
+  padding-top: 1.5rem;
 }
 
 .create-header {

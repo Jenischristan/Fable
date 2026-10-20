@@ -16,7 +16,7 @@ import {
   IconX,
   IconChecks,
   IconTrash,
-  IconUserCheck,
+  IconCheck,
 } from "@tabler/icons-react";
 import "./SideNavBar.css";
 import logo from "../../../assets/icons/logo.svg";
@@ -295,21 +295,20 @@ export default function SideNavBar() {
           ref={panelRef}
         >
           <div className="notifications-header">
-            <h3>
-              Notifications
-              {unreadCount > 0 && (
-                <span className="notifications-unread-label">
-                  {unreadCount} new
-                </span>
-              )}
-            </h3>
+            {unreadCount > 0 ? (
+              <span className="notifications-unread-label">
+                {unreadCount} unread
+              </span>
+            ) : (
+              <span className="notifications-header-spacer" />
+            )}
             <button
               className="close-panel-btn"
               onClick={closeNotifications}
               aria-label="Close notifications"
               title="Close"
             >
-              <IconX size={25} />
+              <IconX size={20} />
             </button>
           </div>
 
@@ -362,7 +361,7 @@ export default function SideNavBar() {
                             aria-label="Accept follow request"
                             title="Accept"
                           >
-                            <IconUserCheck size={16} />
+                            <IconCheck size={16} stroke={2.5} />
                             Accept
                           </button>
                           <button
@@ -372,7 +371,7 @@ export default function SideNavBar() {
                             aria-label="Decline follow request"
                             title="Decline"
                           >
-                            <IconX size={16} />
+                            <IconX size={16} stroke={2.5} />
                             Decline
                           </button>
                         </div>

@@ -12,6 +12,8 @@ import {
   getTrendingTags,
   isPostSavedBy,
   searchPosts,
+  searchTags,
+  searchUsers,
   togglePostSaved,
 } from "../../mocks/api";
 import { countFormatter } from "../../utils/countFormatter";
@@ -224,24 +226,25 @@ export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [toastMessage, setToastMessage] = useState("");
   const postsSectionRef = useRef(null);
-  const columnWidth = useMasonryColumnWidth(postsSectionRef);
+  const { columnWidth, columnCount } = useMasonryColumnWidth(postsSectionRef);
 
   const query = (searchParams.get("q") || "").trim();
   const trendingTags = getTrendingTags(10);
   const creators = getRecommendedCreators(6);
   const posts = searchPosts(query);
 
+  const matchingTags = query ? searchTags(query, 10) : [];
+  const matchingUsers = query ? searchUsers(query, 6) : [];
+
   const handleClearSearch = () => {
     setSearchParams({});
   };
 
+  const hasAnyResults = !query || posts.length > 0 || matchingTags.length > 0 || matchingUsers.length > 0;
+
   return (
     <main className="explore-page">
-      <div className="explore-header">
-        <h1>Explore</h1>
-        <p>Discover new posts, tags, and creators.</p>
-      </div>
-
+      {/* When no search query: show Trending Topics */}
       {!query && (
         <section className="explore-tags-section">
           <h2>Trending Topics</h2>
@@ -267,6 +270,33 @@ export default function Explore() {
         </section>
       )}
 
+      {/* When searching: show Matching Topics if any */}
+      {query && matchingTags.length > 0 && (
+        <section className="explore-tags-section">
+          <h2>Matching Topics ({matchingTags.length})</h2>
+          <div className="explore-tags-grid">
+            {matchingTags.map((tag) => (
+              <button
+                key={tag.id}
+                type="button"
+                className="explore-tag-card"
+                onClick={() => setSearchParams({ q: tag.name })}
+              >
+                <img src={tag.coverImageUrl} alt={tag.displayName} />
+                <div className="explore-tag-card-overlay">
+                  <IconHash size={20} />
+                  <span className="explore-tag-name">{tag.name}</span>
+                  <span className="explore-tag-count">
+                    {countFormatter(tag.postsCount)} posts
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* When no search query: show Recommended Creators */}
       {!query && creators.length > 0 && (
         <section className="explore-creators-section">
           <h2>Creators to Follow</h2>
@@ -292,11 +322,38 @@ export default function Explore() {
         </section>
       )}
 
+      {/* When searching: show Matching Users if any */}
+      {query && matchingUsers.length > 0 && (
+        <section className="explore-creators-section">
+          <h2>Matching Users ({matchingUsers.length})</h2>
+          <div className="explore-creators-grid">
+            {matchingUsers.map((creator) => (
+              <NavLink
+                key={creator.id}
+                to={`/user/${creator.username}`}
+                className="explore-creator-card"
+              >
+                <img src={creator.avatarUrl} alt={creator.username} />
+                <div className="explore-creator-info">
+                  <span className="explore-creator-name">
+                    {`${creator.firstName} ${creator.lastName}`}
+                  </span>
+                  <span className="explore-creator-handle">
+                    @{creator.username}
+                  </span>
+                </div>
+              </NavLink>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Posts Section */}
       <section className="explore-posts-section" ref={postsSectionRef}>
         <div className="explore-posts-header">
           <h2>
             {query
-              ? `Results for "${query}" (${posts.length})`
+              ? `Matching Posts (${posts.length})`
               : "All Posts"}
           </h2>
           {query && (
@@ -305,15 +362,15 @@ export default function Explore() {
               className="explore-clear-btn"
               onClick={handleClearSearch}
             >
-              Clear
+              Clear search
             </button>
           )}
         </div>
 
         {posts.length === 0 ? (
           <div className="explore-empty">
-            <p>No posts found.</p>
-            <p>Try a different search term.</p>
+            <p>No posts found{query ? ` for "${query}"` : ""}.</p>
+            <p>Try searching for a different keyword or topic.</p>
           </div>
         ) : (
           <Masonry
@@ -324,9 +381,25 @@ export default function Explore() {
             itemKey={(data, index) => data?.id ?? index}
             columnGutter={16}
             columnWidth={columnWidth}
+            columnCount={columnCount}
+            maxColumnCount={5}
           />
         )}
       </section>
+
+      {!hasAnyResults && (
+        <div className="explore-empty">
+          <p>No results found for "{query}".</p>
+          <button
+            type="button"
+            className="explore-clear-btn"
+            onClick={handleClearSearch}
+            style={{ marginTop: "1rem" }}
+          >
+            Clear search
+          </button>
+        </div>
+      )}
 
       <Toast message={toastMessage} onClose={() => setToastMessage("")} />
     </main>

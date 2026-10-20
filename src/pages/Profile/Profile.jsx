@@ -396,18 +396,21 @@ export default function Profile() {
   );
 
   let targetColumns = 4;
-  if (sectionWidth < 820) {
+  if (sectionWidth < 768) {
     targetColumns = 2;
-  } else if (sectionWidth <= 1120) {
+  } else if (sectionWidth <= 1024) {
     targetColumns = 3;
+  } else if (sectionWidth > 1400) {
+    targetColumns = 5;
   }
+  targetColumns = Math.min(5, Math.max(2, targetColumns));
 
   const columnGutter = 16;
   const computedColumnWidth = Math.max(
     80,
     Math.floor(
       (sectionWidth - (targetColumns - 1) * columnGutter) / targetColumns,
-    ),
+    ) - 6,
   );
 
   return (
@@ -552,7 +555,8 @@ export default function Profile() {
           itemKey={(data, index) => data?.id ?? index}
           columnGutter={columnGutter}
           columnWidth={computedColumnWidth}
-          maxColumnCount={targetColumns}
+          columnCount={targetColumns}
+          maxColumnCount={5}
         />
       </div>
 

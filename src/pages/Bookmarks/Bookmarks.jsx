@@ -224,17 +224,12 @@ export default function Bookmarks() {
   const user = getCurrentUser();
   const [toastMessage, setToastMessage] = useState("");
   const containerRef = useRef(null);
-  const columnWidth = useMasonryColumnWidth(containerRef);
+  const { columnWidth, columnCount } = useMasonryColumnWidth(containerRef);
 
   const posts = getSavedPostsById(user?.id);
 
   return (
     <main className="bookmarks-page">
-      <div className="bookmarks-header">
-        <h1>Bookmarks</h1>
-        <p>Your saved posts, all in one place.</p>
-      </div>
-
       <div className="bookmarks-container" ref={containerRef}>
         {posts.length === 0 ? (
           <div className="bookmarks-empty">
@@ -250,6 +245,8 @@ export default function Bookmarks() {
             itemKey={(data, index) => data?.id ?? index}
             columnGutter={16}
             columnWidth={columnWidth}
+            columnCount={columnCount}
+            maxColumnCount={5}
           />
         )}
       </div>

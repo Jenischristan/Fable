@@ -290,7 +290,7 @@ function Home() {
   useMockData();
   const containerRef = useRef(null);
   const posts = getHomePostFeed();
-  const columnWidth = useMasonryColumnWidth(containerRef);
+  const { columnWidth, columnCount } = useMasonryColumnWidth(containerRef);
   const [toastMessage, setToastMessage] = useState("");
 
   return (
@@ -303,6 +303,8 @@ function Home() {
         itemKey={(data, index) => data?.id ?? index}
         columnGutter={16}
         columnWidth={columnWidth}
+        columnCount={columnCount}
+        maxColumnCount={5}
       />
       <Toast message={toastMessage} onClose={() => setToastMessage("")} />
     </main>

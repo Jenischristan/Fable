@@ -69,14 +69,6 @@ function ProfileSection({ showToast }) {
 
   return (
     <section className="settings-profile-section">
-      <div className="settings-profile-header">
-        <h2>Edit Profile</h2>
-        <p>
-          Update your public details. Anything saved here can be viewed by
-          anyone on the platform.
-        </p>
-      </div>
-
       <form className="settings-profile-form" onSubmit={handleSubmit}>
         <div className="settings-profile-avatar-group">
           <img
@@ -212,10 +204,6 @@ function SecuritySection({ showToast }) {
 
   return (
     <section className="settings-security-section">
-      <div className="settings-security-header">
-        <h2>Account management</h2>
-        <p>Make changes to your account here.</p>
-      </div>
       <form className="settings-security-credentials" onSubmit={handleSubmit}>
         <div className="settings-security-input-group">
           <label htmlFor="email">Email</label>

@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100dvh;
   background: rgb(0, 0, 0);
-  padding: 1rem;
+  padding: 1.75rem 1.5rem 2.5rem;
   box-sizing: border-box;
 }
 
@@ -50,4 +50,10 @@
 .bookmarks-empty p:first-child {
   color: #d4d4d8;
   font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .bookmarks-page {
+    padding: 0.75rem 0.5rem;
+  }
 }

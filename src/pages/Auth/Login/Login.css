@@ -276,7 +276,7 @@
 }
 
 .login-signup-footer a:hover {
-  color: #3b82f6;
+  color: #e4e4e7;
   text-decoration: underline;
 }
 
@@ -284,6 +284,8 @@
   display: flex;
   gap: 4rem;
   flex-direction: column;
+  width: 100%;
+  max-width: 380px;
 }
 
 @media (max-width: 768px) {

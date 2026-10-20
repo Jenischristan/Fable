@@ -40,17 +40,34 @@ export const getUserByUsername = (username) => {
   return store.users.find((u) => u.username === username) || null;
 };
 
-export const searchUsers = (query) => {
-  const q = (query || "").trim().toLowerCase();
+export const searchUsers = (query, limit = 20) => {
+  const q = (query || "").trim().toLowerCase().replace(/^@/, "");
   if (!q) return [];
   const viewer = getCurrentUser();
-  return store.users.filter((u) => {
-    if (!viewer || u.id === viewer.id) return false;
-    if (viewer.blockedUsers?.includes(u.id)) return false;
-    if (u.blockedByUsers?.includes(viewer.id)) return false;
-    const haystack = [u.username, u.firstName, u.lastName, u.email].filter(Boolean).join(" ").toLowerCase();
-    return haystack.includes(q);
-  });
+  return store.users
+    .filter((u) => {
+      if (u.isDeactivated) return false;
+      if (viewer && u.id === viewer.id) return false;
+      if (viewer?.blockedUsers?.includes(u.id)) return false;
+      if (u.blockedByUsers?.includes(viewer?.id)) return false;
+      const haystack = [u.username, u.firstName, u.lastName, u.bio, u.email]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(q);
+    })
+    .slice(0, limit);
+};
+
+export const searchTags = (query, limit = 20) => {
+  const q = (query || "").trim().toLowerCase().replace(/^#/, "");
+  if (!q) return [];
+  const allTags = getTrendingTags(100);
+  return allTags
+    .filter((tag) =>
+      tag.name.toLowerCase().includes(q) || tag.displayName.toLowerCase().includes(q)
+    )
+    .slice(0, limit);
 };
 
 export const getPostById = (postId) => {
@@ -180,7 +197,7 @@ export const getTrendingTags = (limit = 12) => {
 export const searchPosts = (query) => {
   const viewerId = getCurrentUser()?.id;
   const visible = store.posts.filter((p) => canViewPost(p, viewerId));
-  const q = (query || "").trim().toLowerCase();
+  const q = (query || "").trim().toLowerCase().replace(/^#/, "");
   if (!q) return visible;
   return visible.filter((post) => {
     const author = getUserById(post.authorId);
