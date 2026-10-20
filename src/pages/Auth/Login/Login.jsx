@@ -1,10 +1,14 @@
 import "./Login.css";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grainient from "../../../components/ui/Grainient/Grainient";
+import Modal from "../../../components/ui/Modal/Modal";
+import Toast from "../../../components/ui/Toast/Toast";
+import { mockCredentials } from "../../../mocks/data/credentials";
 
 function Login() {
+  const navigate = useNavigate();
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const [passShow, setPassShow] = useState(false);
   const [formData, setFormData] = useState({
@@ -12,8 +16,11 @@ function Login() {
     password: "",
   });
 
-
   const [errors, setErrors] = useState({});
+  const [isForgotOpen, setIsForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotError, setForgotError] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
 
   const validateFields = () => {
     let fieldError = {};
@@ -40,10 +47,44 @@ function Login() {
     const validationErrors = validateFields();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-    } else {
-      setErrors({});
-      console.log("Form submitted succesfully");
+      return;
     }
+
+    const cred = mockCredentials.find(
+      (c) =>
+        c.email === formData.email.trim().toLowerCase() &&
+        c.password === formData.password,
+    );
+
+    if (!cred) {
+      setErrors({ email: "Invalid email or password" });
+      return;
+    }
+
+    setErrors({});
+    navigate("/home");
+  };
+
+  const openForgotPassword = () => {
+    setForgotEmail(formData.email || "");
+    setForgotError("");
+    setIsForgotOpen(true);
+  };
+
+  const handleForgotSubmit = (event) => {
+    event.preventDefault();
+    if (!forgotEmail.trim()) {
+      setForgotError("Email is required");
+      return;
+    }
+    if (!emailRegex.test(forgotEmail.trim())) {
+      setForgotError("Please enter a valid email address");
+      return;
+    }
+    setForgotError("");
+    setIsForgotOpen(false);
+    setToastMessage(`If an account exists for ${forgotEmail.trim()}, a reset link is on the way.`);
+    setForgotEmail("");
   };
 
   return (
@@ -135,7 +176,9 @@ function Login() {
               </div>
 
               <div className="login-forgot">
-                <a href="/forgot-password">Forgot password?</a>
+                <button type="button" onClick={openForgotPassword}>
+                  Forgot password?
+                </button>
               </div>
 
               <button type="submit" className="login-btn">
@@ -150,6 +193,33 @@ function Login() {
           </div>
         </div>
       </div>
+
+      <Modal
+        open={isForgotOpen}
+        onClose={() => setIsForgotOpen(false)}
+        title="Reset your password"
+      >
+        <p className="modal-body-text">
+          Enter the email linked to your account and we'll send you a reset
+          link.
+        </p>
+        <form onSubmit={handleForgotSubmit}>
+          <input
+            type="email"
+            className="modal-input"
+            placeholder="e.g. clarkkent@email.com"
+            value={forgotEmail}
+            onChange={(e) => setForgotEmail(e.target.value)}
+            autoFocus
+          />
+          {forgotError && <span className="login-error-text">{forgotError}</span>}
+          <button type="submit" className="login-forgot-submit">
+            Send reset link
+          </button>
+        </form>
+      </Modal>
+
+      <Toast message={toastMessage} onClose={() => setToastMessage("")} />
     </main>
   );
 }

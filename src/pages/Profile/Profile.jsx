@@ -1,6 +1,6 @@
 import "./Profile.css";
 import { useRef, useState, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { countFormatter } from "../../utils/countFormatter";
 import React from "react";
 import {
@@ -15,13 +15,25 @@ import {
   getCreatedPostsById,
   getCurrentUser,
   getSavedPostsById,
+  getUserById,
   getUserByUsername,
   isFollowedBy,
   isPostSavedBy,
+  togglePostSaved,
 } from "../../mocks/api";
 import { Masonry } from "masonic";
+import Toast from "../../components/ui/Toast/Toast";
+import ConfirmDialog from "../../components/ui/ConfirmDialog/ConfirmDialog";
+import { REPORT_REASONS } from "../../utils/reportReasons";
+import Modal from "../../components/ui/Modal/Modal";
+import {
+  downloadImage,
+  shareContent,
+  shareMessageFor,
+} from "../../utils/shareActions";
+import defaultProfileImage from "../../assets/default_profile.jpg";
 
-function MorePopUp({ position, ignoreRef, handler }) {
+function MorePopUp({ position, ignoreRef, handler, onDownload, onReport }) {
   const popUpRef = useRef(null);
   useClickOutside(popUpRef, handler, ignoreRef);
   const handlePopUpClick = (e) => {
@@ -38,11 +50,11 @@ function MorePopUp({ position, ignoreRef, handler }) {
       }}
       ref={popUpRef}
     >
-      <button>
+      <button onClick={onDownload}>
         <IconDownload />
         Download image
       </button>
-      <button>
+      <button onClick={onReport}>
         <IconFlag />
         Report image
       </button>
@@ -50,7 +62,7 @@ function MorePopUp({ position, ignoreRef, handler }) {
   );
 }
 
-const PostCard = React.memo(function PostCard({ data: post }) {
+const PostCard = React.memo(function PostCard({ data: post, onToast, onReport }) {
   const [isPopUpActive, setIsPopUpActive] = useState(false);
   const user = getCurrentUser();
   const btnRef = useRef(null);
@@ -135,10 +147,40 @@ const PostCard = React.memo(function PostCard({ data: post }) {
 
   if (!post) return null;
 
+  const closePopUp = () => setIsPopUpActive(false);
+
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsSaved(true);
+    const nowSaved = togglePostSaved(user?.id, post.id);
+    setIsSaved(nowSaved);
+    onToast?.(nowSaved ? "Saved to bookmarks." : "Removed from bookmarks.");
+  };
+
+  const handleShare = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const result = await shareContent({
+      title: post.title,
+      text: post.description,
+      url: `${window.location.origin}/post/${post.id}`,
+    });
+    const msg = shareMessageFor(result);
+    if (msg) onToast?.(msg);
+  };
+
+  const handleDownload = async () => {
+    closePopUp();
+    const ok = await downloadImage(
+      post.imageUrl,
+      `${(post.title || "post").replace(/\s+/g, "-").toLowerCase()}.jpg`,
+    );
+    onToast?.(ok ? "Download started." : "Opened image in a new tab.");
+  };
+
+  const handleReport = () => {
+    closePopUp();
+    onReport?.(post);
   };
 
   const handleMore = (e) => {
@@ -187,7 +229,12 @@ const PostCard = React.memo(function PostCard({ data: post }) {
               {isSaved ? "Saved" : "Save"}
             </button>
             {!isLandscape && (
-              <button className="home-masonry-item-share">
+              <button
+                type="button"
+                className="home-masonry-item-share"
+                aria-label="Share"
+                onClick={handleShare}
+              >
                 <IconShare3 />
               </button>
             )}
@@ -211,7 +258,9 @@ const PostCard = React.memo(function PostCard({ data: post }) {
         <MorePopUp
           position={popUpPos}
           ignoreRef={btnRef}
-          handler={() => setIsPopUpActive(false)}
+          handler={closePopUp}
+          onDownload={handleDownload}
+          onReport={handleReport}
         />
       )}
     </div>
@@ -219,10 +268,11 @@ const PostCard = React.memo(function PostCard({ data: post }) {
 });
 
 export default function Profile() {
+  const navigate = useNavigate();
   const user = getCurrentUser();
   const { username, tab } = useParams();
   const targetUsername = username || user?.username;
-  const displayUser = getUserByUsername(username);
+  const displayUser = username ? getUserByUsername(username) : user;
 
   const [isActionsPopupActive, setIsActionsPopupActive] = useState(false);
   const activeTab = tab === "saved" ? "saved" : "created";
@@ -231,6 +281,76 @@ export default function Profile() {
   const sectionRef = useRef(null);
 
   const [sectionWidth, setSectionWidth] = useState(() => window.innerWidth);
+  const [isFollowing, setIsFollowing] = useState(() =>
+    user && displayUser ? isFollowedBy(user.id, displayUser.id) : false,
+  );
+  const [prevDisplayUserId, setPrevDisplayUserId] = useState(
+    displayUser?.id ?? null,
+  );
+  const [toastMessage, setToastMessage] = useState("");
+  const [dialog, setDialog] = useState(null);
+  const [listModal, setListModal] = useState(null);
+
+  if (displayUser?.id !== prevDisplayUserId) {
+    setPrevDisplayUserId(displayUser?.id ?? null);
+    setIsFollowing(
+      user && displayUser ? isFollowedBy(user.id, displayUser.id) : false,
+    );
+    setDialog(null);
+    setListModal(null);
+    setIsActionsPopupActive(false);
+  }
+
+  const handlePostToast = (msg) => setToastMessage(msg);
+  const handlePostReport = (post) => setDialog({ type: "report-post", post });
+
+  const closeActionsPopup = () => setIsActionsPopupActive(false);
+
+  const openUserList = (kind) => {
+    closeActionsPopup();
+    const ids =
+      kind === "followers"
+        ? displayUser?.followerList || []
+        : displayUser?.followingList || [];
+    setListModal({
+      kind,
+      title: kind === "followers" ? "Followers" : "Following",
+      users: ids.map((id) => getUserById(id)).filter(Boolean),
+    });
+  };
+
+  const handleFollowClick = () => {
+    if (isFollowing) {
+      setDialog({ type: "unfollow" });
+    } else {
+      setIsFollowing(true);
+      setToastMessage(`Following @${displayUser.username}.`);
+    }
+  };
+
+  const handleSendRequest = () => {
+    setDialog({ type: "follow-request" });
+  };
+
+  const handleShareProfile = async () => {
+    const result = await shareContent({
+      title: `${displayUser.firstName} ${displayUser.lastName}`,
+      text: `Check out @${displayUser.username}'s profile`,
+      url: `${window.location.origin}/user/${displayUser.username}`,
+    });
+    const msg = shareMessageFor(result);
+    if (msg) setToastMessage(msg);
+  };
+
+  const handleBlock = () => {
+    closeActionsPopup();
+    setDialog({ type: "block" });
+  };
+
+  const handleReportProfile = () => {
+    closeActionsPopup();
+    setDialog({ type: "report-profile" });
+  };
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -258,16 +378,19 @@ export default function Profile() {
   );
 
   if (!displayUser) {
-    return <div>User not found</div>;
+    return (
+      <main className="profile-page">
+        <div className="profile-not-found">
+          <p>User not found.</p>
+        </div>
+      </main>
+    );
   }
 
-  const isFollwingDisplayUser = isFollowedBy(user?.id, displayUser.id);
   const isOwnProfile = user?.username === displayUser?.username;
   const isPrivate =
-    displayUser?.visibility === "private" &&
-    !isOwnProfile &&
-    !isFollwingDisplayUser;
-const rawPosts =
+    displayUser?.visibility === "private" && !isOwnProfile && !isFollowing;
+  const rawPosts =
     activeTab === "created"
       ? getCreatedPostsById(displayUser.id)
       : getSavedPostsById(displayUser.id);
@@ -308,14 +431,14 @@ const rawPosts =
               <span className="profile-page-card-handle">{`@${displayUser.username}`}</span>
 
               <div className="profile-card-follow">
-                <button type="button">
+                <button type="button" onClick={() => openUserList("followers")}>
                   <span className="profile-followers-count">
                     {countFormatter(displayUser.followersCount)}
                   </span>{" "}
                   <p className="profile-page-follow-text">Followers</p>
                 </button>
                 <span className="dot" />
-                <button type="button">
+                <button type="button" onClick={() => openUserList("following")}>
                   <span className="profile-following-count">
                     {countFormatter(displayUser.followingCount)}
                   </span>{" "}
@@ -339,8 +462,33 @@ const rawPosts =
             {isActionsPopupActive && (
               <div className="profile-page-actions-popup" ref={morePopupRef}>
                 <p>Profile actions</p>
-                <button type="button">Block</button>
-                <button type="button">Report</button>
+                {isOwnProfile ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        closeActionsPopup();
+                        handleShareProfile();
+                      }}
+                    >
+                      Share profile
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        closeActionsPopup();
+                        navigate("/settings");
+                      }}
+                    >
+                      Account settings
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button type="button" onClick={handleBlock}>Block</button>
+                    <button type="button" onClick={handleReportProfile}>Report</button>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -348,15 +496,25 @@ const rawPosts =
         <p className="profile-page-card-bio">{displayUser.bio}</p>
 
         <div className="profile-follow-actions">
-          {isFollwingDisplayUser ? (
-            <button type="button">UnFollow</button>
+          {isOwnProfile ? null : isFollowing ? (
+            <button type="button" onClick={handleFollowClick}>
+              UnFollow
+            </button>
           ) : isPrivate ? (
-            <button type="button">Send Request</button>
+            <button type="button" onClick={handleSendRequest}>
+              Send Request
+            </button>
           ) : (
-            <button type="button">Follow</button>
+            <button type="button" onClick={handleFollowClick}>
+              Follow
+            </button>
           )}
 
-          <button type="button" className="profile-follow-actions-share-btn">
+          <button
+            type="button"
+            className="profile-follow-actions-share-btn"
+            onClick={handleShareProfile}
+          >
             Share profile
           </button>
         </div>
@@ -383,13 +541,121 @@ const rawPosts =
         <Masonry
           key={`${activeTab}-${targetColumns}`}
           items={postsToDisplay}
-          render={PostCard}
+          render={(props) => (
+            <PostCard
+              {...props}
+              onToast={handlePostToast}
+              onReport={handlePostReport}
+            />
+          )}
           itemKey={(data, index) => data?.id ?? index}
           columnGutter={columnGutter}
           columnWidth={computedColumnWidth}
           maxColumnCount={targetColumns}
         />
       </div>
+
+      <Toast message={toastMessage} onClose={() => setToastMessage("")} />
+
+      <ConfirmDialog
+        open={dialog?.type === "unfollow"}
+        title={`Unfollow @${displayUser.username}?`}
+        message={`${displayUser.firstName} won't be notified, and their posts will stop appearing in your feed. You can follow again anytime.`}
+        confirmLabel="Unfollow"
+        danger
+        onConfirm={() => {
+          setIsFollowing(false);
+          setToastMessage(`Unfollowed @${displayUser.username}.`);
+        }}
+        onClose={() => setDialog(null)}
+      />
+
+      <ConfirmDialog
+        open={dialog?.type === "follow-request"}
+        title="Send follow request?"
+        message={`@${displayUser.username} has a private profile. They'll need to approve your request before you can see their posts.`}
+        confirmLabel="Send request"
+        onConfirm={() =>
+          setToastMessage(`Follow request sent to @${displayUser.username}.`)
+        }
+        onClose={() => setDialog(null)}
+      />
+
+      <ConfirmDialog
+        open={dialog?.type === "block"}
+        title={`Block @${displayUser.username}?`}
+        message="They won't be able to follow you, message you, or see your posts. They won't be notified."
+        confirmLabel="Block"
+        danger
+        onConfirm={() =>
+          setToastMessage(`Blocked @${displayUser.username}.`)
+        }
+        onClose={() => setDialog(null)}
+      />
+
+      <ConfirmDialog
+        open={dialog?.type === "report-profile"}
+        title={`Report @${displayUser.username}?`}
+        message="Why are you reporting this profile? Your report is anonymous."
+        options={REPORT_REASONS}
+        confirmLabel="Submit report"
+        onConfirm={() => setToastMessage("Report submitted. Thank you.")}
+        onClose={() => setDialog(null)}
+      />
+
+      <ConfirmDialog
+        open={dialog?.type === "report-post"}
+        title="Report this image?"
+        message="Why are you reporting this? Your report is anonymous."
+        options={REPORT_REASONS}
+        confirmLabel="Submit report"
+        onConfirm={() => setToastMessage("Report submitted. Thank you.")}
+        onClose={() => setDialog(null)}
+      />
+
+      <Modal
+        open={!!listModal}
+        onClose={() => setListModal(null)}
+        title={listModal?.title || ""}
+      >
+        {listModal && listModal.users.length === 0 ? (
+          <p className="profile-user-list-empty">No users to show yet.</p>
+        ) : (
+          <div className="profile-user-list">
+            {listModal?.users.map((u) => (
+              <button
+                key={u.id}
+                type="button"
+                className="profile-user-list-item"
+                onClick={() => {
+                  setListModal(null);
+                  navigate(
+                    u.username === user?.username
+                      ? "/profile"
+                      : `/user/${u.username}`,
+                  );
+                }}
+              >
+                <img
+                  src={u.avatarUrl || defaultProfileImage}
+                  alt={`${u.username}'s avatar`}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultProfileImage;
+                  }}
+                />
+                <div className="profile-user-list-info">
+                  <span className="profile-user-list-name">
+                    {u.firstName} {u.lastName}
+                  </span>
+                  <span className="profile-user-list-handle">
+                    @{u.username}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </Modal>
     </main>
   );
 }

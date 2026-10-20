@@ -6,13 +6,24 @@ import {
 } from "@tabler/icons-react";
 import "./Settings.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../mocks/api";
 import { dateFormatter } from "../../utils/dateFormatter";
+import Toast from "../../components/ui/Toast/Toast";
+import ConfirmDialog from "../../components/ui/ConfirmDialog/ConfirmDialog";
 
 const user = getCurrentUser();
 
-function ProfileSection() {
+function ProfileSection({ showToast }) {
   const [avatarPreview, setAvatarPreview] = useState(user.avatarUrl);
+
+  const initialProfile = {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    bio: user.bio,
+  };
+  const [formData, setFormData] = useState(initialProfile);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -21,21 +32,23 @@ function ProfileSection() {
     }
   };
 
-  const [formData,setFormData] = useState({
-    firstName : user.firstName,
-    lastName : user.lastName,
-    username : user.username,
-    bio : user.bio,
-  })
-
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name] : value,
+      [name]: value,
     }));
-  }
- 
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    showToast("Profile updated.");
+  };
+
+  const handleReset = () => {
+    setFormData(initialProfile);
+    setAvatarPreview(user.avatarUrl);
+  };
 
   return (
     <section className="settings-profile-section">
@@ -47,7 +60,7 @@ function ProfileSection() {
         </p>
       </div>
 
-      <form className="settings-profile-form">
+      <form className="settings-profile-form" onSubmit={handleSubmit}>
         <div className="settings-profile-avatar-group">
           <img
             src={avatarPreview}
@@ -122,7 +135,7 @@ function ProfileSection() {
         </div>
 
         <div className="settings-profile-form-actions">
-          <button type="reset" className="settings-btn-reset">
+          <button type="button" className="settings-btn-reset" onClick={handleReset}>
             Reset
           </button>
           <button type="submit" className="settings-btn-submit">
@@ -134,28 +147,40 @@ function ProfileSection() {
   );
 }
 
-function SecuritySection() {
-   const [formData,setFormData] = useState({
-
-    email : user.email,
-    dob : dateFormatter(user.dob),
-    visibility : user.visibility
-  })
+function SecuritySection({ showToast }) {
+  const navigate = useNavigate();
+  const initialSecurity = {
+    email: user.email,
+    dob: dateFormatter(user.dob),
+    visibility: user.visibility,
+  };
+  const [formData, setFormData] = useState(initialSecurity);
+  const [dialog, setDialog] = useState(null);
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name] : value,
+      [name]: value,
     }));
-  }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    showToast("Account settings saved.");
+  };
+
+  const handleReset = () => {
+    setFormData(initialSecurity);
+  };
+
   return (
     <section className="settings-security-section">
       <div className="settings-security-header">
         <h2>Account management</h2>
         <p>Make changes to your account here.</p>
       </div>
-      <form className="settings-security-credentials">
+      <form className="settings-security-credentials" onSubmit={handleSubmit}>
         <div className="settings-security-input-group">
           <label htmlFor="email">Email</label>
           <input
@@ -178,7 +203,13 @@ function SecuritySection() {
         </div>
         <div className="settings-security-input-group">
           <label htmlFor="dob">Date of birth</label>
-          <input type="date" name="dob" id="dob" value={formData.dob} onChange={handleChange} />
+          <input
+            type="date"
+            name="dob"
+            id="dob"
+            value={formData.dob}
+            onChange={handleChange}
+          />
         </div>
         <div className="settings-profile-visibility-input">
           <label>Account visibility</label>
@@ -189,7 +220,8 @@ function SecuritySection() {
                 name="visibility"
                 id="public"
                 value="public"
-                defaultChecked={formData.visibility === "public"}
+                checked={formData.visibility === "public"}
+                onChange={handleChange}
               />
               <span className="settings-security-radio-title">Public</span>
             </label>
@@ -199,7 +231,8 @@ function SecuritySection() {
                 name="visibility"
                 id="private"
                 value="private"
-                   defaultChecked={formData.visibility === "private"}
+                checked={formData.visibility === "private"}
+                onChange={handleChange}
               />
               <span className="settings-security-radio-title">Private</span>
             </label>
@@ -215,7 +248,11 @@ function SecuritySection() {
                 by logging back in.
               </p>
             </div>
-            <button type="button" className="settings-btn-deactivate">
+            <button
+              type="button"
+              className="settings-btn-deactivate"
+              onClick={() => setDialog("deactivate")}
+            >
               Deactivate
             </button>
           </div>
@@ -227,13 +264,17 @@ function SecuritySection() {
                 undone.
               </p>
             </div>
-            <button type="button" className="settings-btn-delete">
+            <button
+              type="button"
+              className="settings-btn-delete"
+              onClick={() => setDialog("delete")}
+            >
               Delete Account
             </button>
           </div>
         </div>
         <div className="settings-profile-form-actions">
-          <button type="reset" className="settings-btn-reset">
+          <button type="button" className="settings-btn-reset" onClick={handleReset}>
             Reset
           </button>
           <button type="submit" className="settings-btn-submit">
@@ -241,12 +282,34 @@ function SecuritySection() {
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        open={dialog === "deactivate"}
+        title="Deactivate your account?"
+        message="Your profile and posts will be hidden until you log back in. Nothing is deleted."
+        confirmLabel="Deactivate"
+        danger
+        onConfirm={() => showToast("Account deactivated. Log in again to reactivate.")}
+        onClose={() => setDialog(null)}
+      />
+
+      <ConfirmDialog
+        open={dialog === "delete"}
+        title="Delete your account?"
+        message="This permanently deletes your account, posts, and all saved data. This cannot be undone."
+        options={["I understand this is permanent", "Keep my account"]}
+        confirmLabel="Delete account"
+        danger
+        onConfirm={() => navigate("/login")}
+        onClose={() => setDialog(null)}
+      />
     </section>
   );
 }
 
 export default function Settings() {
   const [activeNav, setActiveNav] = useState("profile");
+  const [toastMessage, setToastMessage] = useState("");
 
   return (
     <main className="settings-page">
@@ -268,8 +331,13 @@ export default function Settings() {
           </button>
         </aside>
 
-        {activeNav === "profile" ? <ProfileSection /> : <SecuritySection />}
+        {activeNav === "profile" ? (
+          <ProfileSection showToast={setToastMessage} />
+        ) : (
+          <SecuritySection showToast={setToastMessage} />
+        )}
       </div>
+      <Toast message={toastMessage} onClose={() => setToastMessage("")} />
     </main>
   );
 }

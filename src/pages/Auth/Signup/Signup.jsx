@@ -1,10 +1,11 @@
 import "./Signup.css";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grainient from "../../../components/ui/Grainient/Grainient";
 
 function Signup() {
+  const navigate = useNavigate();
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const [passShow, setPassShow] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,10 +48,10 @@ function Signup() {
     const validationErrors = validateFields();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-    } else {
-      setErrors({});
-      console.log("Form submitted succesfully");
+      return;
     }
+    setErrors({});
+    navigate("/home");
   };
 
   return (

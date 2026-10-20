@@ -4,16 +4,17 @@ import {
   IconLogout,
   IconSearch,
   IconSettingsFilled,
+  IconUserFilled,
 } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../../mocks/api";
 
 
 const user = getCurrentUser()
 
-function TopAccountPopUP() {
+function TopAccountPopUP({ onLogout, onClose }) {
   return (
     <div className="topbar-account-popup">
       <p>Logged in as</p>
@@ -26,16 +27,20 @@ function TopAccountPopUP() {
         </div>
       </div>
       <div className="topbar-popup-profile-settings">
-        {/* <button type="button">
+        <NavLink
+          to="/profile"
+          className="topbar-settings-nav"
+          onClick={onClose}
+        >
           <IconUserFilled />
           View profile
-        </button> */}
-        <NavLink to="/settings" className="topbar-settings-nav">
+        </NavLink>
+        <NavLink to="/settings" className="topbar-settings-nav" onClick={onClose}>
           <IconSettingsFilled />
           Account settings
         </NavLink>
 
-        <button type="button" className="topbar-popup-logout">
+        <button type="button" className="topbar-popup-logout" onClick={onLogout}>
           <IconLogout />
           Log out
         </button>
@@ -45,22 +50,47 @@ function TopAccountPopUP() {
 }
 
 export default function TopBar() {
+  const navigate = useNavigate();
   const [isPopUpActive, setIsPopUpActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const popupRef = useRef(null);
 
   useClickOutside(popupRef, () => {
     setIsPopUpActive(false);
   });
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (q) {
+      navigate(`/explore?q=${encodeURIComponent(q)}`);
+    } else {
+      navigate("/explore");
+    }
+  };
+
+  const handleLogout = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="topbar-div">
-      <div className="topbar-search-container">
+      <form className="topbar-search-container" onSubmit={handleSearch}>
         <IconSearch className="search-icon" color="#38383a" size={25} />
-        <input type="text" placeholder="Search" />
-      </div>
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </form>
 
       <div className="topbar-profile-container" ref={popupRef}>
-        <Link to="/profile" title="Profile">
+        <Link
+          to="/profile"
+          title="Profile"
+          onClick={() => setIsPopUpActive(false)}
+        >
           <img title="Your profile" src={user.avatarUrl} alt="profile-img" />
         </Link>
 
@@ -79,7 +109,12 @@ export default function TopBar() {
           <IconChevronDown color="white" size={25} />
         </button>
 
-        {isPopUpActive && <TopAccountPopUP />}
+        {isPopUpActive && (
+          <TopAccountPopUP
+            onLogout={handleLogout}
+            onClose={() => setIsPopUpActive(false)}
+          />
+        )}
       </div>
     </div>
   );

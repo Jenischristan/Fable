@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   IconBell,
   IconPlus,
@@ -14,21 +14,134 @@ import {
   IconSettingsFilled,
   IconPlusFilled,
   IconX,
+  IconChecks,
+  IconTrash,
 } from "@tabler/icons-react";
 import "./SideNavBar.css";
-import logo from "../../../assets/icons/logo.svg"
+import logo from "../../../assets/icons/logo.svg";
+import {
+  getCurrentUser,
+  getUserById,
+  getNotificationsByUserId,
+  getCommentById,
+} from "../../../mocks/api";
+import { NOTIFICATION_TYPE } from "../../../mocks/data/notifications";
+import { timeFormatter } from "../../../utils/timeFormatter";
+import defaultProfileImage from "../../../assets/default_profile.jpg";
+import { useClickOutside } from "../../../hooks/useClickOutside";
+import ConfirmDialog from "../../ui/ConfirmDialog/ConfirmDialog";
+
+const user = getCurrentUser();
+
+const formatNotificationMessage = (notif) => {
+  const actor = getUserById(notif.actorId);
+  const actorName = actor ? `${actor.firstName} ${actor.lastName}` : "Someone";
+
+  switch (notif.type) {
+    case NOTIFICATION_TYPE.FOLLOW:
+      return `${actorName} started following you.`;
+    case NOTIFICATION_TYPE.FOLLOW_REQUEST:
+      return `${actorName} sent you a follow request.`;
+    case NOTIFICATION_TYPE.FOLLOW_ACCEPT:
+      return `${actorName} accepted your follow request.`;
+    case NOTIFICATION_TYPE.POST_LIKE:
+      return `${actorName} liked your post.`;
+    case NOTIFICATION_TYPE.COMMENT_LIKE:
+      return `${actorName} liked your comment.`;
+    case NOTIFICATION_TYPE.COMMENT:
+      return `${actorName} commented on your post.`;
+    case NOTIFICATION_TYPE.BOOKMARK:
+      return `${actorName} bookmarked your post.`;
+    default:
+      return `${actorName} interacted with your content.`;
+  }
+};
 
 export default function SideNavBar() {
+  const navigate = useNavigate();
   const [showNotificationTab, setShowNotificationTab] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [items, setItems] = useState(() =>
+    getNotificationsByUserId(user?.id).map((n) => ({ ...n })),
+  );
+  const [isClearConfirmOpen, setIsClearConfirmOpen] = useState(false);
 
-  const handleClosing = () => {
+  const closeTimerRef = useRef(null);
+  const bellBtnRef = useRef(null);
+  const panelRef = useRef(null);
+
+  const unreadCount = items.filter((n) => !n.isRead).length;
+
+  const closeNotifications = () => {
+    if (closeTimerRef.current || !showNotificationTab) return;
     setIsClosing(true);
-    setTimeout(() => {
-      setShowNotificationTab(false)
-      setIsClosing(false)   
+    closeTimerRef.current = setTimeout(() => {
+      setShowNotificationTab(false);
+      setIsClosing(false);
+      closeTimerRef.current = null;
     }, 280);
-  }
+  };
+
+  const toggleNotifications = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    if (showNotificationTab && !isClosing) {
+      closeNotifications();
+    } else {
+      setIsClosing(false);
+      setShowNotificationTab(true);
+    }
+  };
+
+  const markAllRead = () => {
+    setItems((prev) => prev.map((n) => ({ ...n, isRead: true })));
+  };
+
+  const removeItem = (e, id) => {
+    e.stopPropagation();
+    setItems((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  const clearAll = () => {
+    setItems([]);
+    setIsClearConfirmOpen(false);
+  };
+
+  const handleOpenItem = (notif) => {
+    setItems((prev) =>
+      prev.map((n) => (n.id === notif.id ? { ...n, isRead: true } : n)),
+    );
+
+    if (notif.targetType === "post" && notif.targetId) {
+      closeNotifications();
+      navigate(`/post/${notif.targetId}`);
+    } else if (notif.targetType === "comment" && notif.targetId) {
+      const comment = getCommentById(notif.targetId);
+      if (comment?.postId) {
+        closeNotifications();
+        navigate(`/post/${comment.postId}`);
+      }
+    } else if (notif.targetType === "user") {
+      const actor = getUserById(notif.actorId);
+      if (actor?.username) {
+        closeNotifications();
+        navigate(`/user/${actor.username}`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  useClickOutside(panelRef, closeNotifications, bellBtnRef);
 
   const getNavClass = ({ isActive }) =>
     isActive ? "side-nav-btn nav-btn-active" : "side-nav-btn";
@@ -39,7 +152,7 @@ export default function SideNavBar() {
         <div className="side-nav-container">
           <div className="side-logo-container">
             <Link to="/home" className="side-nav-logo" aria-label="Home">
-             <img src={logo} alt="logo" />
+              <img src={logo} alt="logo" />
             </Link>
           </div>
 
@@ -52,7 +165,7 @@ export default function SideNavBar() {
                 to="/home"
                 title="Home"
                 className={getNavClass}
-                onClick={() => setShowNotificationTab(false)}
+                onClick={closeNotifications}
               >
                 {({ isActive }) =>
                   isActive ? (
@@ -70,7 +183,7 @@ export default function SideNavBar() {
                 to="/explore"
                 title="Explore"
                 className={getNavClass}
-                onClick={() => setShowNotificationTab(false)}
+                onClick={closeNotifications}
               >
                 {({ isActive }) =>
                   isActive ? (
@@ -88,7 +201,7 @@ export default function SideNavBar() {
                 to="/create"
                 title="Create"
                 className={getNavClass}
-                onClick={() => setShowNotificationTab(false)}
+                onClick={closeNotifications}
               >
                 {({ isActive }) =>
                   isActive ? (
@@ -106,7 +219,7 @@ export default function SideNavBar() {
                 to="/bookmarks"
                 title="Bookmarks"
                 className={getNavClass}
-                onClick={() => setShowNotificationTab(false)}
+                onClick={closeNotifications}
               >
                 {({ isActive }) =>
                   isActive ? (
@@ -123,12 +236,16 @@ export default function SideNavBar() {
               <button
                 title="Updates"
                 className={`side-nav-btn ${showNotificationTab ? "nav-btn-active" : ""}`}
-                onClick={() => setShowNotificationTab((prev) => !prev)}
+                onClick={toggleNotifications}
+                ref={bellBtnRef}
               >
-                {showNotificationTab ? (
+                {showNotificationTab && !isClosing ? (
                   <IconBellFilled size={20} />
                 ) : (
                   <IconBell size={20} />
+                )}
+                {unreadCount > 0 && (
+                  <span className="side-nav-badge">{unreadCount}</span>
                 )}
               </button>
             </li>
@@ -141,7 +258,7 @@ export default function SideNavBar() {
             to="/settings"
             title="Settings"
             className={getNavClass}
-            onClick={() => setShowNotificationTab(false)}
+            onClick={closeNotifications}
           >
             {({ isActive }) =>
               isActive ? (
@@ -156,24 +273,118 @@ export default function SideNavBar() {
 
       {/* Notifications Drawer */}
       {showNotificationTab && (
-        <aside className={`notifications-panel ${
+        <aside
+          className={`notifications-panel ${
             isClosing ? "panel-closing" : "panel-open"
-          }`}>
+          }`}
+          ref={panelRef}
+        >
           <div className="notifications-header">
-            <h3>Notifications</h3>
+            <h3>
+              Notifications
+              {unreadCount > 0 && (
+                <span className="notifications-unread-label">
+                  {unreadCount} new
+                </span>
+              )}
+            </h3>
             <button
               className="close-panel-btn"
-              onClick={handleClosing}
+              onClick={closeNotifications}
+              aria-label="Close notifications"
+              title="Close"
             >
               <IconX size={25} />
             </button>
           </div>
+
+          {items.length > 0 && (
+            <div className="notifications-actions">
+              <button
+                type="button"
+                onClick={markAllRead}
+                disabled={unreadCount === 0}
+              >
+                <IconChecks size={16} />
+                Mark all as read
+              </button>
+              <button
+                type="button"
+                className="notifications-action-danger"
+                onClick={() => setIsClearConfirmOpen(true)}
+              >
+                <IconTrash size={16} />
+                Clear all
+              </button>
+            </div>
+          )}
+
           <div className="notifications-content">
-            <p className="notification-item">You have no new updates.</p>
-       
+            {items.length === 0 ? (
+              <p className="notification-empty">You have no new updates.</p>
+            ) : (
+              items.map((notif) => {
+                const actor = getUserById(notif.actorId);
+                return (
+                  <div
+                    key={notif.id}
+                    className={`notification-item ${
+                      notif.isRead ? "" : "notification-item-unread"
+                    }`}
+                    onClick={() => handleOpenItem(notif)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleOpenItem(notif);
+                      }
+                    }}
+                  >
+                    <img
+                      src={actor?.avatarUrl || defaultProfileImage}
+                      alt={actor?.username || "User"}
+                      onError={(e) => {
+                        e.currentTarget.src = defaultProfileImage;
+                      }}
+                    />
+                    <div className="notification-item-body">
+                      <p className="notification-item-message">
+                        {formatNotificationMessage(notif)}
+                      </p>
+                      <span className="notification-item-time">
+                        {timeFormatter(notif.createdAt)}
+                      </span>
+                    </div>
+                    {!notif.isRead && (
+                      <span className="notification-item-dot" />
+                    )}
+                    <button
+                      type="button"
+                      className="notification-item-remove"
+                      onClick={(e) => removeItem(e, notif.id)}
+                      aria-label="Remove notification"
+                      title="Remove"
+                    >
+                      <IconX size={16} />
+                    </button>
+                  </div>
+                );
+              })
+            )}
           </div>
         </aside>
       )}
+
+      <ConfirmDialog
+        open={isClearConfirmOpen}
+        title="Clear all notifications?"
+        message="This will remove every notification from your list. This action cannot be undone."
+        confirmLabel="Clear all"
+        danger
+        onConfirm={clearAll}
+        onClose={() => setIsClearConfirmOpen(false)}
+      />
     </div>
   );
 }

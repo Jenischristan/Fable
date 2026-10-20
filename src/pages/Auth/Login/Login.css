@@ -193,6 +193,47 @@
   text-decoration: underline;
 }
 
+.login-forgot button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #a1a1aa;
+  font-size: 0.85rem;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.login-forgot button:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.login-forgot-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.login-forgot-submit:hover {
+  background-color: #e4e4e7;
+  transform: scale(1.01);
+}
+
 /* Action Button */
 .login-btn {
   display: flex;

@@ -658,3 +658,24 @@ body.scroll-locked {
     display: none;
   } 
 }
+
+.postview-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  color: #a1a1aa;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.postview-comments-empty {
+  color: #71717a;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1.5rem 0;
+}
