@@ -55,6 +55,7 @@ export default function PostView() {
   const [isImageMaximized, setIsImageMaximized] = useState(false);
   const [isMorePopupOn, setIsMorePopupOn] = useState(false);
   const [moreBtnCenter, setMoreBtnCenter] = useState(0);
+  const [popupPlacement, setPopupPlacement] = useState("bottom");
   const [toastMessage, setToastMessage] = useState("");
   const [dialog, setDialog] = useState(null);
   const [sortMode, setSortMode] = useState("default");
@@ -66,6 +67,7 @@ export default function PostView() {
   const commentInputRef = useRef(null);
 
   const backNavigate = useNavigate();
+  const [isScrolledPast, setIsScrolledPast] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,6 +76,22 @@ export default function PostView() {
       layoutContent.scrollTop = 0;
       layoutContent.scrollLeft = 0;
     }
+
+    const handleScroll = () => {
+      const scrollPos = layoutContent?.scrollTop ?? window.scrollY ?? 0;
+      setIsScrolledPast((prev) => {
+        const next = scrollPos > 160;
+        return prev !== next ? next : prev;
+      });
+    };
+
+    layoutContent?.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      layoutContent?.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [id]);
   useClickOutside(
     sortPopupRef,
@@ -245,12 +263,14 @@ export default function PostView() {
     <main className="postview-page">
       <div className="postview-image-container">
         <button
-          className="postview-back-btn"
+          className={`postview-back-btn ${isScrolledPast ? "is-floating" : ""}`}
+          title="Go back"
+          aria-label="Go back"
           onClick={() => {
             backNavigate(-1);
           }}
         >
-          <IconArrowLeft size={30} />
+          <IconArrowLeft size={28} />
         </button>
         <div className="postview-image-frame" ref={imageFrameRef}>
           <img
@@ -346,6 +366,8 @@ export default function PostView() {
                     setMoreBtnCenter(
                       btnRect.left - parentRect.left + btnRect.width / 2,
                     );
+                    const spaceBelow = window.innerHeight - btnRect.bottom;
+                    setPopupPlacement(spaceBelow < 250 ? "top" : "bottom");
                   }
                   setIsMorePopupOn(!isMorePopupOn);
                 }}
@@ -355,7 +377,7 @@ export default function PostView() {
               </button>
               {isMorePopupOn && (
                 <div
-                  className="postview-more-popup-window"
+                  className={`postview-more-popup-window placement-${popupPlacement}`}
                   ref={morePopupRef}
                   style={{
                     left: `${moreBtnCenter}px`,
@@ -473,7 +495,11 @@ export default function PostView() {
         </div>
 
         {showCommentInput && (
-          <div className="postview-comments-input-wrapper">
+          <div
+            className={`postview-comments-input-wrapper ${
+              isScrolledPast ? "is-floating" : ""
+            }`}
+          >
             <div className="postview-comments-input-section">
               <input
                 type="text"

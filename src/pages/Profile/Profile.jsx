@@ -84,12 +84,6 @@ const PostCard = React.memo(function PostCard({ data: post, onToast, onReport })
   const [isImageLoaded, setIsImageLoaded] = useState(isCached);
   const [isLandscape, setIsLandscape] = useState(false);
 
-  useEffect(() => {
-    if (isImageCached(post?.imageUrl)) {
-      setIsImageLoaded(true);
-    }
-  }, [post?.imageUrl]);
-
   const calculatePopUpPos = () => {
     if (!btnRef.current) return null;
     const rect = btnRef.current.getBoundingClientRect();
@@ -212,8 +206,6 @@ const PostCard = React.memo(function PostCard({ data: post, onToast, onReport })
     setIsImageLoaded(true);
   };
 
-  const closePopUp = () => setIsPopUpActive(false);
-
   const ratio = post.aspectRatio || 0.75;
 
   return (
@@ -306,10 +298,16 @@ export default function Profile() {
   const [dialog, setDialog] = useState(null);
   const [listModal, setListModal] = useState(null);
 
+  const isOwnProfile = Boolean(
+    user && displayUser && user.username === displayUser.username,
+  );
   const isFollowing =
     user && displayUser ? isFollowedBy(user.id, displayUser.id) : false;
   const hasPendingRequest =
     user && displayUser ? hasPendingFollowRequest(user.id, displayUser.id) : false;
+  const isPrivate = Boolean(
+    displayUser?.visibility === "private" && !isOwnProfile && !isFollowing,
+  );
 
   const handlePostToast = useCallback((msg) => setToastMessage(msg), [setToastMessage]);
   const handlePostReport = useCallback((post) => setDialog({ type: "report-post", post }), [setDialog]);
@@ -401,6 +399,18 @@ export default function Profile() {
     morePopupBtnRef,
   );
 
+  const postsToDisplay = useMemo(() => {
+    if (!displayUser?.id) return [];
+    const rawPosts =
+      activeTab === "created"
+        ? getCreatedPostsById(displayUser.id)
+        : getSavedPostsById(displayUser.id);
+    return (Array.isArray(rawPosts) ? rawPosts : []).filter(
+      (post) => post && typeof post === "object",
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, displayUser?.id, storeVersion]);
+
   if (!displayUser) {
     return (
       <main className="profile-page">
@@ -411,18 +421,6 @@ export default function Profile() {
     );
   }
 
-  const isOwnProfile = user?.username === displayUser?.username;
-  const isPrivate =
-    displayUser?.visibility === "private" && !isOwnProfile && !isFollowing;
-  const postsToDisplay = useMemo(() => {
-    const rawPosts =
-      activeTab === "created"
-        ? getCreatedPostsById(displayUser?.id)
-        : getSavedPostsById(displayUser?.id);
-    return (Array.isArray(rawPosts) ? rawPosts : []).filter(
-      (post) => post && typeof post === "object",
-    );
-  }, [activeTab, displayUser?.id, storeVersion]);
 
   let targetColumns = 4;
   if (sectionWidth < 768) {

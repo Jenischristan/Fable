@@ -294,15 +294,31 @@ export default function SideNavBar() {
           }`}
           ref={panelRef}
         >
-          <div className="notifications-header">
-            {unreadCount > 0 ? (
-              <span className="notifications-unread-label">
-                {unreadCount} unread
-              </span>
-            ) : (
-              <span className="notifications-header-spacer" />
-            )}
+          <div className="notifications-actions">
+            <div className="notifications-actions-left">
+              {(items.length > 0 || pendingRequests.length > 0) && (
+                <>
+                  <button
+                    type="button"
+                    onClick={markAllRead}
+                    disabled={unreadCount === 0}
+                  >
+                    <IconChecks size={16} />
+                    Mark all as read
+                  </button>
+                  <button
+                    type="button"
+                    className="notifications-action-danger"
+                    onClick={() => setIsClearConfirmOpen(true)}
+                  >
+                    <IconTrash size={16} />
+                    Clear all
+                  </button>
+                </>
+              )}
+            </div>
             <button
+              type="button"
               className="close-panel-btn"
               onClick={closeNotifications}
               aria-label="Close notifications"
@@ -311,27 +327,6 @@ export default function SideNavBar() {
               <IconX size={20} />
             </button>
           </div>
-
-          {(items.length > 0 || pendingRequests.length > 0) && (
-            <div className="notifications-actions">
-              <button
-                type="button"
-                onClick={markAllRead}
-                disabled={unreadCount === 0}
-              >
-                <IconChecks size={16} />
-                Mark all as read
-              </button>
-              <button
-                type="button"
-                className="notifications-action-danger"
-                onClick={() => setIsClearConfirmOpen(true)}
-              >
-                <IconTrash size={16} />
-                Clear all
-              </button>
-            </div>
-          )}
 
           <div className="notifications-content">
             {pendingRequests.length > 0 && (

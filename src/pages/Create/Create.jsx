@@ -11,6 +11,7 @@ export default function Create() {
 
   const [previewUrl, setPreviewUrl] = useState(null);
   const [previewFile, setPreviewFile] = useState(null);
+  const [aspectRatio, setAspectRatio] = useState(1);
   const [visibility, setVisibility] = useState("public");
   const [toastMessage, setToastMessage] = useState("");
 
@@ -20,6 +21,13 @@ export default function Create() {
       const fileUrl = URL.createObjectURL(file);
       setPreviewFile(file);
       setPreviewUrl(fileUrl);
+      const img = new Image();
+      img.onload = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          setAspectRatio(img.naturalWidth / img.naturalHeight);
+        }
+      };
+      img.src = fileUrl;
     }
   }
 
@@ -28,6 +36,7 @@ export default function Create() {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);
       setPreviewFile(null);
+      setAspectRatio(1);
     }
   }
 
@@ -58,7 +67,7 @@ export default function Create() {
       title,
       visibility,
       imageUrl: previewUrl,
-      aspectRatio: 1,
+      aspectRatio: aspectRatio || 1,
       tags: tagList,
       likesCount: 0,
       likedBy: [],
@@ -74,6 +83,7 @@ export default function Create() {
     form.reset();
     setPreviewUrl(null);
     setPreviewFile(null);
+    setAspectRatio(1);
     setVisibility("public");
 
     setTimeout(() => {

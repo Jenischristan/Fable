@@ -25,8 +25,9 @@ export const signup = (payload) => authSignup(payload);
 export const logout = () => authLogout();
 
 export const getCurrentUser = () => {
-  const userId = getSessionUserId() || "user_001";
-  const user = store.users.find((u) => u.id === userId) || store.users[0] || null;
+  const userId = getSessionUserId();
+  if (!userId) return null;
+  const user = store.users.find((u) => u.id === userId) || null;
   if (user?.isDeactivated) return null;
   return user;
 };

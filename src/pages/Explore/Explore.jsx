@@ -63,12 +63,6 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
   const isCached = isImageCached(post?.imageUrl);
   const [isImageLoaded, setIsImageLoaded] = useState(isCached);
 
-  useEffect(() => {
-    if (isImageCached(post?.imageUrl)) {
-      setIsImageLoaded(true);
-    }
-  }, [post?.imageUrl]);
-
   const calculatePopUpPos = () => {
     if (!btnRef.current) return null;
     const rect = btnRef.current.getBoundingClientRect();
@@ -243,7 +237,7 @@ export default function Explore() {
 
   const query = (searchParams.get("q") || "").trim();
   const trendingTags = getTrendingTags(10);
-  const creators = getRecommendedCreators(6);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const posts = useMemo(() => searchPosts(query), [query, storeVersion]);
 
   const matchingTags = query ? searchTags(query, 10) : [];

@@ -4,7 +4,9 @@ const SESSION_KEY = "fable_session_user_id";
 
 export const getSessionUserId = () => {
   try {
-    return localStorage.getItem(SESSION_KEY) || "user_001";
+    const stored = localStorage.getItem(SESSION_KEY);
+    if (stored === "logged_out") return null;
+    return stored || "user_001";
   } catch {
     return "user_001";
   }
@@ -13,7 +15,7 @@ export const getSessionUserId = () => {
 const setSessionUserId = (userId) => {
   try {
     if (userId) localStorage.setItem(SESSION_KEY, userId);
-    else localStorage.removeItem(SESSION_KEY);
+    else localStorage.setItem(SESSION_KEY, "logged_out");
   } catch {
     /* storage unavailable — session stays in-memory for this page load */
   }

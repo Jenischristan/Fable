@@ -281,7 +281,6 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
         />
       )}
 
-      <Toast message="" onClose={() => {}} />
       <ConfirmDialog
         open={isReportOpen}
         title="Report this image?"
