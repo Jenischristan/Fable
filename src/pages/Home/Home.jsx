@@ -1,5 +1,6 @@
-import "./Home.css";
-import { getCurrentUser, getHomePostFeed, isPostSavedBy, togglePostSaved } from "../../mocks/api";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { Masonry } from "masonic";
 import {
   IconDots,
@@ -9,9 +10,8 @@ import {
   IconThumbDown,
   IconThumbUp,
 } from "@tabler/icons-react";
-import { NavLink } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
-import React from "react";
+import "./Home.css";
+import { getCurrentUser, getHomePostFeed, isPostSavedBy, togglePostSaved } from "../../mocks/api";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useMockData } from "../../hooks/useMockData";
 import { useMasonryColumnWidth } from "../../hooks/useMasonryColumnWidth";
@@ -19,6 +19,7 @@ import Toast from "../../components/ui/Toast/Toast";
 import ConfirmDialog from "../../components/ui/ConfirmDialog/ConfirmDialog";
 import { REPORT_REASONS } from "../../utils/reportReasons";
 import { downloadImage, shareContent, shareMessageFor } from "../../utils/shareActions";
+import { isImageCached, markImageCached } from "../../utils/imageCache";
 
 function MorePopUp({ position, ignoreRef, handler, onShowMore, onShowLess, onDownload, onReport }) {
   const popUpRef = useRef(null);
@@ -60,7 +61,7 @@ function MorePopUp({ position, ignoreRef, handler, onShowMore, onShowLess, onDow
 
 const PostCard = React.memo(function PostCard({ data: post, onToast }) {
   const [isPopUpActive, setIsPopUpActive] = useState(false);
-  const user = getCurrentUser()
+  const user = getCurrentUser();
   const btnRef = useRef(null);
   const [isReportOpen, setIsReportOpen] = useState(false);
 
@@ -69,9 +70,11 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
     left: 0,
   });
 
-  const [isSaved, setIsSaved] = useState(() => isPostSavedBy(user?.id,post.id));
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isSaved, setIsSaved] = useState(() => isPostSavedBy(user?.id, post?.id));
+  const isCached = isImageCached(post?.imageUrl);
+  const [isImageLoaded, setIsImageLoaded] = useState(isCached);
   const [isLandscape, setIsLandscape] = useState(false);
+  const isLoaded = isImageLoaded || isCached;
 
   const calculatePopUpPos = () => {
     if (!btnRef.current) return null;
@@ -161,6 +164,7 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
   };
 
   const handleImageLoading = (e) => {
+    markImageCached(post?.imageUrl);
     setIsLandscape(e.target.naturalWidth > e.target.naturalHeight);
     setIsImageLoaded(true);
   };
@@ -205,60 +209,65 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
     setIsReportOpen(true);
   };
 
+  const ratio = post.aspectRatio || 0.75;
+
   return (
     <div className="home-masonry-item">
-      <NavLink to={`/post/${post.id}`} state={{ post }}>
-        {!isImageLoaded && (
-          <div
-            className="home-image-skeleton"
-            style={{
-              aspectRatio: post.aspectRatio || "16/9"
-            }}
-          />
-        )}
+      <NavLink
+        to={`/post/${post.id}`}
+        state={{ post }}
+        className="home-card-link"
+        style={{ aspectRatio: ratio }}
+      >
+        {!isLoaded && <div className="home-image-skeleton" />}
 
         <img
           src={post.imageUrl}
-          alt={post.description || "Post"}
-          loading="lazy"
+          alt={post.description || post.title || "Post"}
+          decoding="async"
           onLoad={handleImageLoading}
+          className={`home-card-img ${isLoaded ? "is-loaded" : "is-loading"}`}
+          ref={(imgEl) => {
+            if (imgEl && imgEl.complete && imgEl.naturalWidth > 0 && !isLoaded) {
+              markImageCached(post?.imageUrl);
+              setIsLandscape(imgEl.naturalWidth > imgEl.naturalHeight);
+              setIsImageLoaded(true);
+            }
+          }}
         />
-      </NavLink>
-      {isImageLoaded && (
-        <>
-          <div className="home-masonry-item-overlay">
-            <button
-              type="button"
-              onClick={handleSave}
-              className="home-overlay-save-btn"
-            >
-              {isSaved ? "Saved" : "Save"}
-            </button>
-            {!isLandscape && (
-              <button
-                type="button"
-                className="home-masonry-item-share"
-                aria-label="Share"
-                onClick={handleShare}
-              >
-                <IconShare3 />
-              </button>
-            )}
-          </div>
 
-          <div className="home-masonry-item-bottom">
+        <div className="home-masonry-item-overlay">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="home-overlay-save-btn"
+          >
+            {isSaved ? "Saved" : "Save"}
+          </button>
+          {!isLandscape && (
             <button
               type="button"
-              ref={btnRef}
-              className="home-masonry-item-bottom-button"
-              title="More actions"
-              onClick={handleMore}
+              className="home-masonry-item-share"
+              aria-label="Share"
+              onClick={handleShare}
             >
-              <IconDots size={25} />
+              <IconShare3 />
             </button>
-          </div>
-        </>
-      )}
+          )}
+        </div>
+      </NavLink>
+
+      <div className="home-masonry-item-bottom">
+        <button
+          type="button"
+          ref={btnRef}
+          className="home-masonry-item-bottom-button"
+          title="More actions"
+          onClick={handleMore}
+        >
+          <IconDots size={25} />
+        </button>
+      </div>
 
       {isPopUpActive && (
         <MorePopUp
@@ -287,19 +296,25 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
 });
 
 function Home() {
-  useMockData();
+  const storeVersion = useMockData();
   const containerRef = useRef(null);
-  const posts = getHomePostFeed();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const posts = useMemo(() => getHomePostFeed(), [storeVersion]);
   const { columnWidth, columnCount } = useMasonryColumnWidth(containerRef);
   const [toastMessage, setToastMessage] = useState("");
+
+  const renderItem = useCallback(
+    ({ data, index }) => (
+      <PostCard data={data} index={index} onToast={setToastMessage} />
+    ),
+    [setToastMessage],
+  );
 
   return (
     <main className="home-page" ref={containerRef}>
       <Masonry
         items={posts}
-        render={({ data, index }) => (
-          <PostCard data={data} index={index} onToast={setToastMessage} />
-        )}
+        render={renderItem}
         itemKey={(data, index) => data?.id ?? index}
         columnGutter={16}
         columnWidth={columnWidth}

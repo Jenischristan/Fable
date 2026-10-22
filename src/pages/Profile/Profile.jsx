@@ -1,5 +1,5 @@
 import "./Profile.css";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { countFormatter } from "../../utils/countFormatter";
 import React from "react";
@@ -36,6 +36,7 @@ import {
   shareMessageFor,
 } from "../../utils/shareActions";
 import defaultProfileImage from "../../assets/default_profile.jpg";
+import { isImageCached, markImageCached } from "../../utils/imageCache";
 
 function MorePopUp({ position, ignoreRef, handler, onDownload, onReport }) {
   const popUpRef = useRef(null);
@@ -77,10 +78,17 @@ const PostCard = React.memo(function PostCard({ data: post, onToast, onReport })
   });
 
   const [isSaved, setIsSaved] = useState(() =>
-    isPostSavedBy(user?.id, post.id),
+    isPostSavedBy(user?.id, post?.id),
   );
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const isCached = isImageCached(post?.imageUrl);
+  const [isImageLoaded, setIsImageLoaded] = useState(isCached);
   const [isLandscape, setIsLandscape] = useState(false);
+
+  useEffect(() => {
+    if (isImageCached(post?.imageUrl)) {
+      setIsImageLoaded(true);
+    }
+  }, [post?.imageUrl]);
 
   const calculatePopUpPos = () => {
     if (!btnRef.current) return null;
@@ -199,64 +207,72 @@ const PostCard = React.memo(function PostCard({ data: post, onToast, onReport })
   };
 
   const handleImageLoading = (e) => {
+    markImageCached(post?.imageUrl);
     setIsLandscape(e.target.naturalWidth > e.target.naturalHeight);
     setIsImageLoaded(true);
   };
 
+  const closePopUp = () => setIsPopUpActive(false);
+
+  const ratio = post.aspectRatio || 0.75;
+
   return (
     <div className="home-masonry-item">
-      <NavLink to={`/post/${post.id}`} state={{ post }}>
-        {!isImageLoaded && (
-          <div
-            className="home-image-skeleton"
-            style={{
-              aspectRatio: post.aspectRatio || "16/9",
-            }}
-          />
-        )}
+      <NavLink
+        to={`/post/${post.id}`}
+        state={{ post }}
+        className="home-card-link"
+        style={{ aspectRatio: ratio }}
+      >
+        {!isImageLoaded && <div className="home-image-skeleton" />}
 
         <img
           src={post.imageUrl}
-          alt={post.description || "Post"}
-          loading="lazy"
+          alt={post.description || post.title || "Post"}
+          decoding="async"
           onLoad={handleImageLoading}
+          className={`home-card-img ${isImageLoaded ? "is-loaded" : "is-loading"}`}
+          ref={(imgEl) => {
+            if (imgEl && imgEl.complete && imgEl.naturalWidth > 0 && !isImageLoaded) {
+              markImageCached(post?.imageUrl);
+              setIsLandscape(imgEl.naturalWidth > imgEl.naturalHeight);
+              setIsImageLoaded(true);
+            }
+          }}
         />
-      </NavLink>
-      {isImageLoaded && (
-        <>
-          <div className="home-masonry-item-overlay">
-            <button
-              type="button"
-              onClick={handleSave}
-              className="home-overlay-save-btn"
-            >
-              {isSaved ? "Saved" : "Save"}
-            </button>
-            {!isLandscape && (
-              <button
-                type="button"
-                className="home-masonry-item-share"
-                aria-label="Share"
-                onClick={handleShare}
-              >
-                <IconShare3 />
-              </button>
-            )}
-          </div>
 
-          <div className="home-masonry-item-bottom">
+        <div className="home-masonry-item-overlay">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="home-overlay-save-btn"
+          >
+            {isSaved ? "Saved" : "Save"}
+          </button>
+          {!isLandscape && (
             <button
               type="button"
-              ref={btnRef}
-              className="home-masonry-item-bottom-button"
-              title="More actions"
-              onClick={handleMore}
+              className="home-masonry-item-share"
+              aria-label="Share"
+              onClick={handleShare}
             >
-              <IconDots size={25} />
+              <IconShare3 />
             </button>
-          </div>
-        </>
-      )}
+          )}
+        </div>
+      </NavLink>
+
+      <div className="home-masonry-item-bottom">
+        <button
+          type="button"
+          ref={btnRef}
+          className="home-masonry-item-bottom-button"
+          title="More actions"
+          onClick={handleMore}
+        >
+          <IconDots size={25} />
+        </button>
+      </div>
 
       {isPopUpActive && (
         <MorePopUp
@@ -272,7 +288,7 @@ const PostCard = React.memo(function PostCard({ data: post, onToast, onReport })
 });
 
 export default function Profile() {
-  useMockData();
+  const storeVersion = useMockData();
   const navigate = useNavigate();
   const user = getCurrentUser();
   const { username, tab } = useParams();
@@ -295,8 +311,19 @@ export default function Profile() {
   const hasPendingRequest =
     user && displayUser ? hasPendingFollowRequest(user.id, displayUser.id) : false;
 
-  const handlePostToast = (msg) => setToastMessage(msg);
-  const handlePostReport = (post) => setDialog({ type: "report-post", post });
+  const handlePostToast = useCallback((msg) => setToastMessage(msg), [setToastMessage]);
+  const handlePostReport = useCallback((post) => setDialog({ type: "report-post", post }), [setDialog]);
+
+  const renderItem = useCallback(
+    (props) => (
+      <PostCard
+        {...props}
+        onToast={handlePostToast}
+        onReport={handlePostReport}
+      />
+    ),
+    [handlePostToast, handlePostReport],
+  );
 
   const closeActionsPopup = () => setIsActionsPopupActive(false);
 
@@ -387,13 +414,15 @@ export default function Profile() {
   const isOwnProfile = user?.username === displayUser?.username;
   const isPrivate =
     displayUser?.visibility === "private" && !isOwnProfile && !isFollowing;
-  const rawPosts =
-    activeTab === "created"
-      ? getCreatedPostsById(displayUser.id)
-      : getSavedPostsById(displayUser.id);
-  const postsToDisplay = (Array.isArray(rawPosts) ? rawPosts : []).filter(
-    (post) => post && typeof post === "object",
-  );
+  const postsToDisplay = useMemo(() => {
+    const rawPosts =
+      activeTab === "created"
+        ? getCreatedPostsById(displayUser?.id)
+        : getSavedPostsById(displayUser?.id);
+    return (Array.isArray(rawPosts) ? rawPosts : []).filter(
+      (post) => post && typeof post === "object",
+    );
+  }, [activeTab, displayUser?.id, storeVersion]);
 
   let targetColumns = 4;
   if (sectionWidth < 768) {
@@ -545,13 +574,7 @@ export default function Profile() {
         <Masonry
           key={`${activeTab}-${targetColumns}`}
           items={postsToDisplay}
-          render={(props) => (
-            <PostCard
-              {...props}
-              onToast={handlePostToast}
-              onReport={handlePostReport}
-            />
-          )}
+          render={renderItem}
           itemKey={(data, index) => data?.id ?? index}
           columnGutter={columnGutter}
           columnWidth={computedColumnWidth}

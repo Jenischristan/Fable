@@ -8,20 +8,49 @@
 .home-masonry-item {
   padding: 0rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
+.home-card-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #141417;
+  text-decoration: none;
+}
+
+.home-card-link img,
 .home-masonry-item img {
   display: block;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 1rem;
-  height: auto;
+}
+
+.home-card-img {
+  transition: opacity 0.15s ease-out;
+}
+
+.home-card-img.is-loading {
+  opacity: 0;
+}
+
+.home-card-img.is-loaded {
+  opacity: 1;
 }
 
 .home-masonry-item-bottom {
   width: 100%;
+  height: 40px;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  padding: 0.7rem 0.5rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
 }
 
 .home-masonry-item-bottom-button {
@@ -60,9 +89,10 @@
   justify-content: space-between;
   align-items: stretch;
   pointer-events: none;
-  padding: 0.5rem 0.5rem calc(0.5rem + 44px) 0.5rem;
+  padding: 0.75rem;
   opacity: 0;
   transition: opacity 0.2s ease;
+  z-index: 2;
 }
 
 .home-masonry-item-overlay > *:first-child {
@@ -151,15 +181,16 @@
   width: 100%;
   height: 100%;
   border-radius: 1rem;
-  background-color: #1c1c1f;
+  background-color: #161619;
   background-image: linear-gradient(
     90deg,
-    #1c1c1f 0%,
-    #2a2a2e 50%,
-    #1c1c1f 100%
+    #161619 0%,
+    #222226 50%,
+    #161619 100%
   );
   background-size: 200% 100%;
-  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  pointer-events: none;
 }
 
 @keyframes skeleton-shimmer {

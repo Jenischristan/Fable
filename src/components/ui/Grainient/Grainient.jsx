@@ -143,7 +143,8 @@ const Grainient = ({
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
 
-    const gl = renderer.gl;
+    const gl = renderer?.gl;
+    if (!gl || !gl.canvas) return;
     const canvas = gl.canvas;
     canvas.style.width = '100%';
     canvas.style.height = '100%';

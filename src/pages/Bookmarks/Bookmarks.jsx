@@ -1,11 +1,12 @@
-import "./Bookmarks.css";
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { Masonry } from "masonic";
 import {
   IconDots,
   IconShare3,
 } from "@tabler/icons-react";
+import "./Bookmarks.css";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useMockData } from "../../hooks/useMockData";
 import { useMasonryColumnWidth } from "../../hooks/useMasonryColumnWidth";
@@ -17,6 +18,7 @@ import {
 } from "../../mocks/api";
 import Toast from "../../components/ui/Toast/Toast";
 import { shareContent, shareMessageFor } from "../../utils/shareActions";
+import { isImageCached, markImageCached } from "../../utils/imageCache";
 
 function MorePopUp({ position, ignoreRef, handler, onShare }) {
   const popUpRef = useRef(null);
@@ -55,9 +57,11 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
   });
 
   const [isSaved, setIsSaved] = useState(() =>
-    isPostSavedBy(user?.id, post.id),
+    isPostSavedBy(user?.id, post?.id),
   );
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const isCached = isImageCached(post?.imageUrl);
+  const [isImageLoaded, setIsImageLoaded] = useState(isCached);
+  const isLoaded = isImageLoaded || isCached;
 
   const calculatePopUpPos = () => {
     if (!btnRef.current) return null;
@@ -148,6 +152,7 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
   };
 
   const handleImageLoading = () => {
+    markImageCached(post?.imageUrl);
     setIsImageLoaded(true);
   };
 
@@ -162,50 +167,54 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
     if (msg) onToast?.(msg);
   };
 
+  const ratio = post.aspectRatio || 0.75;
+
   return (
     <div className="home-masonry-item">
-      <NavLink to={`/post/${post.id}`} state={{ post }}>
-        {!isImageLoaded && (
-          <div
-            className="home-image-skeleton"
-            style={{
-              aspectRatio: post.aspectRatio || "16/9",
-            }}
-          />
-        )}
+      <NavLink
+        to={`/post/${post.id}`}
+        state={{ post }}
+        className="home-card-link"
+        style={{ aspectRatio: ratio }}
+      >
+        {!isLoaded && <div className="home-image-skeleton" />}
 
         <img
           src={post.imageUrl}
-          alt={post.description || "Post"}
-          loading="lazy"
+          alt={post.description || post.title || "Post"}
+          decoding="async"
           onLoad={handleImageLoading}
+          className={`home-card-img ${isLoaded ? "is-loaded" : "is-loading"}`}
+          ref={(imgEl) => {
+            if (imgEl && imgEl.complete && imgEl.naturalWidth > 0 && !isLoaded) {
+              markImageCached(post?.imageUrl);
+              setIsImageLoaded(true);
+            }
+          }}
         />
-      </NavLink>
-      {isImageLoaded && (
-        <>
-          <div className="home-masonry-item-overlay">
-            <button
-              type="button"
-              onClick={handleSave}
-              className="home-overlay-save-btn"
-            >
-              {isSaved ? "Saved" : "Save"}
-            </button>
-          </div>
 
-          <div className="home-masonry-item-bottom">
-            <button
-              type="button"
-              ref={btnRef}
-              className="home-masonry-item-bottom-button"
-              title="More actions"
-              onClick={handleMore}
-            >
-              <IconDots size={25} />
-            </button>
-          </div>
-        </>
-      )}
+        <div className="home-masonry-item-overlay">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="home-overlay-save-btn"
+          >
+            {isSaved ? "Saved" : "Save"}
+          </button>
+        </div>
+      </NavLink>
+
+      <div className="home-masonry-item-bottom">
+        <button
+          type="button"
+          ref={btnRef}
+          className="home-masonry-item-bottom-button"
+          title="More actions"
+          onClick={handleMore}
+        >
+          <IconDots size={25} />
+        </button>
+      </div>
 
       {isPopUpActive && (
         <MorePopUp
@@ -220,13 +229,21 @@ const PostCard = React.memo(function PostCard({ data: post, onToast }) {
 });
 
 export default function Bookmarks() {
-  useMockData();
+  const storeVersion = useMockData();
   const user = getCurrentUser();
   const [toastMessage, setToastMessage] = useState("");
   const containerRef = useRef(null);
   const { columnWidth, columnCount } = useMasonryColumnWidth(containerRef);
 
-  const posts = getSavedPostsById(user?.id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const posts = useMemo(() => getSavedPostsById(user?.id), [user?.id, storeVersion]);
+
+  const renderItem = useCallback(
+    ({ data, index }) => (
+      <PostCard data={data} index={index} onToast={setToastMessage} />
+    ),
+    [setToastMessage],
+  );
 
   return (
     <main className="bookmarks-page">
@@ -239,9 +256,7 @@ export default function Bookmarks() {
         ) : (
           <Masonry
             items={posts}
-            render={({ data, index }) => (
-              <PostCard data={data} index={index} onToast={setToastMessage} />
-            )}
+            render={renderItem}
             itemKey={(data, index) => data?.id ?? index}
             columnGutter={16}
             columnWidth={columnWidth}

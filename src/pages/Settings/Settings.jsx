@@ -20,14 +20,14 @@ import ConfirmDialog from "../../components/ui/ConfirmDialog/ConfirmDialog";
 
 function ProfileSection({ showToast }) {
   useMockData();
-  const user = getCurrentUser();
-  const [avatarPreview, setAvatarPreview] = useState(user.avatarUrl);
+  const user = getCurrentUser() || {};
+  const [avatarPreview, setAvatarPreview] = useState(user.avatarUrl || "");
 
   const initialProfile = {
-    firstName: user.firstName,
-    lastName: user.lastName,
-    username: user.username,
-    bio: user.bio,
+    firstName: user.firstName || "",
+    lastName: user.lastName || "",
+    username: user.username || "",
+    bio: user.bio || "",
   };
   const [formData, setFormData] = useState(initialProfile);
 
@@ -159,11 +159,11 @@ function ProfileSection({ showToast }) {
 function SecuritySection({ showToast }) {
   useMockData();
   const navigate = useNavigate();
-  const user = getCurrentUser();
+  const user = getCurrentUser() || {};
   const initialSecurity = {
-    email: user.email,
+    email: user.email || "",
     dob: dateFormatter(user.dob),
-    visibility: user.visibility,
+    visibility: user.visibility || "public",
     password: "",
   };
   const [formData, setFormData] = useState(initialSecurity);

@@ -56,27 +56,11 @@ function TopAccountPopUP({ user, onLogout, onClose }) {
   );
 }
 
-export default function TopBar() {
-  useMockData();
+function TopBarSearch({ initialQuery }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const user = getCurrentUser();
-  const [isPopUpActive, setIsPopUpActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const urlQuery = new URLSearchParams(location.search).get("q") || "";
-  const [searchDraft, setSearchDraft] = useState(null);
-  const [prevSearch, setPrevSearch] = useState(location.search);
-  if (prevSearch !== location.search) {
-    setPrevSearch(location.search);
-    setSearchDraft(null);
-  }
-  const searchQuery = searchDraft ?? urlQuery;
-  const popupRef = useRef(null);
   const searchContainerRef = useRef(null);
-
-  useClickOutside(popupRef, () => {
-    setIsPopUpActive(false);
-  });
 
   useClickOutside(searchContainerRef, () => {
     setIsSearchOpen(false);
@@ -100,6 +84,153 @@ export default function TopBar() {
     }
   };
 
+  return (
+    <form
+      className="topbar-search-container"
+      ref={searchContainerRef}
+      onSubmit={handleSearch}
+    >
+      <IconSearch className="search-icon" color="#38383a" size={25} />
+      <input
+        type="text"
+        placeholder="Search for posts, topics, users..."
+        value={searchQuery}
+        onFocus={() => {
+          if (trimmedQuery) setIsSearchOpen(true);
+        }}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          if (e.target.value.trim()) {
+            setIsSearchOpen(true);
+          } else {
+            setIsSearchOpen(false);
+          }
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") setIsSearchOpen(false);
+        }}
+      />
+
+      {isSearchOpen && trimmedQuery && (
+        <div className="topbar-search-dropdown">
+          {matchingTopics.length > 0 && (
+            <div className="search-dropdown-group">
+              <div className="search-dropdown-label">
+                <IconHash size={15} /> Topics
+              </div>
+              {matchingTopics.map((tag) => (
+                <button
+                  key={tag.id}
+                  type="button"
+                  className="search-dropdown-item"
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery(tag.name);
+                    navigate(`/explore?q=${encodeURIComponent(tag.name)}`);
+                  }}
+                >
+                  <span className="search-topic-tag">#{tag.name}</span>
+                  <span className="search-item-meta">
+                    {countFormatter(tag.postsCount)} posts
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {matchingUsers.length > 0 && (
+            <div className="search-dropdown-group">
+              <div className="search-dropdown-label">
+                <IconUserFilled size={15} /> Users
+              </div>
+              {matchingUsers.map((u) => (
+                <NavLink
+                  key={u.id}
+                  to={`/user/${u.username}`}
+                  className="search-dropdown-item"
+                  onClick={() => setIsSearchOpen(false)}
+                >
+                  <img
+                    src={u.avatarUrl}
+                    alt={u.username}
+                    className="search-user-avatar"
+                  />
+                  <div className="search-user-text">
+                    <span className="search-user-name">
+                      {u.firstName} {u.lastName}
+                    </span>
+                    <span className="search-user-handle">@{u.username}</span>
+                  </div>
+                </NavLink>
+              ))}
+            </div>
+          )}
+
+          {matchingPosts.length > 0 && (
+            <div className="search-dropdown-group">
+              <div className="search-dropdown-label">
+                <IconPhoto size={15} /> Posts
+              </div>
+              {matchingPosts.map((post) => (
+                <NavLink
+                  key={post.id}
+                  to={`/post/${post.id}`}
+                  state={{ post }}
+                  className="search-dropdown-item"
+                  onClick={() => setIsSearchOpen(false)}
+                >
+                  <img
+                    src={post.imageUrl}
+                    alt={post.title}
+                    className="search-post-thumb"
+                  />
+                  <div className="search-post-text">
+                    <span className="search-post-title">
+                      {post.title || "Untitled Post"}
+                    </span>
+                    <span className="search-item-meta">
+                      {post.tags?.slice(0, 2).map((t) => `#${t}`).join(" ")}
+                    </span>
+                  </div>
+                </NavLink>
+              ))}
+            </div>
+          )}
+
+          {hasDropdownResults ? (
+            <button
+              type="submit"
+              className="search-dropdown-all-btn"
+              onClick={handleSearch}
+            >
+              <IconSearch size={16} />
+              <span>View all results for "{trimmedQuery}"</span>
+            </button>
+          ) : (
+            <div className="search-dropdown-empty">
+              <p>No quick suggestions for "{trimmedQuery}".</p>
+              <span>Press Enter to explore all matching content.</span>
+            </div>
+          )}
+        </div>
+      )}
+    </form>
+  );
+}
+
+export default function TopBar() {
+  useMockData();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user = getCurrentUser();
+  const [isPopUpActive, setIsPopUpActive] = useState(false);
+  const urlQuery = new URLSearchParams(location.search).get("q") || "";
+  const popupRef = useRef(null);
+
+  useClickOutside(popupRef, () => {
+    setIsPopUpActive(false);
+  });
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -109,136 +240,7 @@ export default function TopBar() {
 
   return (
     <div className="topbar-div">
-      <form
-        className="topbar-search-container"
-        ref={searchContainerRef}
-        onSubmit={handleSearch}
-      >
-        <IconSearch className="search-icon" color="#38383a" size={25} />
-        <input
-          type="text"
-          placeholder="Search for posts, topics, users..."
-          value={searchQuery}
-          onFocus={() => {
-            if (trimmedQuery) setIsSearchOpen(true);
-          }}
-          onChange={(e) => {
-            setSearchDraft(e.target.value);
-            if (e.target.value.trim()) {
-              setIsSearchOpen(true);
-            } else {
-              setIsSearchOpen(false);
-            }
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setIsSearchOpen(false);
-          }}
-        />
-
-        {isSearchOpen && trimmedQuery && (
-          <div className="topbar-search-dropdown">
-            {matchingTopics.length > 0 && (
-              <div className="search-dropdown-group">
-                <div className="search-dropdown-label">
-                  <IconHash size={15} /> Topics
-                </div>
-                {matchingTopics.map((tag) => (
-                  <button
-                    key={tag.id}
-                    type="button"
-                    className="search-dropdown-item"
-                    onClick={() => {
-                      setIsSearchOpen(false);
-                      setSearchDraft(tag.name);
-                      navigate(`/explore?q=${encodeURIComponent(tag.name)}`);
-                    }}
-                  >
-                    <span className="search-topic-tag">#{tag.name}</span>
-                    <span className="search-item-meta">
-                      {countFormatter(tag.postsCount)} posts
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {matchingUsers.length > 0 && (
-              <div className="search-dropdown-group">
-                <div className="search-dropdown-label">
-                  <IconUserFilled size={15} /> Users
-                </div>
-                {matchingUsers.map((u) => (
-                  <NavLink
-                    key={u.id}
-                    to={`/user/${u.username}`}
-                    className="search-dropdown-item"
-                    onClick={() => setIsSearchOpen(false)}
-                  >
-                    <img
-                      src={u.avatarUrl}
-                      alt={u.username}
-                      className="search-user-avatar"
-                    />
-                    <div className="search-user-text">
-                      <span className="search-user-name">
-                        {u.firstName} {u.lastName}
-                      </span>
-                      <span className="search-user-handle">@{u.username}</span>
-                    </div>
-                  </NavLink>
-                ))}
-              </div>
-            )}
-
-            {matchingPosts.length > 0 && (
-              <div className="search-dropdown-group">
-                <div className="search-dropdown-label">
-                  <IconPhoto size={15} /> Posts
-                </div>
-                {matchingPosts.map((post) => (
-                  <NavLink
-                    key={post.id}
-                    to={`/post/${post.id}`}
-                    state={{ post }}
-                    className="search-dropdown-item"
-                    onClick={() => setIsSearchOpen(false)}
-                  >
-                    <img
-                      src={post.imageUrl}
-                      alt={post.title}
-                      className="search-post-thumb"
-                    />
-                    <div className="search-post-text">
-                      <span className="search-post-title">
-                        {post.title || "Untitled Post"}
-                      </span>
-                      <span className="search-item-meta">
-                        {post.tags?.slice(0, 2).map((t) => `#${t}`).join(" ")}
-                      </span>
-                    </div>
-                  </NavLink>
-                ))}
-              </div>
-            )}
-
-            {hasDropdownResults ? (
-              <button
-                type="submit"
-                className="search-dropdown-all-btn"
-                onClick={handleSearch}
-              >
-                <IconSearch size={16} />
-                <span>View all results for "{trimmedQuery}"</span>
-              </button>
-            ) : (
-              <div className="search-dropdown-empty">
-                <p>No quick suggestions for "{trimmedQuery}".</p>
-                <span>Press Enter to explore all matching content.</span>
-              </div>
-            )}
-          </div>
-        )}
-      </form>
+      <TopBarSearch key={location.search} initialQuery={urlQuery} />
 
       <div className="topbar-profile-container" ref={popupRef}>
         <Link

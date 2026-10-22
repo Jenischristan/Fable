@@ -15,7 +15,7 @@ import {
 } from "@tabler/icons-react";
 import { countFormatter } from "../../utils/countFormatter";
 import { timeFormatter } from "../../utils/timeFormatter";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useMockData } from "../../hooks/useMockData";
 import {
@@ -66,6 +66,15 @@ export default function PostView() {
   const commentInputRef = useRef(null);
 
   const backNavigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const layoutContent = document.querySelector(".app-layout-content");
+    if (layoutContent) {
+      layoutContent.scrollTop = 0;
+      layoutContent.scrollLeft = 0;
+    }
+  }, [id]);
   useClickOutside(
     sortPopupRef,
     () => {

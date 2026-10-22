@@ -4,9 +4,9 @@ const SESSION_KEY = "fable_session_user_id";
 
 export const getSessionUserId = () => {
   try {
-    return localStorage.getItem(SESSION_KEY);
+    return localStorage.getItem(SESSION_KEY) || "user_001";
   } catch {
-    return null;
+    return "user_001";
   }
 };
 
